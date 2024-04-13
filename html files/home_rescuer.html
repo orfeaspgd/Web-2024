@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Rescuer</title>
+</head>
+<body>
+<button id="logoutButton">Logout</button>
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            fetch('/logout', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = data.redirectUrl;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
