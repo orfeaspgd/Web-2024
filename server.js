@@ -59,12 +59,13 @@ app.get('/home', (req, res) => {
     if(req.session.user && req.session.user.user_type === 'admin'){
     res.sendFile(path.join(__dirname, './html files/home_admin.html'));
     }
-    if (req.session.user && req.session.user.user_type === 'citizen') {
+    else if (req.session.user && req.session.user.user_type === 'citizen') {
         res.sendFile(path.join(__dirname, './html files/home_citizen.html'));
     }
-    if(req.session.user && req.session.user.user_type === 'rescuer'){
+    else if(req.session.user && req.session.user.user_type === 'rescuer'){
         res.sendFile(path.join(__dirname, './html files/home_rescuer.html'));
-    }
+    }else (res.redirect("/login"));
+
 });
 
 //logout
