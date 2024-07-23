@@ -23,6 +23,37 @@
     <div id="message"></div>
 </form>
 
+<form id="createAccount">
+    <h1>Create Account</h1>
+    <div>
+        <label for="create_firstName">First Name:</label>
+        <input type="text" id="create_firstName" name="firstname" required>
+    </div>
+    <div>
+        <label for="create_lastname">Last Name:</label>
+        <input type="text" id="create_lastname" name="lastname" required>
+    </div>
+    <div>
+        <label for="create_username">Username:</label>
+        <input type="text" id="create_username" name="username" required>
+    </div>
+    <div>
+        <label for="create_phone_number">Phone:</label>
+        <input type="tel" id="create_phone_number" name="phone_number" required>
+    </div>
+    <div>
+        <label for="create_email">Email:</label>
+        <input type="email" id="create_email" name="email" required>
+    </div>
+    <div>
+        <label for="create_password">Password:</label>
+        <input type="password" id="create_password" name="password" required>
+    </div>
+    <div>
+        <input type="submit" value="Create Account">
+    </div>
+    <div id="create_message"></div>
+</form>
 <script>
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -39,6 +70,30 @@
                 let messageElement = document.getElementById('message');
                 if (data.status === 'success') {
                     window.location.href = data.redirectUrl;
+                } else {
+                    messageElement.style.color = 'red';
+                }
+                messageElement.textContent = data.message;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+<script>
+    document.getElementById('createAccount').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let formData = new URLSearchParams(new FormData(this)).toString();
+        fetch('/login_create_account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                let messageElement = document.getElementById('create_message');
+                if (data.status === 'success') {
+                    messageElement.style.color = 'green';
                 } else {
                     messageElement.style.color = 'red';
                 }

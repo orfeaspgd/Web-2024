@@ -86,6 +86,14 @@ app.post('/create_account', async (req, res) => {
         .catch(() => res.json({ status: 'error', message: 'Something went wrong.' }));
 });
 
+app.post('/login_create_account', async (req, res) => {
+    const { firstname, lastname, username, phone_number, email, password} = req.body;
+    const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, user_type: "citizen" });
+    newUser.save()
+        .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
+        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+});
+
 //test for joins in mongoose
 app.get('/admin_tasks_table', async (req, res) => {
     try {
