@@ -15,6 +15,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const phoneRegex = /^\d{10}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   //phone number and email regular expressions
+
 app.use(express.static(path.join(__dirname, '.')));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
@@ -78,8 +81,31 @@ app.post('/logout', async (req, res) => {
     res.json({ status: 'success', redirectUrl: '/login' });
 });
 
-app.post('/create_account', async (req, res) => {
+app.post('/admin_create_account', async (req, res) => {
     const { firstname, lastname, username, phone_number, email, password, role } = req.body;
+
+    if (!phoneRegex.test(phone_number)) {
+        return res.json({ status: 'error', message: 'Invalid phone number format.' });
+    }
+    if (!emailRegex.test(email)) {
+        return res.json({ status: 'error', message: 'Invalid email format.' });
+    }
+
+    const existingUser = await Users.findOne({ username: username });
+    if (existingUser) {
+        return res.json({ status: 'error', message: 'Username already exists.' });
+    }
+
+    const existingPhoneNum = await Users.findOne({ phone_number: phone_number });
+    if (existingPhoneNum) {
+        return res.json({ status: 'error', message: 'Phone number is already being used.' });
+    }
+
+    const existingEmail = await Users.findOne({ email: email});
+    if (existingEmail) {
+        return res.json({ status: 'error', message: 'Email is already being used.' });
+    }
+
     const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, user_type: role });
     newUser.save()
         .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
@@ -87,11 +113,34 @@ app.post('/create_account', async (req, res) => {
 });
 
 app.post('/login_create_account', async (req, res) => {
-    const { firstname, lastname, username, phone_number, email, password} = req.body;
+    const { firstname, lastname, username, phone_number, email, password } = req.body;
+
+    if (!phoneRegex.test(phone_number)) {
+        return res.json({ status: 'error', message: 'Invalid phone number format.' });
+    }
+    if (!emailRegex.test(email)) {
+        return res.json({ status: 'error', message: 'Invalid email format.' });
+    }
+
+    const existingUser = await Users.findOne({ username: username });
+    if (existingUser) {
+        return res.json({ status: 'error', message: 'Username already exists.' });
+    }
+
+    const existingPhoneNum = await Users.findOne({ phone_number: phone_number });
+    if (existingPhoneNum) {
+        return res.json({ status: 'error', message: 'Phone number is already being used.' });
+    }
+
+    const existingEmail = await Users.findOne({ email: email});
+    if (existingEmail) {
+        return res.json({ status: 'error', message: 'Email is already being used.' });
+    }
+
     const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, user_type: "citizen" });
     newUser.save()
         .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
-        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+        .catch((err) => { console.log(err); res.json({ status: 'error', message: 'Something went wrong.' }) });
 });
 
 //test for joins in mongoose

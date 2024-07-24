@@ -24,7 +24,7 @@
         <input type="text" id="username" name="username" required>
     </div>
     <div>
-        <label for="phone_number">Phone:</label>
+        <label for="phone_number">Phone Number:</label>
         <input type="tel" id="phone_number" name="phone_number" required>
     </div>
     <div>
@@ -51,7 +51,7 @@
     document.getElementById('createAccount').addEventListener('submit', function(event) {
         event.preventDefault();
         let formData = new URLSearchParams(new FormData(this)).toString();
-        fetch('/create_account', {
+        fetch('/admin_create_account', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
