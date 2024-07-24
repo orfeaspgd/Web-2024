@@ -57,13 +57,11 @@ db.admin_announcements.insertOne({
         {
             product_id: 1,
             name: "Product 1",
-            description: "Product 1 description",
             quantity: 1
         },
         {
             product_id: 2,
             name: "Product 2",
-            description: "Product 2 description",
             quantity: 2
         }
     ]
@@ -76,13 +74,11 @@ db.admin_announcements.insertOne({
         {
             product_id: 3,
             name: "Product 3",
-            description: "Product 3 description",
             quantity: 1
         },
         {
             product_id: 4,
             name: "Product 4",
-            description: "Product 4 description",
             quantity: 2
         }
     ]

@@ -1,6 +1,7 @@
 import express from "express";
 import 'dotenv/config'
 import session from 'express-session';
+import { body, validationResult } from 'express-validator';
 import {
     Users,
     AdminAnnouncements,
@@ -150,11 +151,39 @@ app.get('/admin_tasks_table', async (req, res) => {
             .populate('citizen_id', 'name surname username email user_type phone_number -_id')
             .populate('rescuer_id', 'name surname username email user_type phone_number -_id')
             .populate('product_id', 'name description quantity storage_quantity -_id');
-        console.log(tasks);
         res.json(tasks);
     } catch (err) {
         console.error(err);
         res.status(500).send(err);
     }
+});
+
+app.get('/products', async (req, res) => {
+    try {
+        const products = await Products.find({}, 'name');
+        res.json(products);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
+app.post('/admin_create_announcement', [
+    body('selectProduct.*').trim().escape(),
+    body('quantity.*').trim().escape().isNumeric().isInt({ min: 1 })
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ status: 'error', message: 'Invalid input.' });
+    }
+
+    const { selectProduct, quantity } = req.body;
+    const products = selectProduct.map((productId, index) => ({
+        productId,
+        quantity: quantity[index]
+    }));
+
+    // Handle the announcement creation logic here
+    res.json({ status: 'success', message: 'Announcement created successfully.', products });
 });
 
