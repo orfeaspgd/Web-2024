@@ -183,7 +183,7 @@ app.post('/admin_create_announcement', [
         quantity: quantity[index]
     }));
 
-    // Handle the announcement creation logic here
+    //insert query for announcement creation in database
     res.json({ status: 'success', message: 'Announcement created successfully.', products });
 });
 
