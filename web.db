@@ -1,0 +1,97 @@
+db.dropDatabase()
+use web
+db.createCollection("users")
+db.users.insertOne({
+	username: "thomasnik",
+	password: "123",
+	role: "admin",
+	fullName: "Thomas Nikolaou",
+	phone: "1234567890",
+
+});
+
+db.users.insertOne({
+	username: "orfeaspg",
+	password: "321",
+	role: "rescuer",
+	fullName: "Orfeas Pourgouridis",
+	phone: "0987654321",
+	location: "38.245605967394575, 21.728534721333745"
+});
+
+db.users.insertOne({
+	username: "akispap",
+	password: "213",
+	role: "citizen",
+	fullName: "Akis Papapanagiotou",
+	phone: "1122334455",
+	location: "38.24884149654704, 21.745502373242417"
+});
+
+var admin = db.users.findOne({ role: "admin"});
+var rescuer = db.users.findOne({ role: "rescuer"});
+var citizen = db.users.findOne({ role: "citizen"});
+
+db.createCollection("products")
+db.products.insertOne({
+	id: "1",
+	name: "Product 1",
+        category: "1",
+        details: [
+        {
+        	detail_name: "volume", 
+        	detail_value: "1l"
+        }
+        ]
+});
+
+db.createCollection("categories")
+db.categories.insertOne({
+	id: "1",
+	category_name: "category"
+});
+
+var product1 = db.products.findOne({ name: "Product 1"});
+
+db.createCollection("warehouse")
+db.warehouse.insertOne({
+	product: [product1._id, product1.name , product1.category],
+	location:"38.24611574093171, 21.735170504383987"
+});
+
+
+db.createCollection("vechicles")
+db.vechicles.insertOne({
+	vechName:"Vechicle 1",
+	rescuerId: rescuer._id ,
+	cargo: [product1._id, product1.name, 1],
+	status:"pending",
+	location:"38.245605967394575, 21.728534721333745"
+});
+
+var vechicle1 = db.vechicles.findOne({vechname:"Vechicle 1"});
+
+db.createCollection("tasks")
+db.tasks.insertOne({
+	taskType: "request",
+        citizenId: citizen._id,
+        rescuerId: rescuer._id,
+        productId: product1._id,
+        quantity: 5,
+        status: "pending",
+	createdAt: new Date("2024-07-18T08:00:00"),
+	assignedAt: new Date("2024-07-18T08:00:30"),
+	completedAt: new Date("2024-07-18T08:02:00")
+});
+
+db.createCollection("announcements")
+db.announcements.insertOne({
+	adminId: admin._id,
+	products: product1._id,
+	createdAt: new Date("2024-07-18T08:03:00")
+});	
+	
+	
+		
+	
+
