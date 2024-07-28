@@ -19,7 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const phoneRegex = /^\d{10}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   //phone number and email regular expressions
 
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(path.join(__dirname, './frontend')));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
@@ -37,7 +37,7 @@ db.once('open', function() {
 //login page
 app.use(express.urlencoded({ extended: true }));
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, './html files/login.html'));
+    res.sendFile(path.join(__dirname, './frontend/login.html'));
 });
 
 app.use(session({
@@ -61,13 +61,13 @@ app.post('/login', async (req, res) => {
 //home pages after login
 app.get('/home', (req, res) => {
     if(req.session.user && req.session.user.role === 'admin'){
-    res.sendFile(path.join(__dirname, './html files/home_admin.html'));
+    res.sendFile(path.join(__dirname, './frontend/home_admin.html'));
     }
     else if (req.session.user && req.session.user.role === 'citizen') {
-        res.sendFile(path.join(__dirname, './html files/home_citizen.html'));
+        res.sendFile(path.join(__dirname, './frontend/home_citizen.html'));
     }
     else if(req.session.user && req.session.user.role === 'rescuer'){
-        res.sendFile(path.join(__dirname, './html files/home_rescuer.html'));
+        res.sendFile(path.join(__dirname, './frontend/home_rescuer.html'));
     }else (res.redirect("/login"));
 
 });
