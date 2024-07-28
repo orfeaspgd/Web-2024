@@ -4,7 +4,7 @@ const getData = () => {
         .then(data => {
             let table = document.createElement('table');
             let headerRow = document.createElement('tr');
-            let columnNames = ['Citizen Name', 'Citizen Surname', 'Rescuer Name', 'Rescuer Surname', 'Product Name', 'Product Description', 'Requested Quantity', 'Status', 'Location', 'Type'];
+            let columnNames = ['Citizen Name', 'Citizen Surname', 'Rescuer Name', 'Rescuer Surname', 'Product Name', 'Requested Quantity', 'Status', 'Type', 'Location'];
             columnNames.forEach(name => {
                 let th = document.createElement('th');
                 th.textContent = name;
@@ -23,7 +23,6 @@ const getData = () => {
                 let cell7 = document.createElement('td');
                 let cell8 = document.createElement('td');
                 let cell9 = document.createElement('td');
-                let cell10 = document.createElement('td');
 
                 cell1.textContent = task.citizen_id.name;
                 row.appendChild(cell1);
@@ -35,16 +34,14 @@ const getData = () => {
                 row.appendChild(cell4);
                 cell5.textContent = task.product_id.name;
                 row.appendChild(cell5);
-                cell6.textContent = task.product_id.description;
+                cell6.textContent = task.quantity;
                 row.appendChild(cell6);
-                cell7.textContent = task.quantity;
+                cell7.textContent = task.status;
                 row.appendChild(cell7);
-                cell8.textContent = task.status;
+                cell8.textContent = task.type;
                 row.appendChild(cell8);
-                cell9.textContent = task.location;
+                cell9.textContent = task.citizen_id.location;
                 row.appendChild(cell9);
-                cell10.textContent = task.type;
-                row.appendChild(cell10);
 
                 table.appendChild(row);
             });

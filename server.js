@@ -49,7 +49,7 @@ app.use(session({
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    const user = await Users.findOne({ username: username, password: password });
+    const user = await Users.findOne({ username: username, password: password })
     if (user) {
         req.session.user = user;
         res.json({ status: 'success', redirectUrl: '/home' });
@@ -60,13 +60,13 @@ app.post('/login', async (req, res) => {
 
 //home pages after login
 app.get('/home', (req, res) => {
-    if(req.session.user && req.session.user.user_type === 'admin'){
+    if(req.session.user && req.session.user.role === 'admin'){
     res.sendFile(path.join(__dirname, './html files/home_admin.html'));
     }
-    else if (req.session.user && req.session.user.user_type === 'citizen') {
+    else if (req.session.user && req.session.user.role === 'citizen') {
         res.sendFile(path.join(__dirname, './html files/home_citizen.html'));
     }
-    else if(req.session.user && req.session.user.user_type === 'rescuer'){
+    else if(req.session.user && req.session.user.role === 'rescuer'){
         res.sendFile(path.join(__dirname, './html files/home_rescuer.html'));
     }else (res.redirect("/login"));
 
@@ -107,10 +107,10 @@ app.post('/admin_create_account', async (req, res) => {
         return res.json({ status: 'error', message: 'Email is already being used.' });
     }
 
-    const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, user_type: role });
+    const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, role: role });
     newUser.save()
         .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
-        .catch(() => res.json({ status: 'error', message: 'Something went wrong.' }));
+        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
 
 app.post('/login_create_account', async (req, res) => {
@@ -138,7 +138,7 @@ app.post('/login_create_account', async (req, res) => {
         return res.json({ status: 'error', message: 'Email is already being used.' });
     }
 
-    const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, user_type: "citizen" });
+    const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, role: "citizen" });
     newUser.save()
         .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
         .catch((err) => { console.log(err); res.json({ status: 'error', message: 'Something went wrong.' }) });
@@ -148,9 +148,9 @@ app.post('/login_create_account', async (req, res) => {
 app.get('/admin_tasks_table', async (req, res) => {
     try {
         const tasks = await Tasks.find()
-            .populate('citizen_id', 'name surname username email user_type phone_number -_id')
-            .populate('rescuer_id', 'name surname username email user_type phone_number -_id')
-            .populate('product_id', 'name description quantity storage_quantity -_id');
+            .populate('citizen_id', 'name surname location username email role phone_number -_id')
+            .populate('rescuer_id', 'name surname location username email role phone_number -_id')
+            .populate('product_id', 'name quantity storage_quantity -_id');
         res.json(tasks);
     } catch (err) {
         console.error(err);
