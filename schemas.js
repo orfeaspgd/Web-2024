@@ -30,7 +30,7 @@ const usersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user_type: {
+    role: {
         type: String,
         enum: ['admin', 'citizen', 'rescuer'],
         required: true
@@ -40,6 +40,11 @@ const usersSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    location: {
+        type: String,
+        required: false,
+        trim: true
+    }
 }, { versionKey: false });
 
 const adminAnnouncementSchema = new mongoose.Schema({
@@ -49,29 +54,12 @@ const adminAnnouncementSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    products: [{
-        product_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'products',
-            required: true,
-            trim: true
-        },
-        name: {
-            type: String,
-            required: true,
-            trim: true
-        },
-        description: {
-            type: String,
-            required: true,
-            trim: true
-        },
-        quantity: {
-            type: Number,
-            required: true,
-            trim: true
-        }
-    }]
+    products: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'products',
+        required: true,
+        trim: true
+    }
 }, { versionKey: false });
 
 const productsSchema = new mongoose.Schema({
@@ -85,21 +73,22 @@ const productsSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    description: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    storage_quantity: {
-        type: Number,
-        required: true,
-        trim: true
-    },
+    details: [
+        {
+            detail_name:
+                {
+                    type: String,
+                    required: true,
+                    trim: true
+                },
+            detail_value:
+                {
+                    type: String,
+                    required: true,
+                    trim: true
+                },
+        }
+    ],
 }, { versionKey: false });
 
 const taskSchema = new mongoose.Schema({
@@ -126,9 +115,13 @@ const taskSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    task_type: {
+    type: {
         type: String,
         enum: ['request', 'donation'],
+        required: true
+    },
+    quantity: {
+        type: Number,
         required: true
     },
     status: {

@@ -1,5 +1,5 @@
 db.dropDatabase()
-use web2024
+use Web2024
 db.createCollection("users")
 db.users.insertOne({
     name: "Thomas",
@@ -2923,6 +2923,8 @@ db.warehouse_products.insertOne({
 	quantity: 10
 });
 
+var product2 = db.products.findOne({ name: "Painkillers"});
+
 db.createCollection("tasks")
 db.tasks.insertOne({
 	type: "request",
@@ -2940,7 +2942,7 @@ db.tasks.insertOne({
 	type: "request",
     citizen_id: citizen._id,
     rescuer_id: rescuer._id,
-    product_id: product1._id,
+    product_id: product2._id,
     quantity: 3,
     status: "pending",
 	createdAt: new Date("2024-07-18T08:00:00"),
@@ -2949,9 +2951,9 @@ db.tasks.insertOne({
 });
 
 var task1 = db.tasks.findOne({type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product1._id, quantity: 5});
-var task2 = db.tasks.findOne({type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product1._id, quantity: 3});
+var task2 = db.tasks.findOne({type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product2._id, quantity: 3});
 
-var product2 = db.products.findOne({ name: "Painkillers"});
+
 db.createCollection("vehicles")
 db.vehicles.insertOne({
 	name: "Vehicle 1",
