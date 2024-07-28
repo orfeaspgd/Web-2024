@@ -4,7 +4,7 @@ const getData = () => {
         .then(data => {
             let table = document.createElement('table');
             let headerRow = document.createElement('tr');
-            let columnNames = ['Citizen Name', 'Citizen Surname', 'Rescuer Name', 'Rescuer Surname', 'Product Name', 'Product Description', 'Requested Quantity', 'Status', 'Location', 'Task Type'];
+            let columnNames = ['Citizen Name', 'Citizen Surname', 'Rescuer Name', 'Rescuer Surname', 'Product Name', 'Product Description', 'Requested Quantity', 'Status', 'Location', 'Type'];
             columnNames.forEach(name => {
                 let th = document.createElement('th');
                 th.textContent = name;
@@ -43,7 +43,7 @@ const getData = () => {
                 row.appendChild(cell8);
                 cell9.textContent = task.location;
                 row.appendChild(cell9);
-                cell10.textContent = task.task_type;
+                cell10.textContent = task.type;
                 row.appendChild(cell10);
 
                 table.appendChild(row);
