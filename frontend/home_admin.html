@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Admin</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="taskTable"></div>
+<form id="createAccount" action="/home" >
+    <h1>Create Account</h1>
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstname" required>
+    </div>
+    <div>
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" required>
+    </div>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="phone_number">Phone Number:</label>
+        <input type="tel" id="phone_number" name="phone_number" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="rescuer">Rescuer</option>
+            <option value="admin">Admin</option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Create Account">
+    </div>
+    <div id="createAccountMessage"></div>
+</form>
+<form id="createAnnouncement" action="/home">
+    <h1>Create New Announcement</h1>
+    <div id="productsContainer">
+        <div class="productEntry">
+            <label for="selectProduct0">Product:</label>
+            <select class="selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
+        </div>
+    </div>
+    <button type="button" id="addProductButton">Add Product</button>
+    <div>
+        <input type="submit" value="Post Announcement">
+    </div>
+    <div id="createAnnouncementMessage"></div>
+</form>
+<button id="logoutButton">Logout</button>
+</body>
+<script src="../home_admin.js"></script>
+</html>
