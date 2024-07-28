@@ -47,19 +47,23 @@ const usersSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
-const adminAnnouncementSchema = new mongoose.Schema({
+const AnnouncementSchema = new mongoose.Schema({
     admin_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
         required: true,
         trim: true
     },
-    products: {
+    products: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'products',
         required: true,
         trim: true
-    }
+    }],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 }, { versionKey: false });
 
 const productsSchema = new mongoose.Schema({
@@ -132,7 +136,7 @@ const taskSchema = new mongoose.Schema({
 }, { versionKey: false });
 
 export const Users = mongoose.model('users', usersSchema);
-export const AdminAnnouncements = mongoose.model('admin_announcements', adminAnnouncementSchema);
+export const Announcements = mongoose.model('announcements', AnnouncementSchema);
 export const Products = mongoose.model('products', productsSchema);
 export const Tasks = mongoose.model('tasks', taskSchema);
 

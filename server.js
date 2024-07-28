@@ -4,7 +4,7 @@ import session from 'express-session';
 import { body, validationResult } from 'express-validator';
 import {
     Users,
-    AdminAnnouncements,
+    Announcements,
     Products,
     Tasks
 } from './schemas.js';
@@ -177,13 +177,12 @@ app.post('/admin_create_announcement', [
         return res.status(400).json({ status: 'error', message: 'Invalid input.' });
     }
 
-    const { selectProduct, quantity } = req.body;
-    const products = selectProduct.map((productId, index) => ({
-        productId,
-        quantity: quantity[index]
-    }));
+    const { selectProduct} = req.body;
 
-    //insert query for announcement creation in database
-    res.json({ status: 'success', message: 'Announcement created successfully.', products });
+    console.log(req.body)
+    const newAnnouncement = new Announcements({ admin_id: req.session.user._id, products: selectProduct});
+    newAnnouncement.save()
+        .then(() => res.json({ status: 'success', message: 'Announcement posted.' }))
+        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
 
