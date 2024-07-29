@@ -172,3 +172,20 @@ document.getElementById('logoutButton').addEventListener('click', function() {
         .catch(error => console.error('Error:', error));
 });
 
+//pull from usidas
+document.getElementById('pullFromUsidas').addEventListener('click', function() {
+    fetch('/pull_from_usidas', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('pullFromUsidasMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+});
