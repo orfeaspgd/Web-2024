@@ -25,6 +25,8 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
+app.use(express.json()); //parse json bodies
+
 //MongoDb connection
 import mongoose from 'mongoose';
 import {ER_MAX_PREPARED_STMT_COUNT_REACHED} from "mysql/lib/protocol/constants/errors.js";
@@ -188,7 +190,7 @@ app.post('/admin_create_announcement', [
 });
 
 app.post('/pull_from_usidas', async (req, res) => {
-    const usidasJson = await fetch("http://usidas.ceid.upatras.gr/web/2023/export.php")
+    try{const usidasJson = await fetch("http://usidas.ceid.upatras.gr/web/2023/export.php")
     const result = await usidasJson.json()
     let newCategories = []
     for (let i = 0; i < result.categories.length; i++){
@@ -199,14 +201,13 @@ app.post('/pull_from_usidas', async (req, res) => {
 
     let newProducts = []
     for (let i = 0; i < result.items.length; i++){
-        if(await Products.findOne({ name: result.items[i].name }) === null){
+        if(await Products.findOne({ id: result.items[i].id }) === null){
             newProducts.push(result.items[i])
         }
     }
 
-    console.log(JSON.stringify(newProducts))
     let products    = newProducts.map(current_product => { //replace category id with category name in products
-        const product_category = result.categories.find(current_category => current_category.id === current_product.category) //find category of product
+        const product_category = result.categories.find(current_category => current_category.id.trim() === current_product.category.trim()) //find category of product
         current_product.category = product_category.category_name                                                  // replace category id with category name
         return current_product
     })
@@ -219,10 +220,64 @@ app.post('/pull_from_usidas', async (req, res) => {
     let findCategories = await Categories.find({})
     Products.insertMany(                                //replace category name with category mongo id in products
         products.map(current_product => {
-            current_product.category = findCategories.find(current_category => current_category.category_name === current_product.category)._id //if === condition matches, get the mongo id of the category and replace it me to product category
-            delete current_product.id //delete manual id from products
+            console.log("Serchin 4:\n", current_product.category)
+            current_product.category = findCategories.find(current_category => {console.log("\n", current_category.category_name, current_product.category, current_category.category_name === current_product.category);return current_category.category_name.trim() === current_product.category.trim()})._id //if === condition matches, get the mongo id of the category and replace it me to product category
             return current_product
         })
     )
+       res.json({ status: 'success', message: 'Products added.' })
+    }
+    catch (err) {
+        res.status(500).send(err);
+        console.log(err);
+        res.json({status: 'error', message: 'Something went wrong.'})
+    }
+});
+
+
+//add products from json
+app.post('/add_products_from_json', async (req, res) => {
+    try{
+        const result = JSON.parse(req.body.fileContents)
+        let newCategories = []
+        for (let i = 0; i < result.categories.length; i++){
+            if(await Categories.findOne({ category_name: result.categories[i].category_name }) === null){
+                newCategories.push(result.categories[i])
+            }
+        }
+
+        let newProducts = []
+        for (let i = 0; i < result.items.length; i++){
+            if(await Products.findOne({ id: result.items[i].id }) === null){
+                newProducts.push(result.items[i])
+            }
+        }
+
+        console.log(JSON.stringify(newProducts))
+        let products    = newProducts.map(current_product => { //replace category id with category name in products
+            const product_category = result.categories.find(current_category => current_category.id.trim() === current_product.category.trim()) //find category of product
+            current_product.category = product_category.category_name                                                  // replace category id with category name
+            return current_product
+        })
+        let categories    = newCategories.map(current_product => { //remove id from categories
+            delete current_product.id;
+            return current_product
+        })
+
+        Categories.insertMany(categories)
+        let findCategories = await Categories.find({})
+        Products.insertMany(                                //replace category name with category mongo id in products
+            products.map(current_product => {
+                current_product.category = findCategories.find(current_category => current_category.category_name.trim() === current_product.category.trim())._id //if === condition matches, get the mongo id of the category and replace it me to product category
+                return current_product
+            })
+        )
+        res.json({ status: 'success', message: 'Products added.' })
+    }
+    catch (err) {
+        res.status(500).send(err);
+        console.log(err);
+        res.json({status: 'error', message: 'Something went wrong.'})
+    }
 });
 

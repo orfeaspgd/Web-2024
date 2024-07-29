@@ -189,3 +189,35 @@ document.getElementById('pullFromUsidas').addEventListener('click', function() {
         })
         .catch(error => console.error('Error:', error));
 });
+
+//add products from json
+document.getElementById('addProductsFromJson').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const fileContents = e.target.result;
+            await fetch('/add_products_from_json', {
+                method: 'POST'
+                , headers: {
+                    'Content-Type': 'application/json'
+                }
+                , body: JSON.stringify({
+                    fileContents: fileContents
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let messageElement = document.getElementById('addProductsFromJsonMessage');
+                    if (data.status === 'success') {
+                        messageElement.style.color = 'green';
+                    } else {
+                        messageElement.style.color = 'red';
+                    }
+                    messageElement.textContent = data.message;
+                })
+                .catch(error => console.error('Error:', error));
+        };
+        reader.readAsText(file);
+    }
+});
