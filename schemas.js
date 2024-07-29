@@ -67,13 +67,14 @@ const AnnouncementSchema = new mongoose.Schema({
 }, { versionKey: false });
 
 const productsSchema = new mongoose.Schema({
-    product_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        trim: true
-    },
     name: {
         type: String,
+        required: false,
+        trim: true
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'categories',
         required: true,
         trim: true
     },
@@ -82,16 +83,18 @@ const productsSchema = new mongoose.Schema({
             detail_name:
                 {
                     type: String,
-                    required: true,
+                    required: false,
                     trim: true
                 },
             detail_value:
                 {
                     type: String,
-                    required: true,
+                    required: false,
                     trim: true
                 },
+            _id: false
         }
+
     ],
 }, { versionKey: false });
 
@@ -135,8 +138,17 @@ const taskSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
+const categoriesSchema = new mongoose.Schema({
+    category_name: {
+        type: String,
+        required: false,
+        trim: true
+    }
+}, { versionKey: false });
+
 export const Users = mongoose.model('users', usersSchema);
 export const Announcements = mongoose.model('announcements', AnnouncementSchema);
 export const Products = mongoose.model('products', productsSchema);
 export const Tasks = mongoose.model('tasks', taskSchema);
+export const Categories = mongoose.model('categories', categoriesSchema);
 
