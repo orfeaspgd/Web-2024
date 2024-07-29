@@ -1,5 +1,5 @@
 //task table for admin
-const getData = () => {
+const getTasksData = () => {
     fetch('/admin_tasks_table')
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
@@ -51,8 +51,8 @@ const getData = () => {
         })
         .catch(error => console.error('Error:', error));
 }
-getData();
-setInterval(getData, 5000); // Refresh the table every 5 seconds
+getTasksData();
+setInterval(getTasksData, 5000); // Refresh the table every 5 seconds
 
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/products')
