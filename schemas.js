@@ -94,8 +94,12 @@ const productsSchema = new mongoose.Schema({
                 },
             _id: false
         }
-
     ],
+    id: {
+        type: Number,
+        required: false,
+        trim: true
+    },
 }, { versionKey: false });
 
 const taskSchema = new mongoose.Schema({

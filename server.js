@@ -220,8 +220,7 @@ app.post('/pull_from_usidas', async (req, res) => {
     let findCategories = await Categories.find({})
     Products.insertMany(                                //replace category name with category mongo id in products
         products.map(current_product => {
-            console.log("Serchin 4:\n", current_product.category)
-            current_product.category = findCategories.find(current_category => {console.log("\n", current_category.category_name, current_product.category, current_category.category_name === current_product.category);return current_category.category_name.trim() === current_product.category.trim()})._id //if === condition matches, get the mongo id of the category and replace it me to product category
+            current_product.category = findCategories.find(current_category => current_category.category_name.trim() === current_product.category.trim())._id //if === condition matches, get the mongo id of the category and replace it me to product category
             return current_product
         })
     )
@@ -253,7 +252,6 @@ app.post('/add_products_from_json', async (req, res) => {
             }
         }
 
-        console.log(JSON.stringify(newProducts))
         let products    = newProducts.map(current_product => { //replace category id with category name in products
             const product_category = result.categories.find(current_category => current_category.id.trim() === current_product.category.trim()) //find category of product
             current_product.category = product_category.category_name                                                  // replace category id with category name
