@@ -6,7 +6,7 @@ db.users.insertOne({
     surname: "Pourgourides",
 	username: "op",
 	password: "123",
-	email: "tn@tn.com",
+	email: "op@op.com",
 	role: "admin",
 	phone_number: "1234567890",
     location:"38.24611574093171, 21.735170504383987"
@@ -17,7 +17,7 @@ db.users.insertOne({
     surname: "Georgoulis",
 	username: "jg",
 	password: "321",
-	email: "op@op.com",
+	email: "jg@jg.com",
 	role: "rescuer",
 	phone_number: "0987654321",
 	location: "38.245605967394575, 21.728534721333745"
