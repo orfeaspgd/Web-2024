@@ -2,9 +2,9 @@ db.dropDatabase()
 use Web2024
 db.createCollection("users")
 db.users.insertOne({
-    name: "Thomas",
-    surname: "Nikolaou",
-	username: "tn",
+    name: "Orfeas",
+    surname: "Pourgourides",
+	username: "op",
 	password: "123",
 	email: "tn@tn.com",
 	role: "admin",
@@ -13,9 +13,9 @@ db.users.insertOne({
 });
 
 db.users.insertOne({
-    name: "Orfeas",
-    surname: "Pourgourides",
-	username: "op",
+    name: "Johnny",
+    surname: "Georgoulis",
+	username: "jg",
 	password: "321",
 	email: "op@op.com",
 	role: "rescuer",
