@@ -1,124 +1,122 @@
-db.dropDatabase()
-use Web2024
-db.createCollection("users")
+db.dropDatabase();
+use Web2024;
+db.createCollection("users");
 db.users.insertOne({
     name: "Orfeas",
     surname: "Pourgourides",
-	username: "op",
-	password: "123",
-	email: "op@op.com",
-	role: "admin",
-	phone_number: "1234567890",
-    location:"38.24611574093171, 21.735170504383987"
+    username: "op",
+    password: "123",
+    email: "op@op.com",
+    role: "admin",
+    phone_number: "1234567890",
+    location: "38.24611574093171, 21.735170504383987"
 });
 
 db.users.insertOne({
     name: "Johnny",
     surname: "Georgoulis",
-	username: "jg",
-	password: "321",
-	email: "jg@jg.com",
-	role: "rescuer",
-	phone_number: "0987654321",
-	location: "38.245605967394575, 21.728534721333745"
+    username: "jg",
+    password: "321",
+    email: "jg@jg.com",
+    role: "rescuer",
+    phone_number: "0987654321",
+    location: "38.245605967394575, 21.728534721333745"
 });
 
 db.users.insertOne({
     name: "Akis",
     surname: "Papapanagiotou",
-	username: "ap",
-	password: "213",
-	email: "ap@ap.com",
-	role: "citizen",
-	phone_number: "1122334455",
-	location: "38.24884149654704, 21.745502373242417"
+    username: "ap",
+    password: "213",
+    email: "ap@ap.com",
+    role: "citizen",
+    phone_number: "1122334455",
+    location: "38.24884149654704, 21.745502373242417"
 });
 
-
-db.categories.insertOne(
-        {"category_name":"Medical Supplies"}
-)
+db.categories.insertOne({
+    "category_name": "Medical Supplies"
+});
 
 products = [
-  {
-    "name": "DEPON",
-    "category": "Medical Supplies",
-    "details": [
-      {
-        "detail_name": "",
-        "detail_value": ""
-      }
-    ],
-    "id": 14,
-  },
-  {
-    "name": "Painkillers",
-    "category": "Medical Supplies",
-    "details": [
-      {
-        "detail_name": "",
-        "detail_value": ""
-      }
-    ],
-    "id": 15,
-  },
-]
+    {
+        "name": "DEPON",
+        "category": "Medical Supplies",
+        "details": [
+            {
+                "detail_name": "",
+                "detail_value": ""
+            }
+        ],
+        "id": 14,
+    },
+    {
+        "name": "Painkillers",
+        "category": "Medical Supplies",
+        "details": [
+            {
+                "detail_name": "",
+                "detail_value": ""
+            }
+        ],
+        "id": 15,
+    },
+];
 
 db.products.insertMany(
     products.map(p => {
-        p.category = db.categories.findOne({category_name: p.category})?._id
-        return p
+        p.category = db.categories.findOne({ category_name: p.category })?._id;
+        return p;
     })
-)
+);
 
-var admin = db.users.findOne({ role: "admin"});
-var rescuer = db.users.findOne({ role: "rescuer"});
-var citizen = db.users.findOne({ role: "citizen"});
+var admin = db.users.findOne({ role: "admin" });
+var rescuer = db.users.findOne({ role: "rescuer" });
+var citizen = db.users.findOne({ role: "citizen" });
 
-var product1 = db.products.findOne({ name: "DEPON"});
+var product1 = db.products.findOne({ name: "DEPON" });
 
-db.createCollection("warehouse_products")
+db.createCollection("warehouse_products");
 db.warehouse_products.insertOne({
-	product_id: product1._id,
-	quantity: 10
+    product_id: product1._id,
+    quantity: 10
 });
 
-var product2 = db.products.findOne({ name: "Painkillers"});
+var product2 = db.products.findOne({ name: "Painkillers" });
 
-db.createCollection("tasks")
+db.createCollection("tasks");
 db.tasks.insertOne({
-	type: "request",
+    type: "request",
     citizen_id: citizen._id,
     rescuer_id: rescuer._id,
     product_id: product1._id,
     quantity: 5,
     status: "pending",
-	createdAt: new Date("2024-07-18T08:00:00"),
-	assignedAt: new Date("2024-07-18T08:00:30"),
-	completedAt: null
+    createdAt: new Date("2024-07-18T08:00:00"),
+    assignedAt: new Date("2024-07-18T08:00:30"),
+    completedAt: null
 });
 
 db.tasks.insertOne({
-	type: "request",
+    type: "request",
     citizen_id: citizen._id,
     rescuer_id: rescuer._id,
     product_id: product2._id,
     quantity: 3,
     status: "pending",
-	createdAt: new Date("2024-07-18T08:00:00"),
-	assignedAt: new Date("2024-07-18T08:00:30"),
-	completedAt: null
+    createdAt: new Date("2024-07-18T08:00:00"),
+    assignedAt: new Date("2024-07-18T08:00:30"),
+    completedAt: null
 });
 
-var task1 = db.tasks.findOne({type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product1._id, quantity: 5});
-var task2 = db.tasks.findOne({type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product2._id, quantity: 3});
+var task1 = db.tasks.findOne({ type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product1._id, quantity: 5 });
+var task2 = db.tasks.findOne({ type: "request", citizen_id: citizen._id, rescuer_id: rescuer._id, product_id: product2._id, quantity: 3 });
 
-
-db.createCollection("vehicles")
+db.createCollection("vehicles");
 db.vehicles.insertOne({
-	name: "Vehicle 1",
-	rescuer_id: rescuer._id,
-	cargo: [
+    name: "Vehicle 1",
+    rescuer_id: rescuer._id,
+    cargo: [
         {
             product_id: product1._id,
             quantity: 1
@@ -134,12 +132,11 @@ db.vehicles.insertOne({
     ]
 });
 
-var vehicle1 = db.vehicles.findOne({name:"Vehicle 1"});
+var vehicle1 = db.vehicles.findOne({ name: "Vehicle 1" });
 
-db.createCollection("announcements")
+db.createCollection("announcements");
 db.announcements.insertOne({
-	admin_id: admin._id,
-	products: product1._id,
-	createdAt: new Date("2024-07-18T08:03:00")
+    admin_id: admin._id,
+    products: product1._id,
+    createdAt: new Date("2024-07-18T08:03:00")
 });
-
