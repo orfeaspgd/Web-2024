@@ -17,7 +17,7 @@ const getAnnouncementsData = () => {
         .then(data => {
             let table = document.createElement('table');
             let headerRow = document.createElement('tr');
-            let columnNames = ['ID', 'Product Needed', 'Created By', 'Created At'];
+            let columnNames = ['ID', 'Products Needed', 'Created By', 'Created At'];
             columnNames.forEach(name => {
                 let th = document.createElement('th');
                 th.textContent = name;
@@ -34,7 +34,13 @@ const getAnnouncementsData = () => {
 
                 cell1.textContent = announcement._id;
                 row.appendChild(cell1);
-                cell2.textContent = announcement.products.name;
+                let productList = document.createElement('ul');
+                announcement.products.forEach(product => {
+                    let listItem = document.createElement('li');
+                    listItem.textContent = product.name;
+                    productList.appendChild(listItem);
+                });
+                cell2.appendChild(productList);
                 row.appendChild(cell2);
                 cell3.textContent = announcement.admin_id.name;
                 row.appendChild(cell3);

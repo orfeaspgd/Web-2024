@@ -137,6 +137,6 @@ var vehicle1 = db.vehicles.findOne({ name: "Vehicle 1" });
 db.createCollection("announcements");
 db.announcements.insertOne({
     admin_id: admin._id,
-    products: product1._id,
+    products: [product1._id, product2._id],
     createdAt: new Date("2024-07-18T08:03:00")
 });
