@@ -75,6 +75,13 @@ app.get('/home', (req, res) => {
 
 });
 
+//warehouse management page for admin
+app.get('/warehouse', (req, res) => {
+    if(req.session.user && req.session.user.role === 'admin'){
+        res.sendFile(path.join(__dirname, './frontend/admin_warehouse.html'));
+    }else (res.redirect("/login"));
+});
+
 //logout
 app.post('/logout', async (req, res) => {
     req.session.destroy((err) => {
@@ -183,6 +190,16 @@ app.get('/products', async (req, res) => {
     }
 });
 
+app.get('/categories', async (req, res) => {
+    try {
+        const categories = await Categories.find({}, 'category_name');
+        res.json(categories);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
 app.post('/admin_create_announcement', [
     body('selectProduct.*').trim().escape(),
     body('quantity.*').trim().escape().isNumeric().isInt({ min: 1 })
@@ -228,9 +245,9 @@ app.post('/pull_from_usidas', async (req, res) => {
         return current_product
     })
 
-    Categories.insertMany(categories)
+    await Categories.insertMany(categories)
     let findCategories = await Categories.find({})
-    Products.insertMany(                                //replace category name with category mongo id in products
+    await Products.insertMany(                                //replace category name with category mongo id in products
         products.map(current_product => {
             console.log(findCategories.length)
             current_product.category = findCategories.find(current_category => {console.log(current_category.category_name.trim(), current_product.category.trim());return current_category.category_name.trim() === current_product.category.trim()})._id //if === condition matches, get the mongo id of the category and replace it me to product category
@@ -292,3 +309,27 @@ app.post('/add_products_from_json', async (req, res) => {
     }
 });
 
+//delete product
+app.delete('/delete_product', async (req, res) => {
+    try {
+        const { _id } = req.body;
+        await Products.deleteOne({ _id: _id });
+        res.json({ status: 'success', message: 'Product deleted.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: 'error', message: 'Something went wrong.' });
+    }
+});
+
+//delete category
+app.delete('/delete_category', async (req, res) => {
+    try {
+        const { _id } = req.body;
+        await Categories.deleteOne({ _id: _id });
+        await Products.deleteMany({ category: _id });
+        res.json({ status: 'success', message: 'Category deleted.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: 'error', message: 'Something went wrong.' });
+    }
+});

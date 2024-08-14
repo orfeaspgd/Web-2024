@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Warehouse</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<form id="deleteProduct">
+    <h1>Delete Product</h1>
+        <div class="productEntry">
+            <label for="selectProduct0">Product:</label>
+            <select class="selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
+        </div>
+    <div>
+        <input type="submit">
+    </div>
+    <div id="deleteProductMessage"></div>
+</form>
+<form id="deleteCategory">
+    <h1>Delete Category</h1>
+    <div class="productEntry">
+        <label for="selectCategory0">Category:</label>
+        <select class="selectCategory" id="selectCategory0" name="selectCategory[]" required></select>
+    </div>
+    <div>
+        <input type="submit">
+    </div>
+    <div id="deleteCategoryMessage"></div>
+</form>
+
+<button id="backButton">Back</button>
+</body>
+<script src="./admin_warehouse.js"></script>
+</html>

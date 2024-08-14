@@ -72,20 +72,7 @@ pullProductsData = () => {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/products')
-        .then(response => response.json())
-        .then(data => {
-            const selectProductElements = document.querySelectorAll('.selectProduct');
-            selectProductElements.forEach(selectProduct => {
-                data.forEach(product => {
-                    const option = document.createElement('option');
-                    option.value = product._id;
-                    option.textContent = product.name;
-                    selectProduct.appendChild(option);
-                });
-            });
-        })
-        .catch(error => console.error('Error:', error));
+    pullProductsData();
 });
 
 //add product to announcement
