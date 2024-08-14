@@ -337,8 +337,12 @@ app.delete('/delete_category', async (req, res) => {
 //create product
 app.post('/create_product', async (req, res) => {
     console.log(req.body);
-    const { name, category, details} = req.body;
-    const newProduct = new Products({ name: name, category: category, details: [] });
+    const { productName, selectCategory, productDetailName, productDetailValue} = req.body;
+    let productDetails = [];
+    for (let i =0 ; i < productDetailName.length; i++){
+        productDetails.push ({name: productDetailName[i], value: productDetailValue[i]})
+    }
+    const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
     newProduct.save()
         .then(() => res.json({ status: 'success', message: 'Product created.' }))
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});

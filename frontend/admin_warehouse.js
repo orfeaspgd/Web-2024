@@ -85,7 +85,7 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
 });
 
 //create product
-document.getElementById('selectCreateProductCategory').addEventListener('submit', function(event) {
+document.getElementById('createProduct').addEventListener('submit', function(event) {
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/create_product', {
         method: 'POST',
