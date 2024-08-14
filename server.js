@@ -340,8 +340,9 @@ app.post('/create_product', async (req, res) => {
     const { productName, selectCategory, productDetailName, productDetailValue} = req.body;
     let productDetails = [];
     for (let i =0 ; i < productDetailName.length; i++){
-        productDetails.push ({name: productDetailName[i], value: productDetailValue[i]})
+        productDetails.push ({detail_name: productDetailName[i], detail_value: productDetailValue[i]})
     }
+    console.log(productDetails);
     const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
     newProduct.save()
         .then(() => res.json({ status: 'success', message: 'Product created.' }))
