@@ -333,3 +333,13 @@ app.delete('/delete_category', async (req, res) => {
         res.status(500).json({ status: 'error', message: 'Something went wrong.' });
     }
 });
+
+//create product
+app.post('/create_product', async (req, res) => {
+    console.log(req.body);
+    const { name, category, details} = req.body;
+    const newProduct = new Products({ name: name, category: category, details: [] });
+    newProduct.save()
+        .then(() => res.json({ status: 'success', message: 'Product created.' }))
+        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+});

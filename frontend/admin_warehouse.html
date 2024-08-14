@@ -14,20 +14,48 @@
             <select class="selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
         </div>
     <div>
-        <input type="submit">
+        <input type="submit" value="Delete Product">
     </div>
     <div id="deleteProductMessage"></div>
 </form>
 <form id="deleteCategory">
     <h1>Delete Category</h1>
-    <div class="productEntry">
+    <div class="categoryEntry">
         <label for="selectCategory0">Category:</label>
         <select class="selectCategory" id="selectCategory0" name="selectCategory[]" required></select>
     </div>
     <div>
-        <input type="submit">
+        <input type="submit" value="Delete Category">
     </div>
     <div id="deleteCategoryMessage"></div>
+</form>
+
+<form id="createProduct">
+    <h1>Create Product</h1>
+    <div>
+        <label for="productName">Name:</label>
+        <input type="text" id="productName" name="productName" required>
+    </div>
+    <div class="categoryEntry">
+        <label for="selectCategory0">Category:</label>
+        <select class="selectCategory" id="selectCreateProductCategory" name="selectCategory[]" required></select>
+    </div>
+    <div id="detailsContainer">
+        <div class="input-container">
+            <div>
+                <label for="productDetailName0">Item detail name (e.g. "volume"):</label>
+                <input type="text" id="productDetailName0" name="productDetailName[]">
+            </div>
+            <div>
+                <label for="productDetailValue0">Item detail value (e.g. "500ml"):</label>
+                <input type="text" id="productDetailValue0" name="productDetailValue[]">
+            </div>
+        </div>
+
+    </div>
+    <button type="button" id="addDetailButton">Add More Details</button>
+    <div id="createProductMessage"></div>
+    <input type="submit" value="Create Product">
 </form>
 
 <button id="backButton">Back</button>
