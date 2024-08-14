@@ -129,15 +129,36 @@ document.getElementById('addDetailButton').addEventListener('click', function() 
                 </div>
                         <button type="button" class="removeProductDetailButton">Remove</button>
                 </div>
-                
             `;
     detailsContainer.appendChild(detailDiv);
 });
-
 
 //remove detail button
 document.getElementById('detailsContainer').addEventListener('click', function(event) {
     if (event.target.classList.contains('removeProductDetailButton')) {
         event.target.parentElement.remove();
     }
+});
+
+//create category
+document.getElementById('createCategory').addEventListener('submit', function(event) {
+    let formData = new URLSearchParams(new FormData(this)).toString();
+    fetch('/create_category', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('createCategoryMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
 });

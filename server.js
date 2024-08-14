@@ -336,7 +336,6 @@ app.delete('/delete_category', async (req, res) => {
 
 //create product
 app.post('/create_product', async (req, res) => {
-    console.log(req.body);
     const { productName, selectCategory, productDetailName, productDetailValue} = req.body;
     let productDetails = [];
     for (let i =0 ; i < productDetailName.length; i++){
@@ -346,5 +345,18 @@ app.post('/create_product', async (req, res) => {
     const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
     newProduct.save()
         .then(() => res.json({ status: 'success', message: 'Product created.' }))
+        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+});
+
+//create category
+app.post('/create_category', async (req, res) => {
+    const { categoryName} = req.body;
+    const existingCategory = await Categories.findOne({ category_name: categoryName });
+    if (existingCategory) {
+        return res.json({ status: 'error', message: 'Category already exists.' });
+    }
+    const newCategory = new Categories({ category_name: categoryName});
+    newCategory.save()
+        .then(() => res.json({ status: 'success', message: 'Category created.' }))
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
