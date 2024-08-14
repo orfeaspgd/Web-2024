@@ -54,6 +54,23 @@ const getTasksData = () => {
 getTasksData();
 setInterval(getTasksData, 5000); // Refresh the table every 5 seconds
 
+pullProductsData = () => {
+    fetch('/products')
+        .then(response => response.json())
+        .then(data => {
+            const selectProductElements = document.querySelectorAll('.selectProduct');
+            selectProductElements.forEach(selectProduct => {
+                data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product._id;
+                    option.textContent = product.name;
+                    selectProduct.appendChild(option);
+                });
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/products')
         .then(response => response.json())
@@ -186,6 +203,7 @@ document.getElementById('pullFromUsidas').addEventListener('click', function() {
                 messageElement.style.color = 'red';
             }
             messageElement.textContent = data.message;
+            pullProductsData();
         })
         .catch(error => console.error('Error:', error));
 });
@@ -215,6 +233,7 @@ document.getElementById('addProductsFromJson').addEventListener('change', async 
                         messageElement.style.color = 'red';
                     }
                     messageElement.textContent = data.message;
+                    pullProductsData();
                 })
                 .catch(error => console.error('Error:', error));
         };
