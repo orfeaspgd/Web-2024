@@ -147,13 +147,25 @@ app.post('/login_create_account', async (req, res) => {
         .catch((err) => { console.log(err); res.json({ status: 'error', message: 'Something went wrong.' }) });
 });
 
-//test for joins in mongoose
+//queries for tables
 app.get('/admin_tasks_table', async (req, res) => {
     try {
         const tasks = await Tasks.find()
             .populate('citizen_id', 'name surname location username email role phone_number -_id')
             .populate('rescuer_id', 'name surname location username email role phone_number -_id')
             .populate('product_id', 'name quantity storage_quantity -_id');
+        res.json(tasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
+app.get('/citizen_announcements_table', async (req, res) => {
+    try {
+        const tasks = await Announcements.find()
+            .populate('admin_id', 'name surname location username email role phone_number -_id')
+            .populate('products', 'name quantity storage_quantity -_id');
         res.json(tasks);
     } catch (err) {
         console.error(err);
