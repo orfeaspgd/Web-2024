@@ -1,3 +1,4 @@
+//logout
 document.getElementById('logoutButton').addEventListener('click', function() {
     fetch('/logout', {
         method: 'POST'
@@ -11,6 +12,7 @@ document.getElementById('logoutButton').addEventListener('click', function() {
         .catch(error => console.error('Error:', error));
 });
 
+//get announcements data
 const getAnnouncementsData = () => {
     fetch('/citizen_announcements_table')
         .then(response => response.json()) // Parse the response as JSON
@@ -55,4 +57,4 @@ const getAnnouncementsData = () => {
         .catch(error => console.error('Error:', error));
 }
 getAnnouncementsData();
-setInterval(getAnnouncementsData, 5000); // Refresh the table every 5 seconds
+setInterval(getAnnouncementsData, 5000); //refresh table every 5 seconds

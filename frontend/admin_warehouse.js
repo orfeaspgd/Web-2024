@@ -1,3 +1,4 @@
+//get products and populate select elements
 pullProductsData = () => {
     fetch('/products')
     .then(response => response.json())
@@ -24,6 +25,7 @@ pullProductsData = () => {
         .catch(error => console.error('Error:', error));
 }
 
+//get categories and populate select elements
 pullCategoriesData = () => {
     fetch('/categories')
         .then(response => response.json())
@@ -37,10 +39,20 @@ pullCategoriesData = () => {
                     selectCategory.appendChild(option);
                 });
             });
+            const selectCategoryEditProduct = document.querySelectorAll('.selectCategoryEditProduct');
+            selectCategoryEditProduct.forEach(selectCategoryEditProduct => {
+                data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category._id;
+                    option.textContent = category.category_name;
+                    selectCategoryEditProduct.appendChild(option);
+                });
+            });
         })
         .catch(error => console.error('Error:', error));
 }
 
+//things to do when the page is loaded
 document.addEventListener('DOMContentLoaded', function() {
     pullProductsData();
     pullCategoriesData();
@@ -118,7 +130,7 @@ document.getElementById('createProduct').addEventListener('submit', function(eve
         .catch(error => console.error('Error:', error));
 });
 
-//add details button
+//add details button for create product
 document.getElementById('addDetailButton').addEventListener('click', function() {
     const detailsContainer = document.getElementById('detailsContainer');
     if (detailsContainer.children.length >= 10) {
@@ -144,7 +156,7 @@ document.getElementById('addDetailButton').addEventListener('click', function() 
     detailsContainer.appendChild(detailDiv);
 });
 
-//remove detail button
+//remove detail button for create product
 document.getElementById('detailsContainer').addEventListener('click', function(event) {
     if (event.target.classList.contains('removeProductDetailButton')) {
         event.target.parentElement.remove();
@@ -174,6 +186,7 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
         .catch(error => console.error('Error:', error));
 });
 
+//edit product
 document.getElementById('editProduct').addEventListener('submit', function(event) {
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/edit_product', {
@@ -192,6 +205,40 @@ document.getElementById('editProduct').addEventListener('submit', function(event
                 messageElement.style.color = 'red';
             }
             messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+//fill form with product details for edit product
+document.getElementById('selectEditProduct0').addEventListener('change', function() {
+    const productId = this.value;
+    if (!productId) return;
+
+    fetch(`/product/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('editProductName').value = data.name;
+            document.getElementById('selectCategoryEditProduct0').value = data.categoryId;
+
+            // Clear existing details
+            const detailsContainer = document.querySelector('#editProduct .input-container');
+            detailsContainer.innerHTML = '';
+
+            // Populate details
+            data.details.forEach((detail, index) => {
+                const detailDiv = document.createElement('div');
+                detailDiv.innerHTML = `
+                    <div>
+                        <label for="editProductDetailName${index}">Item detail name:</label>
+                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.name}">
+                    </div>
+                    <div>
+                        <label for="editProductDetailValue${index}">Item detail value:</label>
+                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.value}">
+                    </div>
+                `;
+                detailsContainer.appendChild(detailDiv);
+            });
         })
         .catch(error => console.error('Error:', error));
 });

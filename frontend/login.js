@@ -1,3 +1,4 @@
+//login
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
     let formData = new URLSearchParams(new FormData(this)).toString();
@@ -20,6 +21,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         })
         .catch(error => console.error('Error:', error));
 });
+
+//login page create account
 document.getElementById('createAccount').addEventListener('submit', function(event) {
     event.preventDefault();
     let formData = new URLSearchParams(new FormData(this)).toString();

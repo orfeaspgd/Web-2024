@@ -1,3 +1,4 @@
+//logout
 document.getElementById('logoutButton').addEventListener('click', function() {
     fetch('/logout', {
         method: 'POST'

@@ -37,12 +37,13 @@ db.once('open', function() {
     console.log("We're connected to the database!");
 });
 
-//login page
+//get login page html file
 app.use(express.urlencoded({ extended: true }));
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, './frontend/login.html'));
 });
 
+//session details for login functionality
 app.use(session({
     secret: 'session_pass',
     resave: false,
@@ -50,6 +51,7 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+//login
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const user = await Users.findOne({ username: username, password: password })
@@ -92,6 +94,7 @@ app.post('/logout', async (req, res) => {
     res.json({ status: 'success', redirectUrl: '/login' });
 });
 
+//admin page create account
 app.post('/admin_create_account', async (req, res) => {
     const { firstname, lastname, username, phone_number, email, password, role } = req.body;
 
@@ -123,6 +126,7 @@ app.post('/admin_create_account', async (req, res) => {
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
 
+//login page create account
 app.post('/login_create_account', async (req, res) => {
     const { firstname, lastname, username, phone_number, email, password } = req.body;
 
@@ -154,7 +158,7 @@ app.post('/login_create_account', async (req, res) => {
         .catch((err) => { console.log(err); res.json({ status: 'error', message: 'Something went wrong.' }) });
 });
 
-//queries for tables
+//populate task table for admin
 app.get('/admin_tasks_table', async (req, res) => {
     try {
         const tasks = await Tasks.find()
@@ -168,6 +172,7 @@ app.get('/admin_tasks_table', async (req, res) => {
     }
 });
 
+//populate announcements table for citizen
 app.get('/citizen_announcements_table', async (req, res) => {
     try {
         const tasks = await Announcements.find()
@@ -180,6 +185,7 @@ app.get('/citizen_announcements_table', async (req, res) => {
     }
 });
 
+//get all products
 app.get('/products', async (req, res) => {
     try {
         const products = await Products.find({}, 'name');
@@ -190,6 +196,7 @@ app.get('/products', async (req, res) => {
     }
 });
 
+//get all categories
 app.get('/categories', async (req, res) => {
     try {
         const categories = await Categories.find({}, 'category_name');
@@ -200,6 +207,7 @@ app.get('/categories', async (req, res) => {
     }
 });
 
+//admin page create announcement
 app.post('/admin_create_announcement', [
     body('selectProduct.*').trim().escape(),
     body('quantity.*').trim().escape().isNumeric().isInt({ min: 1 })
@@ -218,6 +226,7 @@ app.post('/admin_create_announcement', [
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
 
+//populate database with data from usidas
 app.post('/pull_from_usidas', async (req, res) => {
     try{const usidasJson = await fetch("http://usidas.ceid.upatras.gr/web/2023/export.php")
     const result = await usidasJson.json()
@@ -263,8 +272,7 @@ app.post('/pull_from_usidas', async (req, res) => {
     }
 });
 
-
-//add products from json
+//populate database with json file
 app.post('/add_products_from_json', async (req, res) => {
     try{
         const result = JSON.parse(req.body.fileContents)
@@ -309,7 +317,7 @@ app.post('/add_products_from_json', async (req, res) => {
     }
 });
 
-//delete product
+//admin warehouse delete product
 app.delete('/delete_product', async (req, res) => {
     try {
         const { _id } = req.body;
@@ -321,7 +329,7 @@ app.delete('/delete_product', async (req, res) => {
     }
 });
 
-//delete category
+//admin warehouse delete category
 app.delete('/delete_category', async (req, res) => {
     try {
         const { _id } = req.body;
@@ -334,7 +342,7 @@ app.delete('/delete_category', async (req, res) => {
     }
 });
 
-//create product
+//admin warehouse create product
 app.post('/create_product', async (req, res) => {
     const { productName, selectCategory, productDetailName, productDetailValue} = req.body;
     let productDetails = [];
@@ -348,7 +356,7 @@ app.post('/create_product', async (req, res) => {
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
 
-//create category
+//admin warehouse create category
 app.post('/create_category', async (req, res) => {
     const { categoryName} = req.body;
     const existingCategory = await Categories.findOne({ category_name: categoryName });
@@ -361,7 +369,7 @@ app.post('/create_category', async (req, res) => {
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
 
-//edit product
+//admin warehouse edit product
 app.put('/edit_product', async (req, res) => {
     const { categoryName} = req.body;
     const existingCategory = await Categories.findOne({ category_name: categoryName });

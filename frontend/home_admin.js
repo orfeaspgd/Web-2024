@@ -1,4 +1,4 @@
-//task table for admin
+//populate task table for admin
 const getTasksData = () => {
     fetch('/admin_tasks_table')
         .then(response => response.json()) // Parse the response as JSON
@@ -54,6 +54,7 @@ const getTasksData = () => {
 getTasksData();
 setInterval(getTasksData, 5000); // Refresh the table every 5 seconds
 
+//get products data and populate select elements
 pullProductsData = () => {
     fetch('/products')
         .then(response => response.json())
@@ -107,7 +108,7 @@ document.getElementById('addProductButton').addEventListener('click', function()
         .catch(error => console.error('Error:', error));
 });
 
-//create account
+//admin create account
 document.getElementById('createAccount').addEventListener('submit', function(event) {
     event.preventDefault();
     let formData = new URLSearchParams(new FormData(this)).toString();
@@ -176,7 +177,7 @@ document.getElementById('logoutButton').addEventListener('click', function() {
         .catch(error => console.error('Error:', error));
 });
 
-//pull from usidas
+//populate database with data from usidas
 document.getElementById('pullFromUsidas').addEventListener('click', function() {
     fetch('/pull_from_usidas', {
         method: 'POST'
@@ -195,7 +196,7 @@ document.getElementById('pullFromUsidas').addEventListener('click', function() {
         .catch(error => console.error('Error:', error));
 });
 
-//add products from json
+//populated database with json file
 document.getElementById('addProductsFromJson').addEventListener('change', async function(event) {
     const file = event.target.files[0];
     if (file) {
