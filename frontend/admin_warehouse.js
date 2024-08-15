@@ -203,7 +203,7 @@ document.getElementById('selectEditProduct0').addEventListener('change', functio
             data.details.forEach((detail, index) => {
                 const detailDiv = document.createElement('div');
                 detailDiv.innerHTML = `
-                <div class="input-container">
+                <div class="input-container" id="">
                     <div>
                         <label for="editProductDetailName${index}">Item detail name:</label>
                         <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.detail_name}">
@@ -211,6 +211,9 @@ document.getElementById('selectEditProduct0').addEventListener('change', functio
                     <div>
                         <label for="editProductDetailValue${index}">Item detail value:</label>
                         <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.detail_value}">
+                    </div>
+                    </div>
+                        <button type="button" class="removeEditProductDetailButton">Remove</button>
                     </div>
                 </div>
                 `;
@@ -241,4 +244,37 @@ document.getElementById('editProduct').addEventListener('submit', function(event
             messageElement.textContent = data.message;
         })
         .catch(error => console.error('Error:', error));
+});
+
+//add details button for edit product
+document.getElementById('editProductAddDetailButton').addEventListener('click', function() {
+    const editProductDetailContainer = document.getElementById('editProductDetailContainer');
+    if (editProductDetailContainer.children.length >= 10) {
+        alert('You can only add up to 10 products.');
+        return;
+    }
+
+    const detailDiv = document.createElement('div');
+    const index = editProductDetailContainer.children.length;
+    detailDiv.innerHTML = `
+                <div class="input-container" >
+                    <div>
+                        <label for="editProductDetailName${index}">Item detail name:</label>
+                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]"}">
+                    </div>
+                    <div>
+                        <label for="editProductDetailValue${index}">Item detail value:</label>
+                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]"">
+                    </div>
+                        <button type="button" class="removeEditProductDetailButton">Remove</button>
+                </div>
+            `;
+    editProductDetailContainer.appendChild(detailDiv);
+});
+
+//remove detail button for edit product
+document.getElementById('editProductDetailContainer').addEventListener('click', function(event) {
+    if (event.target.classList.contains('removeEditProductDetailButton')) {
+        event.target.parentElement.remove();
+    }
 });
