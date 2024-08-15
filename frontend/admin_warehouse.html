@@ -53,7 +53,6 @@
                 <input type="text" id="productDetailValue0" name="productDetailValue[]">
             </div>
         </div>
-
     </div>
     <button type="button" id="addDetailButton">Add more details</button>
     <div id="createProductMessage"></div>
@@ -81,18 +80,10 @@
         <input type="text" id="editProductName" name="editProductName" required>
     </div>
     <div class="productEntry">
-        <label for="selectCategoryEditProduct0">Product:</label>
+        <label for="selectCategoryEditProduct0">Category:</label>
         <select class="selectCategoryEditProduct" id="selectCategoryEditProduct0" name="selectCategoryEditProduct[]" required></select>
     </div>
-    <div class="input-container">
-        <div>
-            <label for="editProductDetailName0">Item detail name:</label>
-            <input type="text" id="editProductDetailName0" name="editProductDetailName[]">
-        </div>
-        <div>
-            <label for="editProductDetailValue0">Item detail value:</label>
-            <input type="text" id="editProductDetailValue0" name="editProductDetailValue[]">
-        </div>
+    <div class="detailsContainer">
     </div>
     <div id="editProductMessage"></div>
     <input type="submit" value="Update Product">

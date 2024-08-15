@@ -371,13 +371,43 @@ app.post('/create_category', async (req, res) => {
 
 //admin warehouse edit product
 app.put('/edit_product', async (req, res) => {
-    const { categoryName} = req.body;
-    const existingCategory = await Categories.findOne({ category_name: categoryName });
-    if (existingCategory) {
-        return res.json({ status: 'error', message: 'Category already exists.' });
+    const { selectEditProduct, editProductName, selectCategoryEditProduct, editProductDetailName, editProductDetailValue } = req.body;
+
+    const updateData = {
+        name: editProductName,
+        category: selectCategoryEditProduct,
+        details: editProductDetailName.map((name, index) => ({
+            detail_name: name,
+            detail_value: editProductDetailValue[index]
+        }))
+    };
+
+    try {
+        const product = await Products.findOneAndUpdate(
+            { _id: selectEditProduct },
+            updateData,
+            { new: true }
+        );
+        if (!product) {
+            return res.status(404).json({ status: 'error', message: 'Product not found' });
+        }
+        res.json({ status: 'success', message: 'Product updated successfully.' });
+    } catch (err) {
+        console.error('Error updating product:', err);
+        res.status(500).json({ status: 'error', message: 'Something went wrong.' });
     }
-    const newCategory = new Categories({ category_name: categoryName});
-    newCategory.save()
-        .then(() => res.json({ status: 'success', message: 'Category created.' }))
-        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+});
+
+//get product by id
+app.get('/product/:id', async (req, res) => {
+    try {
+        const product = await Products.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.json(product);
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
