@@ -360,3 +360,16 @@ app.post('/create_category', async (req, res) => {
         .then(() => res.json({ status: 'success', message: 'Category created.' }))
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
 });
+
+//edit product
+app.put('/edit_product', async (req, res) => {
+    const { categoryName} = req.body;
+    const existingCategory = await Categories.findOne({ category_name: categoryName });
+    if (existingCategory) {
+        return res.json({ status: 'error', message: 'Category already exists.' });
+    }
+    const newCategory = new Categories({ category_name: categoryName});
+    newCategory.save()
+        .then(() => res.json({ status: 'success', message: 'Category created.' }))
+        .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+});

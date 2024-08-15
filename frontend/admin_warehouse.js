@@ -11,6 +11,15 @@ pullProductsData = () => {
                     selectProduct.appendChild(option);
                 });
             });
+            const selectEditProduct = document.querySelectorAll('.selectEditProduct');
+            selectEditProduct.forEach(selectEditProduct => {
+                data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product._id;
+                    option.textContent = product.name;
+                    selectEditProduct.appendChild(option);
+                });
+            });
         })
         .catch(error => console.error('Error:', error));
 }
@@ -42,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//delete product
 document.getElementById('deleteProduct').addEventListener('submit', function(event) {
     fetch('/delete_product', {
         method: 'DELETE',
@@ -63,6 +73,7 @@ document.getElementById('deleteProduct').addEventListener('submit', function(eve
         .catch(error => console.error('Error:', error));
 });
 
+//delete category
 document.getElementById('deleteCategory').addEventListener('submit', function(event) {
     fetch('/delete_category', {
         method: 'DELETE',
@@ -109,7 +120,7 @@ document.getElementById('createProduct').addEventListener('submit', function(eve
 
 //add details button
 document.getElementById('addDetailButton').addEventListener('click', function() {
-    const productsContainer = document.getElementById('detailsContainer');
+    const detailsContainer = document.getElementById('detailsContainer');
     if (detailsContainer.children.length >= 10) {
         alert('You can only add up to 10 products.');
         return;
@@ -153,6 +164,28 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
         .then(response => response.json())
         .then(data => {
             let messageElement = document.getElementById('createCategoryMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+document.getElementById('editProduct').addEventListener('submit', function(event) {
+    let formData = new URLSearchParams(new FormData(this)).toString();
+    fetch('/edit_product', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('editProductMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
             } else {

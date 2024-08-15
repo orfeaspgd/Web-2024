@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+
 <form id="deleteProduct">
     <h1>Delete Product</h1>
         <div class="productEntry">
@@ -18,6 +19,7 @@
     </div>
     <div id="deleteProductMessage"></div>
 </form>
+
 <form id="deleteCategory">
     <h1>Delete Category</h1>
     <div class="categoryEntry">
@@ -66,6 +68,20 @@
     </div>
     <div id="createCategoryMessage"></div>
     <input type="submit" value="Create Category">
+</form>
+
+<form id="editProduct">
+    <h1>Edit Product</h1>
+    <div class="productEntry">
+        <label for="selectEditProduct0">Product:</label>
+        <select class="selectEditProduct" id="selectEditProduct0" name="selectEditProduct[]" required></select>
+    </div>
+    <div>
+        <label for="editProductName">Name:</label>
+        <input type="text" id="editProductName" name="editProductName" required>
+    </div>
+    <div id="editProductMessage"></div>
+    <input type="submit" value="Edit Product">
 </form>
 
 <button id="backButton">Back</button>
