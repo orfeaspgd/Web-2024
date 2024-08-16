@@ -1,3 +1,6 @@
+//global variables
+let warehouseProducts = [];
+
 //get products and populate select elements
 pullProductsData = () => {
     fetch('/products')
@@ -10,15 +13,6 @@ pullProductsData = () => {
                     option.value = product._id;
                     option.textContent = product.name;
                     selectProduct.appendChild(option);
-                });
-            });
-            const selectEditProduct = document.querySelectorAll('.selectEditProduct');
-            selectEditProduct.forEach(selectEditProduct => {
-                data.forEach(product => {
-                    const option = document.createElement('option');
-                    option.value = product._id;
-                    option.textContent = product.name;
-                    selectEditProduct.appendChild(option);
                 });
             });
         })
@@ -39,13 +33,23 @@ pullCategoriesData = () => {
                     selectCategory.appendChild(option);
                 });
             });
-            const selectCategoryEditProduct = document.querySelectorAll('.selectCategoryEditProduct');
-            selectCategoryEditProduct.forEach(selectCategoryEditProduct => {
-                data.forEach(category => {
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+//get products from warehouse and populate select elements
+pullWarehouseData = () => {
+    fetch('/warehouse_products')
+        .then(response => response.json())
+        .then(data => {
+            warehouseProducts = data;
+            const selectWarehouseProductElements = document.querySelectorAll('.selectEditProductWarehouse');
+            selectWarehouseProductElements.forEach(selectProduct => {
+                data.forEach(product => {
                     const option = document.createElement('option');
-                    option.value = category._id;
-                    option.textContent = category.category_name;
-                    selectCategoryEditProduct.appendChild(option);
+                    option.value = product.warehouseId;
+                    option.textContent = product.name;
+                    selectProduct.appendChild(option);
                 });
             });
         })
@@ -56,6 +60,7 @@ pullCategoriesData = () => {
 document.addEventListener('DOMContentLoaded', function() {
     pullProductsData();
     pullCategoriesData();
+    pullWarehouseData();
 
     const backButton = document.getElementById('backButton');
     backButton.addEventListener('click', function() {
@@ -277,4 +282,58 @@ document.getElementById('editProductDetailContainer').addEventListener('click', 
     if (event.target.classList.contains('removeEditProductDetailButton')) {
         event.target.parentElement.remove();
     }
+});
+
+//add product in the warehouse
+document.getElementById('addProductWarehouse').addEventListener('submit', function(event) {
+    let formData = new URLSearchParams(new FormData(this)).toString();
+    fetch('/add_product_warehouse', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('addProductWarehouseMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+//edit product in the warehouse
+document.getElementById('editProductWarehouse').addEventListener('submit', function(event) {
+    let formData = new URLSearchParams(new FormData(this)).toString();
+    fetch('/edit_product_warehouse', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('editProductWarehouseMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+//fill form with product details for edit product
+document.getElementById('selectEditProductWarehouse0').addEventListener('change', function(e) {
+    warehouseProducts.forEach(product => {
+        if (product.warehouseId === e.target.value) {
+            document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
+     });
 });

@@ -150,9 +150,24 @@ const categoriesSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
+const warehouseProductsSchema = new mongoose.Schema({
+    product_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'products',
+        required: true,
+        trim: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    }
+}, { versionKey: false });
+
+
 export const Users = mongoose.model('users', usersSchema);
 export const Announcements = mongoose.model('announcements', AnnouncementSchema);
 export const Products = mongoose.model('products', productsSchema);
 export const Tasks = mongoose.model('tasks', taskSchema);
 export const Categories = mongoose.model('categories', categoriesSchema);
+export const WarehouseProducts = mongoose.model('warehouse_products', warehouseProductsSchema);
 

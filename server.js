@@ -7,7 +7,8 @@ import {
     Announcements,
     Products,
     Tasks,
-    Categories
+    Categories,
+    WarehouseProducts
 } from './schemas.js';
 
 const app = express();
@@ -196,11 +197,41 @@ app.get('/products', async (req, res) => {
     }
 });
 
+//get product by id
+app.get('/product/:id', async (req, res) => {
+    try {
+        const product = await Products.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.json(product);
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 //get all categories
 app.get('/categories', async (req, res) => {
     try {
         const categories = await Categories.find({}, 'category_name');
         res.json(categories);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
+//get warehouse products
+app.get('/warehouse_products', async (req, res) => {
+    try {
+        const warehouse = await WarehouseProducts.find();
+        const products = await Products.find({ _id: { $in: warehouse.map(warehouseProduct => warehouseProduct.product_id) } });
+        const warehouseData = products.map(product => {
+           let current_warehouse = warehouse.find(warehouse => warehouse.product_id.equals(product._id));
+            return {...product._doc, warehouseId: current_warehouse._id, warehouseQuantity: current_warehouse.quantity}; //creates copu of "product", instead of acting like a pointer
+        })
+        res.json(warehouseData);
     } catch (err) {
         console.error(err);
         res.status(500).send(err);
@@ -425,16 +456,45 @@ app.put('/edit_product', async (req, res) => {
     }
 });
 
-//get product by id
-app.get('/product/:id', async (req, res) => {
+app.post('/add_product_warehouse', async (req, res) => {
+    const { selectAddProductWarehouse, warehouseQuantity } = req.body;
     try {
-        const product = await Products.findById(req.params.id);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+        const existingProduct = await WarehouseProducts.findOne({ product_id: selectAddProductWarehouse});
+        if (existingProduct) {
+
+            existingProduct.quantity = parseInt(existingProduct.quantity, 10);
+            const warehouseQuantityInt = parseInt(warehouseQuantity, 10);
+            existingProduct.quantity += warehouseQuantityInt;
+            await WarehouseProducts.findOneAndUpdate(
+                { product_id: selectAddProductWarehouse },
+                { quantity: existingProduct.quantity },
+                { new: true }
+            );
+            res.json({status: 'success', message: 'Product quantity updated in Warehouse.'});
         }
-        res.json(product);
-    } catch (error) {
-        console.error('Error fetching product:', error);
-        res.status(500).json({ message: 'Server error' });
+        else {
+            const newWarehouseProduct = new WarehouseProducts({ product_id: selectAddProductWarehouse, quantity: warehouseQuantity });
+            await newWarehouseProduct.save();
+            res.json({ status: 'success', message: 'Product added to Warehouse.' });
+        }
+    } catch (err) {
+        console.error('Error updating product:', err);
+        res.status(500).json({ status: 'error', message: 'Something went wrong.' });
+    }
+});
+
+app.put('/edit_product_warehouse', async (req, res) => {
+    const { selectEditProductWarehouse, warehouseEditQuantity } = req.body;
+    try {
+        const findone = await WarehouseProducts.findOneAndUpdate(
+            { _id: selectEditProductWarehouse },
+            { quantity: warehouseEditQuantity},
+            { new: true }
+        );
+        console.log(findone);
+        res.json({ status: 'success', message: 'Product Updates.' });
+    } catch (err) {
+        console.error('Error updating product:', err);
+        res.status(500).json({ status: 'error', message: 'Something went wrong.' });
     }
 });

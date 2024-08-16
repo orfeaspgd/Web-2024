@@ -73,7 +73,7 @@
     <h1>Edit Product</h1>
     <div class="productEntry">
         <label for="selectEditProduct0">Product:</label>
-        <select class="selectEditProduct" id="selectEditProduct0" name="selectEditProduct[]" required></select>
+        <select class="selectProduct" id="selectEditProduct0" name="selectEditProduct[]" required></select>
     </div>
     <div>
         <label for="editProductName">Name:</label>
@@ -81,7 +81,7 @@
     </div>
     <div class="productEntry">
         <label for="selectCategoryEditProduct0">Category:</label>
-        <select class="selectCategoryEditProduct" id="selectCategoryEditProduct0" name="selectCategoryEditProduct[]" required></select>
+        <select class="selectCategory" id="selectCategoryEditProduct0" name="selectCategoryEditProduct[]" required></select>
     </div>
     <div class="detailsContainer" id="editProductDetailContainer">
     </div>
@@ -89,6 +89,35 @@
     <button type="button" id="editProductAddDetailButton">Add more details</button>
     <input type="submit" value="Update Product">
 </form>
+
+<form id="addProductWarehouse">
+    <h1>Add Product in Warehouse</h1>
+    <div class="productEntry">
+        <label for="selectAddProductWarehouse0">Product:</label>
+        <select class="selectProduct" id="selectAddProductWarehouse0" name="selectAddProductWarehouse[]" required></select>
+    </div>
+    <div>
+        <label for="warehouseQuantity">Quantity:</label>
+        <input type="number" id="warehouseQuantity" name="warehouseQuantity" required>
+    </div>
+    <div id="addProductWarehouseMessage"></div>
+    <input type="submit" value="Add Product">
+</form>
+
+<form id="editProductWarehouse">
+    <h1>Edit Product in Warehouse</h1>
+    <div class="productEntry">
+        <label for="selectEditProductWarehouse0">Product:</label>
+        <select class="selectEditProductWarehouse" id="selectEditProductWarehouse0" name="selectEditProductWarehouse[]" required></select>
+    </div>
+    <div>
+        <label for="warehouseEditQuantity">Quantity:</label>
+        <input type="number" id="warehouseEditQuantity" name="warehouseEditQuantity" required>
+    </div>
+    <div id="editProductWarehouseMessage"></div>
+    <input type="submit" value="Update Product">
+</form>
+
 
 <button id="backButton">Back</button>
 </body>
