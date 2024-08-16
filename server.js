@@ -355,6 +355,7 @@ app.delete('/delete_product', async (req, res) => {
         const { _id } = req.body;
         await Products.deleteOne({ _id: _id });
         await Tasks.deleteMany({product_id: _id});
+        await WarehouseProducts.deleteMany({product_id: _id});
         const announcements = await Announcements.find({ products: { $elemMatch: { $eq: _id} }});
         for (const announcement of announcements) {
             if (announcement.products.length === 1) {
@@ -383,6 +384,7 @@ app.delete('/delete_category', async (req, res) => {
         const productIdsToDelete = productsToDelete.map(product => product._id);
         const announcements = await Announcements.find({products: {$elemMatch: {$in: productIdsToDelete}}});
         await Tasks.deleteMany({product_id: {$in: productIdsToDelete}});
+        await WarehouseProducts.deleteMany({product_id: {$in: productIdsToDelete}});
         for(const IdToDelete of productIdsToDelete)
         {
             for (const announcement of announcements) {
@@ -456,6 +458,7 @@ app.put('/edit_product', async (req, res) => {
     }
 });
 
+//add product or add to the quantity in warehouse
 app.post('/add_product_warehouse', async (req, res) => {
     const { selectAddProductWarehouse, warehouseQuantity } = req.body;
     try {
@@ -483,6 +486,7 @@ app.post('/add_product_warehouse', async (req, res) => {
     }
 });
 
+//change quantity of product in warehouse
 app.put('/edit_product_warehouse', async (req, res) => {
     const { selectEditProductWarehouse, warehouseEditQuantity } = req.body;
     try {
