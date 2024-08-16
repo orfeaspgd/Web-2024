@@ -221,6 +221,7 @@ app.post('/admin_create_announcement', [
 
     console.log(req.body)
     const newAnnouncement = new Announcements({ admin_id: req.session.user._id, products: selectProduct});
+    console.log(req.session.user);
     newAnnouncement.save()
         .then(() => res.json({ status: 'success', message: 'Announcement posted.' }))
         .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
@@ -322,6 +323,18 @@ app.delete('/delete_product', async (req, res) => {
     try {
         const { _id } = req.body;
         await Products.deleteOne({ _id: _id });
+        await Tasks.deleteMany({product_id: _id});
+        const announcements = await Announcements.find({ products: { $elemMatch: { $eq: _id} }});
+        for (const announcement of announcements) {
+            if (announcement.products.length === 1) {
+                await Announcements.deleteOne({ _id: announcement._id });
+            } else {
+                await Announcements.updateOne(
+                    { _id: announcement._id },
+                    { $pull: { products: _id } }
+                );
+            }
+        }
         res.json({ status: 'success', message: 'Product deleted.' });
     } catch (err) {
         console.error(err);
@@ -332,9 +345,23 @@ app.delete('/delete_product', async (req, res) => {
 //admin warehouse delete category
 app.delete('/delete_category', async (req, res) => {
     try {
-        const { _id } = req.body;
-        await Categories.deleteOne({ _id: _id });
-        await Products.deleteMany({ category: _id });
+        const {_id} = req.body;
+        await Categories.deleteOne({_id: _id});
+        const productsToDelete = await Products.find({category: _id});
+        await Products.deleteMany({category: _id});
+        const productIdsToDelete = productsToDelete.map(product => product._id);
+        const announcements = await Announcements.find({products: {$elemMatch: {$in: productIdsToDelete}}});
+        await Tasks.deleteMany({product_id: {$in: productIdsToDelete}});
+        for(const IdToDelete of productIdsToDelete)
+        {
+            for (const announcement of announcements) {
+                await Announcements.updateMany(
+                    {_id: announcement._id},
+                    {$pull: {products: IdToDelete}}
+                );
+            }
+        }
+        await Announcements.deleteMany({products: []});
         res.json({ status: 'success', message: 'Category deleted.' });
     } catch (err) {
         console.error(err);
