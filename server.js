@@ -67,21 +67,20 @@ app.post('/login', async (req, res) => {
 //home pages after login
 app.get('/home', (req, res) => {
     if(req.session.user && req.session.user.role === 'admin'){
-    res.sendFile(path.join(__dirname, './frontend/html/home_admin.html'));
+    res.sendFile(path.join(__dirname, './frontend/html/admin/warehouse.html'));
     }
     else if (req.session.user && req.session.user.role === 'citizen') {
-        res.sendFile(path.join(__dirname, './frontend/html/home_citizen.html'));
+        res.sendFile(path.join(__dirname, './frontend/html/citizen/request-management.html'));
     }
     else if(req.session.user && req.session.user.role === 'rescuer'){
-        res.sendFile(path.join(__dirname, './frontend/html/home_rescuer.html'));
+        res.sendFile(path.join(__dirname, './frontend/html/rescuer/cargo-management.html'));
     }else (res.redirect("/login"));
-
 });
 
 //warehouse management page for admin
 app.get('/warehouse', (req, res) => {
     if(req.session.user && req.session.user.role === 'admin'){
-        res.sendFile(path.join(__dirname, './frontend/html/admin_warehouse.html'));
+        res.sendFile(path.join(__dirname, './frontend/html/admin/warehouse.html'));
     }else (res.redirect("/login"));
 });
 

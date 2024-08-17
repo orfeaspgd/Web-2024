@@ -4,7 +4,7 @@ let warehouseProducts = [];
 //get products and populate select elements
 pullProductsData = () => {
     fetch('/products')
-    .then(response => response.json())
+        .then(response => response.json())
         .then(data => {
             const selectProductElements = document.querySelectorAll('.selectProduct');
             selectProductElements.forEach(selectProduct => {
@@ -335,5 +335,5 @@ document.getElementById('selectEditProductWarehouse0').addEventListener('change'
     warehouseProducts.forEach(product => {
         if (product.warehouseId === e.target.value) {
             document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
-     });
+    });
 });
