@@ -41,7 +41,7 @@ db.once('open', function() {
 //get login page html file
 app.use(express.urlencoded({ extended: true }));
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, './frontend/login.html'));
+    res.sendFile(path.join(__dirname, './frontend/html/login.html'));
 });
 
 //session details for login functionality
@@ -67,13 +67,13 @@ app.post('/login', async (req, res) => {
 //home pages after login
 app.get('/home', (req, res) => {
     if(req.session.user && req.session.user.role === 'admin'){
-    res.sendFile(path.join(__dirname, './frontend/home_admin.html'));
+    res.sendFile(path.join(__dirname, './frontend/html/home_admin.html'));
     }
     else if (req.session.user && req.session.user.role === 'citizen') {
-        res.sendFile(path.join(__dirname, './frontend/home_citizen.html'));
+        res.sendFile(path.join(__dirname, './frontend/html/home_citizen.html'));
     }
     else if(req.session.user && req.session.user.role === 'rescuer'){
-        res.sendFile(path.join(__dirname, './frontend/home_rescuer.html'));
+        res.sendFile(path.join(__dirname, './frontend/html/home_rescuer.html'));
     }else (res.redirect("/login"));
 
 });
@@ -81,7 +81,7 @@ app.get('/home', (req, res) => {
 //warehouse management page for admin
 app.get('/warehouse', (req, res) => {
     if(req.session.user && req.session.user.role === 'admin'){
-        res.sendFile(path.join(__dirname, './frontend/admin_warehouse.html'));
+        res.sendFile(path.join(__dirname, './frontend/html/admin_warehouse.html'));
     }else (res.redirect("/login"));
 });
 

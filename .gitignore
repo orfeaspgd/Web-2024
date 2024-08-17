@@ -1,0 +1,5 @@
+# Ignore IDE configuration files
+.idea/
+
+# Ignore Node.js dependencies
+node_modules/
