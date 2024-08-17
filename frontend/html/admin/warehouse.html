@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Warehouse</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/shared.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+<div id="taskTable"></div>
+
+<button id="pullFromUsidas">Update database from usidas</button>
+<div id="pullFromUsidasMessage"></div>
+
+<label>Upload JSON file</label>
+<input type="file" accept=".json" id="addProductsFromJson">
+<div id="addProductsFromJsonMessage"></div>
+
+
 
 <form id="deleteProduct">
     <h1>Delete Product</h1>
@@ -119,7 +129,7 @@
 </form>
 
 
-<button id="backButton">Back</button>
+<button id="logoutButton">Logout</button>
 </body>
 <script src="../js/admin/warehouse.js"></script>
 </html>

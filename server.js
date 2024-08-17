@@ -77,13 +77,6 @@ app.get('/home', (req, res) => {
     }else (res.redirect("/login"));
 });
 
-//warehouse management page for admin
-app.get('/warehouse', (req, res) => {
-    if(req.session.user && req.session.user.role === 'admin'){
-        res.sendFile(path.join(__dirname, './frontend/html/admin/warehouse.html'));
-    }else (res.redirect("/login"));
-});
-
 //logout
 app.post('/logout', async (req, res) => {
     req.session.destroy((err) => {
