@@ -27,9 +27,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const phoneRegex = /^\d{10}$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   //phone number and email regular expressions
-
 app.use(express.static(path.join(__dirname, './frontend')));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

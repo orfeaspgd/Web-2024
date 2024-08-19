@@ -7,6 +7,9 @@ import {
     WarehouseProducts
 } from '../schemas.js';
 
+const phoneRegex = /^\d{10}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   //phone number and email regular expressions
+
 export default function authenticationRoutes(app) {
 //login
     app.post('/login', async (req, res) => {
