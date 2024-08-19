@@ -69,7 +69,9 @@
                 <h2>Delete Product</h2>
                 <div class="form-group">
                     <label for="selectProduct0">Product:</label>
-                    <select class="form-control selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
+                    <select class="form-control selectProduct" id="selectProduct0" name="selectProduct[]" required>
+                        <option value="" disabled selected>Pick a product</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-danger">Delete Product</button>
                 <div id="deleteProductMessage" class="mt-2"></div>

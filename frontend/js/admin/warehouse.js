@@ -61,6 +61,15 @@ pullProductsData = () => {
         .then(data => {
             const selectProductElements = document.querySelectorAll('.selectProduct');
             selectProductElements.forEach(selectProduct => {
+                // Keep the placeholder option
+                const placeholder = selectProduct.querySelector('option[value=""]');
+
+                // Clear existing options except for the placeholder
+                selectProduct.innerHTML = '';
+                if (placeholder) {
+                    selectProduct.appendChild(placeholder);
+                }
+
                 data.forEach(product => {
                     const option = document.createElement('option');
                     option.value = product._id;
@@ -192,6 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //delete product
 document.getElementById('deleteProduct').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     fetch('/delete_product', {
         method: 'DELETE',
         headers: {
@@ -204,6 +215,9 @@ document.getElementById('deleteProduct').addEventListener('submit', function(eve
             let messageElement = document.getElementById('deleteProductMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown list after deletion
+                pullProductsData();
             } else {
                 messageElement.style.color = 'red';
             }
