@@ -18,6 +18,7 @@ import categoriesRoutes from "./routes/categories.js";
 import announcementsRoutes from "./routes/announcements.js";
 import tasksRoutes from "./routes/tasks.js";
 import authenticationRoutes from "./routes/authentication.js";
+import pagesRoutes from "./routes/pages.js";
 
 const app = express();
 const port = 3000;
@@ -66,6 +67,7 @@ categoriesRoutes(app);
 announcementsRoutes(app);
 tasksRoutes(app);
 authenticationRoutes(app);
+pagesRoutes(app);
 
 //home pages after login
 app.get('/home', (req, res) => {
