@@ -12,7 +12,7 @@ import {
 } from './schemas.js';
 
 import productsRoutes from "./routes/products.js";
-import warehouseRoutes from "./routes/warehouse.js"
+import warehouseRoutes from "./routes/warehouse-routes.js"
 import importRoutes from "./routes/import.js";
 import categoriesRoutes from "./routes/categories.js";
 import announcementsRoutes from "./routes/announcements.js";
