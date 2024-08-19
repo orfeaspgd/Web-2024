@@ -69,7 +69,7 @@
                 <h2>Delete Product</h2>
                 <div class="form-group">
                     <label for="selectProduct0">Product:</label>
-                    <select class="form-control" id="selectProduct0" name="selectProduct[]" required></select>
+                    <select class="form-control selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
                 </div>
                 <button type="submit" class="btn btn-danger">Delete Product</button>
                 <div id="deleteProductMessage" class="mt-2"></div>
@@ -82,7 +82,7 @@
                 <h2>Delete Category</h2>
                 <div class="form-group">
                     <label for="selectCategory0">Category:</label>
-                    <select class="form-control" id="selectCategory0" name="selectCategory[]" required></select>
+                    <select class="form-control selectCategory" id="selectCategory0" name="selectCategory[]" required></select>
                 </div>
                 <button type="submit" class="btn btn-danger">Delete Category</button>
                 <div id="deleteCategoryMessage" class="mt-2"></div>
@@ -98,8 +98,8 @@
                     <input type="text" class="form-control" id="productName" name="productName" required>
                 </div>
                 <div class="form-group">
-                    <label for="selectCreateProductCategory">Category:</label>
-                    <select class="form-control" id="selectCreateProductCategory" name="selectCategory[]" required></select>
+                    <label for="selectCategory">Category:</label>
+                    <select class="form-control selectCategory" id="selectCategory" name="selectCategory[]" required></select>
                 </div>
                 <div id="detailsContainer">
                     <!-- Dynamic Details Container -->
@@ -130,16 +130,16 @@
             <form id="editProduct" class="form-group">
                 <h2>Edit Product</h2>
                 <div class="form-group">
-                    <label for="selectEditProduct0">Product:</label>
-                    <select class="form-control" id="selectEditProduct0" name="selectEditProduct[]" required></select>
+                    <label for="selectProduct">Product:</label>
+                    <select class="form-control selectProduct" id="selectProduct" name="selectEditProduct[]" required></select>
                 </div>
                 <div class="form-group">
                     <label for="editProductName">Name:</label>
                     <input type="text" class="form-control" id="editProductName" name="editProductName" required>
                 </div>
                 <div class="form-group">
-                    <label for="selectCategoryEditProduct0">Category:</label>
-                    <select class="form-control" id="selectCategoryEditProduct0" name="selectCategoryEditProduct[]" required></select>
+                    <label for="selectCategory">Category:</label>
+                    <select class="form-control selectCategory" id="selectCategory2" name="selectCategoryEditProduct[]" required></select>
                 </div>
                 <div id="editProductDetailContainer">
                     <!-- Dynamic Edit Details Container -->
@@ -188,5 +188,4 @@
     </div>
 </div>
 </body>
-<script src="../js/admin/warehouse.js"></script>
 </html>

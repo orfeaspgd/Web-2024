@@ -72,10 +72,6 @@ pullProductsData = () => {
         .catch(error => console.error('Error:', error));
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    pullProductsData();
-});
-
 //logout
 document.getElementById('logoutButton').addEventListener('click', function() {
     fetch('/logout', {
@@ -144,24 +140,6 @@ document.getElementById('addProductsFromJson').addEventListener('change', async 
 
 //global variables
 let warehouseProducts = [];
-
-//get products and populate select elements
-pullProductsData = () => {
-    fetch('/products')
-        .then(response => response.json())
-        .then(data => {
-            const selectProductElements = document.querySelectorAll('.selectProduct');
-            selectProductElements.forEach(selectProduct => {
-                data.forEach(product => {
-                    const option = document.createElement('option');
-                    option.value = product._id;
-                    option.textContent = product.name;
-                    selectProduct.appendChild(option);
-                });
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
 
 //get categories and populate select elements
 pullCategoriesData = () => {
