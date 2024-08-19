@@ -157,6 +157,14 @@ pullCategoriesData = () => {
         .then(data => {
             const selectCategoryElements = document.querySelectorAll('.selectCategory');
             selectCategoryElements.forEach(selectCategory => {
+                // Keep the placeholder option
+                const placeholder = selectCategory.querySelector('option[value=""]');
+
+                // Clear existing options except for the placeholder
+                selectCategory.innerHTML = '';
+                if (placeholder) {
+                    selectCategory.appendChild(placeholder);
+                }
                 data.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category._id;
@@ -228,6 +236,8 @@ document.getElementById('deleteProduct').addEventListener('submit', function(eve
 
 //delete category
 document.getElementById('deleteCategory').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     fetch('/delete_category', {
         method: 'DELETE',
         headers: {
@@ -240,6 +250,9 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
             let messageElement = document.getElementById('deleteCategoryMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown list after deletion
+                pullCategoriesData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -250,6 +263,8 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
 
 //create product
 document.getElementById('createProduct').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/create_product', {
         method: 'POST',
@@ -263,6 +278,9 @@ document.getElementById('createProduct').addEventListener('submit', function(eve
             let messageElement = document.getElementById('createProductMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown list after creation
+                pullProductsData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -306,6 +324,8 @@ document.getElementById('detailsContainer').addEventListener('click', function(e
 
 //create category
 document.getElementById('createCategory').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/create_category', {
         method: 'POST',
@@ -319,6 +339,9 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
             let messageElement = document.getElementById('createCategoryMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the category dropdown lists after successful category creation
+                pullCategoriesData();
             } else {
                 messageElement.style.color = 'red';
             }

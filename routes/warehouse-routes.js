@@ -75,18 +75,38 @@ export default function warehouseRoutes(app) {
             res.status(500).json({ status: 'error', message: 'Something went wrong.' });
         }
     });
-    //admin warehouse create product
+
+    // admin warehouse create product
     app.post('/create_product', async (req, res) => {
-        const { productName, selectCategory, productDetailName, productDetailValue} = req.body;
+        const { productName, selectCategory, productDetailName, productDetailValue } = req.body;
         let productDetails = [];
-        for (let i =0 ; i < productDetailName.length; i++){
-            productDetails.push ({detail_name: productDetailName[i], detail_value: productDetailValue[i]})
+
+        // Check if productDetailName and productDetailValue are provided
+        if (productDetailName && productDetailValue) {
+            if (Array.isArray(productDetailName) && Array.isArray(productDetailValue)) {
+                // Handle the case when multiple details are provided
+                for (let i = 0; i < productDetailName.length; i++) {
+                    productDetails.push({
+                        detail_name: productDetailName[i],
+                        detail_value: productDetailValue[i]
+                    });
+                }
+            } else {
+                // Handle the case when a single detail is provided (non-array)
+                productDetails.push({
+                    detail_name: productDetailName,
+                    detail_value: productDetailValue
+                });
+            }
         }
-        console.log(productDetails);
+        // Create and save the new product
         const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
         newProduct.save()
             .then(() => res.json({ status: 'success', message: 'Product created.' }))
-            .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+            .catch((err) => {
+                console.log(err);
+                res.json({ status: 'error', message: 'Something went wrong.' });
+            });
     });
 
     //admin warehouse create category

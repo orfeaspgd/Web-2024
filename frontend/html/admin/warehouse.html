@@ -84,7 +84,9 @@
                 <h2>Delete Category</h2>
                 <div class="form-group">
                     <label for="selectCategory0">Category:</label>
-                    <select class="form-control selectCategory" id="selectCategory0" name="selectCategory[]" required></select>
+                    <select class="form-control selectCategory" id="selectCategory0" name="selectCategory[]" required>
+                        <option value="" disabled selected>Pick a category</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-danger">Delete Category</button>
                 <div id="deleteCategoryMessage" class="mt-2"></div>
@@ -97,11 +99,13 @@
                 <h2>Create Product</h2>
                 <div class="form-group">
                     <label for="productName">Name:</label>
-                    <input type="text" class="form-control" id="productName" name="productName" required>
+                    <input type="text" class="form-control" id="productName" name="productName" placeholder="Type a product name" required>
                 </div>
                 <div class="form-group">
                     <label for="selectCategory">Category:</label>
-                    <select class="form-control selectCategory" id="selectCategory" name="selectCategory[]" required></select>
+                    <select class="form-control selectCategory" id="selectCategory" name="selectCategory[]" required>
+                        <option value="" disabled selected>Pick a category</option>
+                    </select>
                 </div>
                 <div id="detailsContainer">
                     <!-- Dynamic Details Container -->
@@ -120,7 +124,7 @@
                 <h2>Create Category</h2>
                 <div class="form-group">
                     <label for="categoryName">Name:</label>
-                    <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                    <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Type a category name" required>
                 </div>
                 <div id="createCategoryMessage" class="mt-2"></div>
                 <button type="submit" class="btn btn-primary mt-2">Create Category</button>
