@@ -1,8 +1,8 @@
-//login
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+//admin create account
+document.getElementById('createAccount').addEventListener('submit', function(event) {
     event.preventDefault();
     let formData = new URLSearchParams(new FormData(this)).toString();
-    fetch('/login', {
+    fetch('/admin_create_account', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -11,9 +11,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
         .then(response => response.json())
         .then(data => {
-            let messageElement = document.getElementById('message');
+            let messageElement = document.getElementById('createAccountMessage');
             if (data.status === 'success') {
-                window.location.href = data.redirectUrl;
+                messageElement.style.color = 'green';
             } else {
                 messageElement.style.color = 'red';
             }

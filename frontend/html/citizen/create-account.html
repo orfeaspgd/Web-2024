@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Account Creation</title>
+</head>
+<body>
+<form id="createAccount">
+    <h1>Create Account</h1>
+    <div>
+        <label for="create_firstName">First Name:</label>
+        <input type="text" id="create_firstName" name="firstname" required>
+    </div>
+    <div>
+        <label for="create_lastname">Last Name:</label>
+        <input type="text" id="create_lastname" name="lastname" required>
+    </div>
+    <div>
+        <label for="create_username">Username:</label>
+        <input type="text" id="create_username" name="username" required>
+    </div>
+    <div>
+        <label for="create_phone_number">Phone Number:</label>
+        <input type="tel" id="create_phone_number" name="phone_number" required>
+    </div>
+    <div>
+        <label for="create_email">Email:</label>
+        <input type="email" id="create_email" name="email" required>
+    </div>
+    <div>
+        <label for="create_password">Password:</label>
+        <input type="password" id="create_password" name="password" required>
+    </div>
+    <div>
+        <input type="submit" value="Create Account">
+    </div>
+    <div id="create_message"></div>
+</form>
+</body>
+<script src="../js/citizen/create-account.js"></script>
+</html>

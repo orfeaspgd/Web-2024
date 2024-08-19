@@ -1,10 +1,154 @@
+//populate task table for admin
+const getTasksData = () => {
+    fetch('/admin_tasks_table')
+        .then(response => response.json()) // Parse the response as JSON
+        .then(data => {
+            let table = document.createElement('table');
+            let headerRow = document.createElement('tr');
+            let columnNames = ['Citizen Name', 'Citizen Surname', 'Rescuer Name', 'Rescuer Surname', 'Product Name', 'Requested Quantity', 'Status', 'Type', 'Location'];
+            columnNames.forEach(name => {
+                let th = document.createElement('th');
+                th.textContent = name;
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+            data.forEach(task => {
+                let row = document.createElement('tr');
+
+                let cell1 = document.createElement('td');
+                let cell2 = document.createElement('td');
+                let cell3 = document.createElement('td');
+                let cell4 = document.createElement('td');
+                let cell5 = document.createElement('td');
+                let cell6 = document.createElement('td');
+                let cell7 = document.createElement('td');
+                let cell8 = document.createElement('td');
+                let cell9 = document.createElement('td');
+
+                cell1.textContent = task.citizen_id.name;
+                row.appendChild(cell1);
+                cell2.textContent = task.citizen_id.surname;
+                row.appendChild(cell2);
+                cell3.textContent = task.rescuer_id.name;
+                row.appendChild(cell3);
+                cell4.textContent = task.rescuer_id.surname;
+                row.appendChild(cell4);
+                cell5.textContent = task.product_id.name;
+                row.appendChild(cell5);
+                cell6.textContent = task.quantity;
+                row.appendChild(cell6);
+                cell7.textContent = task.status;
+                row.appendChild(cell7);
+                cell8.textContent = task.type;
+                row.appendChild(cell8);
+                cell9.textContent = task.citizen_id.location;
+                row.appendChild(cell9);
+
+                table.appendChild(row);
+            });
+            document.getElementById('taskTable').innerHTML = '';
+            document.getElementById('taskTable').appendChild(table);
+        })
+        .catch(error => console.error('Error:', error));
+}
+getTasksData();
+setInterval(getTasksData, 5000); // Refresh the table every 5 seconds
+
+//get products data and populate select elements
+pullProductsData = () => {
+    fetch('/products')
+        .then(response => response.json())
+        .then(data => {
+            const selectProductElements = document.querySelectorAll('.selectProduct');
+            selectProductElements.forEach(selectProduct => {
+                data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product._id;
+                    option.textContent = product.name;
+                    selectProduct.appendChild(option);
+                });
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    pullProductsData();
+});
+
+//logout
+document.getElementById('logoutButton').addEventListener('click', function() {
+    fetch('/logout', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.href = data.redirectUrl;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+//populate database with data from usidas
+document.getElementById('pullFromUsidas').addEventListener('click', function() {
+    fetch('/pull_from_usidas', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('pullFromUsidasMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+            pullProductsData();
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+//populated database with json file
+document.getElementById('addProductsFromJson').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const fileContents = e.target.result;
+            await fetch('/add_products_from_json', {
+                method: 'POST'
+                , headers: {
+                    'Content-Type': 'application/json'
+                }
+                , body: JSON.stringify({
+                    fileContents: fileContents
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let messageElement = document.getElementById('addProductsFromJsonMessage');
+                    if (data.status === 'success') {
+                        messageElement.style.color = 'green';
+                    } else {
+                        messageElement.style.color = 'red';
+                    }
+                    messageElement.textContent = data.message;
+                    pullProductsData();
+                })
+                .catch(error => console.error('Error:', error));
+        };
+        reader.readAsText(file);
+    }
+});
+
 //global variables
 let warehouseProducts = [];
 
 //get products and populate select elements
 pullProductsData = () => {
     fetch('/products')
-    .then(response => response.json())
+        .then(response => response.json())
         .then(data => {
             const selectProductElements = document.querySelectorAll('.selectProduct');
             selectProductElements.forEach(selectProduct => {
@@ -335,5 +479,5 @@ document.getElementById('selectEditProductWarehouse0').addEventListener('change'
     warehouseProducts.forEach(product => {
         if (product.warehouseId === e.target.value) {
             document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
-     });
+    });
 });

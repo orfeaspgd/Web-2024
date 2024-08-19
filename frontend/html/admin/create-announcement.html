@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcement Creation</title>
+    <link rel="stylesheet" href="../css/shared.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<form id="createAnnouncement" action="/home">
+    <h1>Create New Announcement</h1>
+    <div id="productsContainer">
+        <div class="productEntry">
+            <label for="selectProduct0">Product:</label>
+            <select class="selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
+        </div>
+    </div>
+    <button type="button" id="addProductButton">Add Product</button>
+    <div>
+        <input type="submit" value="Post Announcement">
+    </div>
+    <div id="createAnnouncementMessage"></div>
+</form>
+
+</body>
+<script src="../js/create-announcement.js"></script>
+</html>

@@ -1,8 +1,8 @@
-//login
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+//login page create account
+document.getElementById('createAccount').addEventListener('submit', function(event) {
     event.preventDefault();
     let formData = new URLSearchParams(new FormData(this)).toString();
-    fetch('/login', {
+    fetch('/login_create_account', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -11,9 +11,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
         .then(response => response.json())
         .then(data => {
-            let messageElement = document.getElementById('message');
+            let messageElement = document.getElementById('create_message');
             if (data.status === 'success') {
-                window.location.href = data.redirectUrl;
+                messageElement.style.color = 'green';
             } else {
                 messageElement.style.color = 'red';
             }

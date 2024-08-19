@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home Admin</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <title>Rescuer Account Creation</title>
+    <link rel="stylesheet" href="../css/shared.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-<div id="taskTable"></div>
 <form id="createAccount" action="/home" >
     <h1>Create Account</h1>
     <div>
@@ -46,33 +45,6 @@
     </div>
     <div id="createAccountMessage"></div>
 </form>
-<form id="createAnnouncement" action="/home">
-    <h1>Create New Announcement</h1>
-    <div id="productsContainer">
-        <div class="productEntry">
-            <label for="selectProduct0">Product:</label>
-            <select class="selectProduct" id="selectProduct0" name="selectProduct[]" required></select>
-        </div>
-    </div>
-    <button type="button" id="addProductButton">Add Product</button>
-    <div>
-        <input type="submit" value="Post Announcement">
-    </div>
-    <div id="createAnnouncementMessage"></div>
-</form>
-
-
-
-<button id="pullFromUsidas">Update database from usidas</button>
-<div id="pullFromUsidasMessage"></div>
-
-<label>Upload JSON file</label>
-<input type="file" accept=".json" id="addProductsFromJson">
-<div id="addProductsFromJsonMessage"></div>
-
-<button id="logoutButton">Logout</button>
-<button id="manageWarehouseButton" onclick="location.href='/warehouse'">Manage Warehouse</button>
-
 </body>
-<script src="../js/home_admin.js"></script>
+<script src="../js/admin/create-rescuer.js"></script>
 </html>
