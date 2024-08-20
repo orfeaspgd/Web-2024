@@ -200,11 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
     pullProductsData();
     pullCategoriesData();
     pullWarehouseData();
-
-    const backButton = document.getElementById('backButton');
-    backButton.addEventListener('click', function() {
-        window.location.href = '/home';
-    });
 });
 
 //delete product
@@ -389,6 +384,8 @@ document.getElementById('selectEditProduct0').addEventListener('change', functio
 
 //edit product
 document.getElementById('editProduct').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/edit_product', {
         method: 'PUT',
@@ -402,6 +399,9 @@ document.getElementById('editProduct').addEventListener('submit', function(event
             let messageElement = document.getElementById('editProductMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the category dropdown lists after successful product edit
+                pullProductsData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -424,7 +424,7 @@ document.getElementById('editProductAddDetailButton').addEventListener('click', 
                 <div class="input-container" >
                     <div>
                         <label for="editProductDetailName${index}">Item detail name:</label>
-                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]"}">
+                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]"">
                     </div>
                     <div>
                         <label for="editProductDetailValue${index}">Item detail value:</label>
