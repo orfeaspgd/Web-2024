@@ -160,13 +160,15 @@
             </form>
         </div>
 
-        <!-- Add Product to Warehouse Form -->
+        <!-- Add Product in Warehouse Form -->
         <div class="col-md-4 mb-4">
             <form id="addProductWarehouse" class="form-group">
                 <h2>Add Product in Warehouse</h2>
                 <div class="form-group">
-                    <label for="selectAddProductWarehouse0">Product:</label>
-                    <select class="form-control" id="selectAddProductWarehouse0" name="selectAddProductWarehouse[]" required></select>
+                    <label for="selectProductWarehouse">Product:</label>
+                    <select class="form-control selectProductWarehouse" id="selectProductWarehouse" name="selectAddProductWarehouse[]" required>
+                        <option value="" disabled selected>Pick a product</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="warehouseQuantity">Quantity:</label>
@@ -184,8 +186,10 @@
             <form id="editProductWarehouse" class="form-group">
                 <h2>Edit Product in Warehouse</h2>
                 <div class="form-group">
-                    <label for="selectEditProductWarehouse0">Product:</label>
-                    <select class="form-control" id="selectEditProductWarehouse0" name="selectEditProductWarehouse[]" required></select>
+                    <label for="selectProductWarehouse0">Product:</label>
+                    <select class="form-control selectProductWarehouse" id="selectProductWarehouse0" name="selectEditProductWarehouse[]" required>
+                        <option value="" disabled selected>Pick a product</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="warehouseEditQuantity">Quantity:</label>

@@ -182,13 +182,22 @@ pullWarehouseData = () => {
         .then(response => response.json())
         .then(data => {
             warehouseProducts = data;
-            const selectWarehouseProductElements = document.querySelectorAll('.selectEditProductWarehouse');
-            selectWarehouseProductElements.forEach(selectProduct => {
+            const selectProductWarehouseElements = document.querySelectorAll('.selectProductWarehouse');
+            selectProductWarehouseElements.forEach(selectProductWarehouse => {
+                // Keep the placeholder option
+                const placeholder = selectProductWarehouse.querySelector('option[value=""]');
+
+                // Clear existing options except for the placeholder
+                selectProductWarehouse.innerHTML = '';
+                if (placeholder) {
+                    selectProductWarehouse.appendChild(placeholder);
+                }
+
                 data.forEach(product => {
                     const option = document.createElement('option');
                     option.value = product.warehouseId;
                     option.textContent = product.name;
-                    selectProduct.appendChild(option);
+                    selectProductWarehouse.appendChild(option);
                 });
             });
         })
@@ -445,6 +454,8 @@ document.getElementById('editProductDetailContainer').addEventListener('click', 
 
 //add product in the warehouse
 document.getElementById('addProductWarehouse').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/add_product_warehouse', {
         method: 'POST',
@@ -468,6 +479,8 @@ document.getElementById('addProductWarehouse').addEventListener('submit', functi
 
 //edit product in the warehouse
 document.getElementById('editProductWarehouse').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/edit_product_warehouse', {
         method: 'PUT',
