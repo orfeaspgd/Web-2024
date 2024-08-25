@@ -296,36 +296,40 @@ document.getElementById('createProduct').addEventListener('submit', function(eve
         .catch(error => console.error('Error:', error));
 });
 
-//add details button for create product
+// add details button for create product
 document.getElementById('addDetailButton').addEventListener('click', function() {
     const detailsContainer = document.getElementById('detailsContainer');
     if (detailsContainer.children.length >= 10) {
-        alert('You can only add up to 10 products.');
+        alert('You can only add up to 10 product details.');
         return;
     }
 
     const detailDiv = document.createElement('div');
     const index = detailsContainer.children.length;
+    detailDiv.classList.add('row', 'mb-3');
+
     detailDiv.innerHTML = `
-                <div class="input-container">
-                <div>
-                    <label for="productDetailName${index}">Item detail name (e.g. "volume"):</label>
-                    <input type="text" id="productDetailName${index}" name="productDetailName[]">
-                </div>
-                <div>
-                    <label for="productDetailValue${index}">Item detail value (e.g. "500ml"):</label>
-                    <input type="text" id="productDetailValue${index}" name="productDetailValue[]">
-                </div>
-                        <button type="button" class="removeProductDetailButton">Remove</button>
-                </div>
-            `;
+        <div class="col-md-5">
+            <label for="productDetailName${index}" class="form-label">Detail name (e.g. "volume"):</label>
+            <input type="text" id="productDetailName${index}" name="productDetailName[]" 
+            class="form-control form-control-sm" placeholder="Type detail name">
+        </div>
+        <div class="col-md-5">
+            <label for="productDetailValue${index}" class="form-label">Detail value (e.g. "500ml"):</label>
+            <input type="text" id="productDetailValue${index}" name="productDetailValue[]" 
+            class="form-control form-control-sm" placeholder="Type detail value">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-sm removeProductDetailButton w-100">X</button>
+        </div>
+    `;
     detailsContainer.appendChild(detailDiv);
 });
 
 //remove detail button for create product
 document.getElementById('detailsContainer').addEventListener('click', function(event) {
     if (event.target.classList.contains('removeProductDetailButton')) {
-        event.target.parentElement.remove();
+        event.target.closest('.row').remove();
     }
 });
 
