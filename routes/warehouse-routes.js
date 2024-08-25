@@ -98,7 +98,14 @@ export default function warehouseRoutes(app) {
                     detail_value: productDetailValue
                 });
             }
+        } else {
+            // If no details are provided, add a default detail with empty strings
+            productDetails.push({
+                detail_name: "",
+                detail_value: ""
+            });
         }
+
         // Create and save the new product
         const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
         newProduct.save()

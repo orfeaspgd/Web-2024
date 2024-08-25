@@ -136,8 +136,8 @@
             <form id="editProduct" class="form-group">
                 <h2>Edit Product</h2>
                 <div class="form-group">
-                    <label for="selectProduct">Product:</label>
-                    <select class="form-control selectProduct" id="selectProduct" name="selectEditProduct[]" required>
+                    <label for="selectEditProduct">Product:</label>
+                    <select class="form-control selectProduct" id="selectEditProduct" name="selectEditProduct" required>
                         <option value="" disabled selected>Pick a product</option>
                     </select>
                 </div>
@@ -146,12 +146,12 @@
                     <input type="text" class="form-control" id="editProductName" name="editProductName" placeholder="Type a product name" required>
                 </div>
                 <div class="form-group">
-                    <label for="selectCategory1">Category:</label>
-                    <select class="form-control selectCategory" id="selectCategory1" name="selectCategoryEditProduct[]" required>
+                    <label for="editCategoryName">Category:</label>
+                    <select class="form-control selectCategory" id="editCategoryName" name="selectCategoryEditProduct" required>
                         <option value="" disabled selected>Pick a category</option>
                     </select>
                 </div>
-                <div id="editProductDetailContainer">
+                <div class="detailsContainer" id="editProductDetailContainer">
                     <!-- Dynamic Edit Details Container -->
                 </div>
                 <button type="button" class="btn btn-secondary" id="editProductAddDetailButton">Add More Details</button>

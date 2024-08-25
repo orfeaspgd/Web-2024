@@ -354,43 +354,6 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
         .catch(error => console.error('Error:', error));
 });
 
-//fill form with product details for edit product
-// document.getElementById('selectEditProduct0').addEventListener('change', function() {
-//     const productId = this.value;
-//     if (!productId) return;
-//
-//     fetch(`/product/${productId}`)
-//         .then(response => response.json())
-//         .then(data => {
-//             document.getElementById('editProductName').value = data.name;
-//             document.getElementById('selectCategoryEditProduct0').value = data.category;
-//
-//             const detailsContainer = document.querySelector('.detailsContainer');
-//             detailsContainer.innerHTML = '';
-//             console.log(data.details);
-//             data.details.forEach((detail, index) => {
-//                 const detailDiv = document.createElement('div');
-//                 detailDiv.innerHTML = `
-//                 <div class="input-container" id="">
-//                     <div>
-//                         <label for="editProductDetailName${index}">Item detail name:</label>
-//                         <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.detail_name}">
-//                     </div>
-//                     <div>
-//                         <label for="editProductDetailValue${index}">Item detail value:</label>
-//                         <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.detail_value}">
-//                     </div>
-//                     </div>
-//                         <button type="button" class="removeEditProductDetailButton">Remove</button>
-//                     </div>
-//                 </div>
-//                 `;
-//                 detailsContainer.appendChild(detailDiv);
-//             });
-//         })
-//         .catch(error => console.error('Error:', error));
-// });
-
 //edit product
 document.getElementById('editProduct').addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent the default form submission behavior
@@ -450,6 +413,42 @@ document.getElementById('editProductDetailContainer').addEventListener('click', 
     if (event.target.classList.contains('removeEditProductDetailButton')) {
         event.target.parentElement.remove();
     }
+});
+
+//fill form with product details for edit product
+document.getElementById('selectEditProduct').addEventListener('change', function() {
+    const productId = this.value;
+    if (!productId) return;
+
+    fetch(`/product/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('editProductName').value = data.name;
+            document.getElementById('editCategoryName').value = data.category;
+
+            const detailsContainer = document.querySelector('.detailsContainer');
+            detailsContainer.innerHTML = '';
+            data.details.forEach((detail, index) => {
+                const detailDiv = document.createElement('div');
+                detailDiv.innerHTML = `
+                <div class="input-container" id="">
+                    <div>
+                        <label for="editProductDetailName${index}">Item detail name:</label>
+                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.detail_name}">
+                    </div>
+                    <div>
+                        <label for="editProductDetailValue${index}">Item detail value:</label>
+                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.detail_value}">
+                    </div>
+                    </div>
+                        <button type="button" class="removeEditProductDetailButton">Remove</button>
+                    </div>
+                </div>
+                `;
+                detailsContainer.appendChild(detailDiv);
+            });
+        })
+        .catch(error => console.error('Error:', error));
 });
 
 //add product in the warehouse
