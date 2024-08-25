@@ -131,15 +131,23 @@ export default function warehouseRoutes(app) {
     //admin warehouse edit product
     app.put('/edit_product', async (req, res) => {
         const { selectEditProduct, editProductName, selectCategoryEditProduct, editProductDetailName, editProductDetailValue } = req.body;
-
-        const updateData = {
-            name: editProductName,
-            category: selectCategoryEditProduct,
-            details: editProductDetailName.map((name, index) => ({
-                detail_name: name,
-                detail_value: editProductDetailValue[index]
-            }))
-        };
+        let updateData
+        if(!editProductDetailName && !editProductDetailValue) {
+            updateData = {
+                name: editProductName,
+                category: selectCategoryEditProduct,
+                details: []
+            };
+        } else {
+            updateData = {
+                name: editProductName,
+                category: selectCategoryEditProduct,
+                details: editProductDetailName.map((name, index) => ({
+                    detail_name: name,
+                    detail_value: editProductDetailValue[index]
+                }))
+            };
+        }
 
         try {
             const product = await Products.findOneAndUpdate(
