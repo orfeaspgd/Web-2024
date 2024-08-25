@@ -355,41 +355,41 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
 });
 
 //fill form with product details for edit product
-document.getElementById('selectEditProduct0').addEventListener('change', function() {
-    const productId = this.value;
-    if (!productId) return;
-
-    fetch(`/product/${productId}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('editProductName').value = data.name;
-            document.getElementById('selectCategoryEditProduct0').value = data.category;
-
-            const detailsContainer = document.querySelector('.detailsContainer');
-            detailsContainer.innerHTML = '';
-            console.log(data.details);
-            data.details.forEach((detail, index) => {
-                const detailDiv = document.createElement('div');
-                detailDiv.innerHTML = `
-                <div class="input-container" id="">
-                    <div>
-                        <label for="editProductDetailName${index}">Item detail name:</label>
-                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.detail_name}">
-                    </div>
-                    <div>
-                        <label for="editProductDetailValue${index}">Item detail value:</label>
-                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.detail_value}">
-                    </div>
-                    </div>
-                        <button type="button" class="removeEditProductDetailButton">Remove</button>
-                    </div>
-                </div>
-                `;
-                detailsContainer.appendChild(detailDiv);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-});
+// document.getElementById('selectEditProduct0').addEventListener('change', function() {
+//     const productId = this.value;
+//     if (!productId) return;
+//
+//     fetch(`/product/${productId}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             document.getElementById('editProductName').value = data.name;
+//             document.getElementById('selectCategoryEditProduct0').value = data.category;
+//
+//             const detailsContainer = document.querySelector('.detailsContainer');
+//             detailsContainer.innerHTML = '';
+//             console.log(data.details);
+//             data.details.forEach((detail, index) => {
+//                 const detailDiv = document.createElement('div');
+//                 detailDiv.innerHTML = `
+//                 <div class="input-container" id="">
+//                     <div>
+//                         <label for="editProductDetailName${index}">Item detail name:</label>
+//                         <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.detail_name}">
+//                     </div>
+//                     <div>
+//                         <label for="editProductDetailValue${index}">Item detail value:</label>
+//                         <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.detail_value}">
+//                     </div>
+//                     </div>
+//                         <button type="button" class="removeEditProductDetailButton">Remove</button>
+//                     </div>
+//                 </div>
+//                 `;
+//                 detailsContainer.appendChild(detailDiv);
+//             });
+//         })
+//         .catch(error => console.error('Error:', error));
+// });
 
 //edit product
 document.getElementById('editProduct').addEventListener('submit', function(event) {
@@ -503,9 +503,9 @@ document.getElementById('editProductWarehouse').addEventListener('submit', funct
 });
 
 //fill form with product details for edit product
-document.getElementById('selectEditProductWarehouse0').addEventListener('change', function(e) {
-    warehouseProducts.forEach(product => {
-        if (product.warehouseId === e.target.value) {
-            document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
-    });
-});
+// document.getElementById('selectEditProductWarehouse0').addEventListener('change', function(e) {
+//     warehouseProducts.forEach(product => {
+//         if (product.warehouseId === e.target.value) {
+//             document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
+//     });
+// });
