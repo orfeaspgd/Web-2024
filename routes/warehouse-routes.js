@@ -186,7 +186,6 @@ export default function warehouseRoutes(app) {
                 { quantity: warehouseEditQuantity},
                 { new: true }
             );
-            console.log(findone);
             res.json({ status: 'success', message: 'Product Updates.' });
         } catch (err) {
             console.error('Error updating product:', err);

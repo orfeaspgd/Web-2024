@@ -469,6 +469,9 @@ document.getElementById('addProductWarehouse').addEventListener('submit', functi
             let messageElement = document.getElementById('addProductWarehouseMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown lists with updated warehouse product data
+                pullWarehouseData();
             } else {
                 messageElement.style.color = 'red';
             }
