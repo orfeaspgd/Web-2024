@@ -505,9 +505,9 @@ document.getElementById('editProductWarehouse').addEventListener('submit', funct
 });
 
 //fill form with product details for edit product
-// document.getElementById('selectEditProductWarehouse0').addEventListener('change', function(e) {
-//     warehouseProducts.forEach(product => {
-//         if (product.warehouseId === e.target.value) {
-//             document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
-//     });
-// });
+document.getElementById('selectEditProductWarehouse').addEventListener('change', function(e) {
+    warehouseProducts.forEach(product => {
+        if (product.warehouseId === e.target.value) {
+            document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}
+    });
+});
