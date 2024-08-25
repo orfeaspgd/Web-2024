@@ -105,11 +105,14 @@ document.getElementById('pullFromUsidas').addEventListener('click', function() {
             let messageElement = document.getElementById('pullFromUsidasMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown lists with products and categories
+                pullProductsData();
+                pullCategoriesData();
             } else {
                 messageElement.style.color = 'red';
             }
             messageElement.textContent = data.message;
-            pullProductsData();
         })
         .catch(error => console.error('Error:', error));
 });
