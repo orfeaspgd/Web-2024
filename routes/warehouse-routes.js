@@ -136,7 +136,10 @@ export default function warehouseRoutes(app) {
             updateData = {
                 name: editProductName,
                 category: selectCategoryEditProduct,
-                details: []
+                details: {
+                    detail_name: "",
+                    detail_value: ""
+                }
             };
         } else {
             updateData = {
