@@ -504,7 +504,7 @@ document.getElementById('editProductWarehouse').addEventListener('submit', funct
         .catch(error => console.error('Error:', error));
 });
 
-//fill form with product details for edit product
+//fill warehouse product quantity in 'Edit Product in Warehouse' when product is selected
 document.getElementById('selectEditProductWarehouse').addEventListener('change', function(e) {
     warehouseProducts.forEach(product => {
         if (product.warehouseId === e.target.value) {
