@@ -61,6 +61,15 @@ pullProductsData = () => {
         .then(data => {
             const selectProductElements = document.querySelectorAll('.selectProduct');
             selectProductElements.forEach(selectProduct => {
+                // Keep the placeholder option
+                const placeholder = selectProduct.querySelector('option[value=""]');
+
+                // Clear existing options except for the placeholder
+                selectProduct.innerHTML = '';
+                if (placeholder) {
+                    selectProduct.appendChild(placeholder);
+                }
+
                 data.forEach(product => {
                     const option = document.createElement('option');
                     option.value = product._id;
@@ -71,10 +80,6 @@ pullProductsData = () => {
         })
         .catch(error => console.error('Error:', error));
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    pullProductsData();
-});
 
 //logout
 document.getElementById('logoutButton').addEventListener('click', function() {
@@ -145,24 +150,6 @@ document.getElementById('addProductsFromJson').addEventListener('change', async 
 //global variables
 let warehouseProducts = [];
 
-//get products and populate select elements
-pullProductsData = () => {
-    fetch('/products')
-        .then(response => response.json())
-        .then(data => {
-            const selectProductElements = document.querySelectorAll('.selectProduct');
-            selectProductElements.forEach(selectProduct => {
-                data.forEach(product => {
-                    const option = document.createElement('option');
-                    option.value = product._id;
-                    option.textContent = product.name;
-                    selectProduct.appendChild(option);
-                });
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
-
 //get categories and populate select elements
 pullCategoriesData = () => {
     fetch('/categories')
@@ -170,6 +157,14 @@ pullCategoriesData = () => {
         .then(data => {
             const selectCategoryElements = document.querySelectorAll('.selectCategory');
             selectCategoryElements.forEach(selectCategory => {
+                // Keep the placeholder option
+                const placeholder = selectCategory.querySelector('option[value=""]');
+
+                // Clear existing options except for the placeholder
+                selectCategory.innerHTML = '';
+                if (placeholder) {
+                    selectCategory.appendChild(placeholder);
+                }
                 data.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category._id;
@@ -187,13 +182,22 @@ pullWarehouseData = () => {
         .then(response => response.json())
         .then(data => {
             warehouseProducts = data;
-            const selectWarehouseProductElements = document.querySelectorAll('.selectEditProductWarehouse');
-            selectWarehouseProductElements.forEach(selectProduct => {
+            const selectProductWarehouseElements = document.querySelectorAll('.selectProductWarehouse');
+            selectProductWarehouseElements.forEach(selectProductWarehouse => {
+                // Keep the placeholder option
+                const placeholder = selectProductWarehouse.querySelector('option[value=""]');
+
+                // Clear existing options except for the placeholder
+                selectProductWarehouse.innerHTML = '';
+                if (placeholder) {
+                    selectProductWarehouse.appendChild(placeholder);
+                }
+
                 data.forEach(product => {
                     const option = document.createElement('option');
                     option.value = product.warehouseId;
                     option.textContent = product.name;
-                    selectProduct.appendChild(option);
+                    selectProductWarehouse.appendChild(option);
                 });
             });
         })
@@ -205,15 +209,12 @@ document.addEventListener('DOMContentLoaded', function() {
     pullProductsData();
     pullCategoriesData();
     pullWarehouseData();
-
-    const backButton = document.getElementById('backButton');
-    backButton.addEventListener('click', function() {
-        window.location.href = '/home';
-    });
 });
 
 //delete product
 document.getElementById('deleteProduct').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     fetch('/delete_product', {
         method: 'DELETE',
         headers: {
@@ -226,6 +227,9 @@ document.getElementById('deleteProduct').addEventListener('submit', function(eve
             let messageElement = document.getElementById('deleteProductMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown list after deletion
+                pullProductsData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -236,6 +240,8 @@ document.getElementById('deleteProduct').addEventListener('submit', function(eve
 
 //delete category
 document.getElementById('deleteCategory').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     fetch('/delete_category', {
         method: 'DELETE',
         headers: {
@@ -248,6 +254,9 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
             let messageElement = document.getElementById('deleteCategoryMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown list after deletion
+                pullCategoriesData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -258,6 +267,8 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
 
 //create product
 document.getElementById('createProduct').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/create_product', {
         method: 'POST',
@@ -271,6 +282,9 @@ document.getElementById('createProduct').addEventListener('submit', function(eve
             let messageElement = document.getElementById('createProductMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown list after creation
+                pullProductsData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -314,6 +328,8 @@ document.getElementById('detailsContainer').addEventListener('click', function(e
 
 //create category
 document.getElementById('createCategory').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/create_category', {
         method: 'POST',
@@ -327,6 +343,9 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
             let messageElement = document.getElementById('createCategoryMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the category dropdown lists after successful category creation
+                pullCategoriesData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -335,8 +354,69 @@ document.getElementById('createCategory').addEventListener('submit', function(ev
         .catch(error => console.error('Error:', error));
 });
 
+//edit product
+document.getElementById('editProduct').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
+    let formData = new URLSearchParams(new FormData(this)).toString();
+    fetch('/edit_product', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.getElementById('editProductMessage');
+            if (data.status === 'success') {
+                messageElement.style.color = 'green';
+
+                // Refresh the category dropdown lists after successful product edit
+                pullProductsData();
+            } else {
+                messageElement.style.color = 'red';
+            }
+            messageElement.textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+//add details button for edit product
+document.getElementById('editProductAddDetailButton').addEventListener('click', function() {
+    const editProductDetailContainer = document.getElementById('editProductDetailContainer');
+    if (editProductDetailContainer.children.length >= 10) {
+        alert('You can only add up to 10 products.');
+        return;
+    }
+
+    const detailDiv = document.createElement('div');
+    const index = editProductDetailContainer.children.length;
+    detailDiv.innerHTML = `
+                <div class="input-container" >
+                    <div>
+                        <label for="editProductDetailName${index}">Item detail name:</label>
+                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]"">
+                    </div>
+                    <div>
+                        <label for="editProductDetailValue${index}">Item detail value:</label>
+                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]"">
+                    </div>
+                        <button type="button" class="removeEditProductDetailButton">Remove</button>
+                </div>
+            `;
+    editProductDetailContainer.appendChild(detailDiv);
+});
+
+//remove detail button for edit product
+document.getElementById('editProductDetailContainer').addEventListener('click', function(event) {
+    if (event.target.classList.contains('removeEditProductDetailButton')) {
+        event.target.parentElement.remove();
+    }
+});
+
 //fill form with product details for edit product
-document.getElementById('selectEditProduct0').addEventListener('change', function() {
+document.getElementById('selectEditProduct').addEventListener('change', function() {
     const productId = this.value;
     if (!productId) return;
 
@@ -344,11 +424,10 @@ document.getElementById('selectEditProduct0').addEventListener('change', functio
         .then(response => response.json())
         .then(data => {
             document.getElementById('editProductName').value = data.name;
-            document.getElementById('selectCategoryEditProduct0').value = data.category;
+            document.getElementById('editCategoryName').value = data.category;
 
             const detailsContainer = document.querySelector('.detailsContainer');
             detailsContainer.innerHTML = '';
-            console.log(data.details);
             data.details.forEach((detail, index) => {
                 const detailDiv = document.createElement('div');
                 detailDiv.innerHTML = `
@@ -372,64 +451,10 @@ document.getElementById('selectEditProduct0').addEventListener('change', functio
         .catch(error => console.error('Error:', error));
 });
 
-//edit product
-document.getElementById('editProduct').addEventListener('submit', function(event) {
-    let formData = new URLSearchParams(new FormData(this)).toString();
-    fetch('/edit_product', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            let messageElement = document.getElementById('editProductMessage');
-            if (data.status === 'success') {
-                messageElement.style.color = 'green';
-            } else {
-                messageElement.style.color = 'red';
-            }
-            messageElement.textContent = data.message;
-        })
-        .catch(error => console.error('Error:', error));
-});
-
-//add details button for edit product
-document.getElementById('editProductAddDetailButton').addEventListener('click', function() {
-    const editProductDetailContainer = document.getElementById('editProductDetailContainer');
-    if (editProductDetailContainer.children.length >= 10) {
-        alert('You can only add up to 10 products.');
-        return;
-    }
-
-    const detailDiv = document.createElement('div');
-    const index = editProductDetailContainer.children.length;
-    detailDiv.innerHTML = `
-                <div class="input-container" >
-                    <div>
-                        <label for="editProductDetailName${index}">Item detail name:</label>
-                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]"}">
-                    </div>
-                    <div>
-                        <label for="editProductDetailValue${index}">Item detail value:</label>
-                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]"">
-                    </div>
-                        <button type="button" class="removeEditProductDetailButton">Remove</button>
-                </div>
-            `;
-    editProductDetailContainer.appendChild(detailDiv);
-});
-
-//remove detail button for edit product
-document.getElementById('editProductDetailContainer').addEventListener('click', function(event) {
-    if (event.target.classList.contains('removeEditProductDetailButton')) {
-        event.target.parentElement.remove();
-    }
-});
-
 //add product in the warehouse
 document.getElementById('addProductWarehouse').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/add_product_warehouse', {
         method: 'POST',
@@ -443,6 +468,9 @@ document.getElementById('addProductWarehouse').addEventListener('submit', functi
             let messageElement = document.getElementById('addProductWarehouseMessage');
             if (data.status === 'success') {
                 messageElement.style.color = 'green';
+
+                // Refresh the dropdown lists with updated warehouse product data
+                pullWarehouseData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -453,6 +481,8 @@ document.getElementById('addProductWarehouse').addEventListener('submit', functi
 
 //edit product in the warehouse
 document.getElementById('editProductWarehouse').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+
     let formData = new URLSearchParams(new FormData(this)).toString();
     fetch('/edit_product_warehouse', {
         method: 'PUT',
@@ -474,8 +504,8 @@ document.getElementById('editProductWarehouse').addEventListener('submit', funct
         .catch(error => console.error('Error:', error));
 });
 
-//fill form with product details for edit product
-document.getElementById('selectEditProductWarehouse0').addEventListener('change', function(e) {
+//fill warehouse product quantity in 'Edit Product in Warehouse' when product is selected
+document.getElementById('selectEditProductWarehouse').addEventListener('change', function(e) {
     warehouseProducts.forEach(product => {
         if (product.warehouseId === e.target.value) {
             document.getElementById('warehouseEditQuantity').value = product.warehouseQuantity;}

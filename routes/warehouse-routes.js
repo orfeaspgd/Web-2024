@@ -75,18 +75,45 @@ export default function warehouseRoutes(app) {
             res.status(500).json({ status: 'error', message: 'Something went wrong.' });
         }
     });
-    //admin warehouse create product
+
+    // admin warehouse create product
     app.post('/create_product', async (req, res) => {
-        const { productName, selectCategory, productDetailName, productDetailValue} = req.body;
+        const { productName, selectCategory, productDetailName, productDetailValue } = req.body;
         let productDetails = [];
-        for (let i =0 ; i < productDetailName.length; i++){
-            productDetails.push ({detail_name: productDetailName[i], detail_value: productDetailValue[i]})
+
+        // Check if productDetailName and productDetailValue are provided
+        if (productDetailName && productDetailValue) {
+            if (Array.isArray(productDetailName) && Array.isArray(productDetailValue)) {
+                // Handle the case when multiple details are provided
+                for (let i = 0; i < productDetailName.length; i++) {
+                    productDetails.push({
+                        detail_name: productDetailName[i],
+                        detail_value: productDetailValue[i]
+                    });
+                }
+            } else {
+                // Handle the case when a single detail is provided (non-array)
+                productDetails.push({
+                    detail_name: productDetailName,
+                    detail_value: productDetailValue
+                });
+            }
+        } else {
+            // If no details are provided, add a default detail with empty strings
+            productDetails.push({
+                detail_name: "",
+                detail_value: ""
+            });
         }
-        console.log(productDetails);
+
+        // Create and save the new product
         const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
         newProduct.save()
             .then(() => res.json({ status: 'success', message: 'Product created.' }))
-            .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
+            .catch((err) => {
+                console.log(err);
+                res.json({ status: 'error', message: 'Something went wrong.' });
+            });
     });
 
     //admin warehouse create category
@@ -104,15 +131,23 @@ export default function warehouseRoutes(app) {
     //admin warehouse edit product
     app.put('/edit_product', async (req, res) => {
         const { selectEditProduct, editProductName, selectCategoryEditProduct, editProductDetailName, editProductDetailValue } = req.body;
-
-        const updateData = {
-            name: editProductName,
-            category: selectCategoryEditProduct,
-            details: editProductDetailName.map((name, index) => ({
-                detail_name: name,
-                detail_value: editProductDetailValue[index]
-            }))
-        };
+        let updateData
+        if(!editProductDetailName && !editProductDetailValue) {
+            updateData = {
+                name: editProductName,
+                category: selectCategoryEditProduct,
+                details: []
+            };
+        } else {
+            updateData = {
+                name: editProductName,
+                category: selectCategoryEditProduct,
+                details: editProductDetailName.map((name, index) => ({
+                    detail_name: name,
+                    detail_value: editProductDetailValue[index]
+                }))
+            };
+        }
 
         try {
             const product = await Products.findOneAndUpdate(
@@ -166,7 +201,6 @@ export default function warehouseRoutes(app) {
                 { quantity: warehouseEditQuantity},
                 { new: true }
             );
-            console.log(findone);
             res.json({ status: 'success', message: 'Product Updates.' });
         } catch (err) {
             console.error('Error updating product:', err);
