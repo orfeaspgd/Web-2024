@@ -399,26 +399,30 @@ document.getElementById('editProductAddDetailButton').addEventListener('click', 
 
     const detailDiv = document.createElement('div');
     const index = editProductDetailContainer.children.length;
+    detailDiv.classList.add('row', 'mb-3');
+
     detailDiv.innerHTML = `
-                <div class="input-container" >
-                    <div>
-                        <label for="editProductDetailName${index}">Item detail name:</label>
-                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]"">
-                    </div>
-                    <div>
-                        <label for="editProductDetailValue${index}">Item detail value:</label>
-                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]"">
-                    </div>
-                        <button type="button" class="removeEditProductDetailButton">Remove</button>
-                </div>
-            `;
+        <div class="col-md-5">
+            <label for="editProductDetailName${index}" class="form-label">Detail name (e.g. "volume"):</label>
+            <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" 
+            class="form-control form-control-sm" placeholder="Type detail name">
+        </div>
+        <div class="col-md-5">
+            <label for="editProductDetailValue${index}" class="form-label">Detail value (e.g. "500ml"):</label>
+            <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" 
+            class="form-control form-control-sm" placeholder="Type detail value">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-sm removeEditProductDetailButton w-100">X</button>
+        </div>
+    `;
     editProductDetailContainer.appendChild(detailDiv);
 });
 
 //remove detail button for edit product
 document.getElementById('editProductDetailContainer').addEventListener('click', function(event) {
     if (event.target.classList.contains('removeEditProductDetailButton')) {
-        event.target.parentElement.remove();
+        event.target.closest('.row').remove();
     }
 });
 
@@ -437,20 +441,22 @@ document.getElementById('selectEditProduct').addEventListener('change', function
             detailsContainer.innerHTML = '';
             data.details.forEach((detail, index) => {
                 const detailDiv = document.createElement('div');
+                detailDiv.classList.add('row', 'mb-3');
+
                 detailDiv.innerHTML = `
-                <div class="input-container" id="">
-                    <div>
-                        <label for="editProductDetailName${index}">Item detail name:</label>
-                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" value="${detail.detail_name}">
+                    <div class="col-md-5">
+                        <label for="editProductDetailName${index}" class="form-label">Detail name:</label>
+                        <input type="text" id="editProductDetailName${index}" name="editProductDetailName[]" 
+                        class="form-control form-control-sm" value="${detail.detail_name}" placeholder="Type detail name">
                     </div>
-                    <div>
-                        <label for="editProductDetailValue${index}">Item detail value:</label>
-                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" value="${detail.detail_value}">
+                    <div class="col-md-5">
+                        <label for="editProductDetailValue${index}" class="form-label">Detail value:</label>
+                        <input type="text" id="editProductDetailValue${index}" name="editProductDetailValue[]" 
+                        class="form-control form-control-sm" value="${detail.detail_value}" placeholder="Type detail value">
                     </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger btn-sm removeEditProductDetailButton w-100">X</button>
                     </div>
-                        <button type="button" class="removeEditProductDetailButton">Remove</button>
-                    </div>
-                </div>
                 `;
                 detailsContainer.appendChild(detailDiv);
             });
