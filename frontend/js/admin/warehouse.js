@@ -393,7 +393,7 @@ document.getElementById('editProduct').addEventListener('submit', function(event
 document.getElementById('editProductAddDetailButton').addEventListener('click', function() {
     const editProductDetailContainer = document.getElementById('editProductDetailContainer');
     if (editProductDetailContainer.children.length >= 10) {
-        alert('You can only add up to 10 products.');
+        alert('You can only add up to 10 product details.');
         return;
     }
 
