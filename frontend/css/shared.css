@@ -1,0 +1,27 @@
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+.input-container {
+    display: flex;
+}
+
+.input-container > div {
+    flex: 1;
+}
+
+/* Navbar active style */
+.navbar-nav .nav-item .nav-link.active {
+    color: #dda0dd;
+}
