@@ -1,0 +1,12 @@
+.form-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-message {
+    font-size: 0.875rem;
+}

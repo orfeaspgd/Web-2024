@@ -21,3 +21,8 @@ document.getElementById('createAccount').addEventListener('submit', function(eve
         })
         .catch(error => console.error('Error:', error));
 });
+
+// Clear form data when the page is refreshed
+window.onbeforeunload = function () {
+    document.getElementById('createAccount').reset();
+};
