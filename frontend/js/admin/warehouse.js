@@ -117,7 +117,7 @@ document.getElementById('pullFromUsidas').addEventListener('click', function() {
         .catch(error => console.error('Error:', error));
 });
 
-//populated database with json file
+//populate database with data from json file
 document.getElementById('addProductsFromJson').addEventListener('change', async function(event) {
     const file = event.target.files[0];
     if (file) {
@@ -138,6 +138,10 @@ document.getElementById('addProductsFromJson').addEventListener('change', async 
                     let messageElement = document.getElementById('addProductsFromJsonMessage');
                     if (data.status === 'success') {
                         messageElement.style.color = 'green';
+
+                        // Refresh the dropdown lists with products and categories
+                        pullProductsData();
+                        pullCategoriesData();
                     } else {
                         messageElement.style.color = 'red';
                     }
