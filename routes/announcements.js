@@ -23,7 +23,7 @@ export default function announcementsRoutes(app) {
         }
     });
 
-//admin page create announcement
+    //admin page create announcement
     app.post('/admin_create_announcement', [
         body('selectProduct.*').trim().escape(),
         body('quantity.*').trim().escape().isNumeric().isInt({ min: 1 })

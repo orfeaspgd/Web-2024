@@ -7,13 +7,17 @@ document.getElementById('addProductButton').addEventListener('click', function()
     }
 
     const newProductEntry = document.createElement('div');
-    newProductEntry.classList.add('productEntry');
+    newProductEntry.classList.add('productEntry', 'row', 'mb-3');
     const index = productsContainer.children.length;
-    newProductEntry.innerHTML = `
-        <label for="selectProduct${index}">Product:</label>
-        <select class="selectProduct" id="selectProduct${index}" name="selectProduct[]" required></select>
-        <button type="button" class="removeProductButton">Remove</button>
-    `;
+    newProductEntry.innerHTML =`
+        <div class="col">
+            <label for="selectProduct${index}" class="form-label">Product:</label>
+            <select class="form-select selectProduct" id="selectProduct${index}" name="selectProduct" required></select>
+        </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-danger removeProductButton">Remove</button>
+    </div>
+`;
     productsContainer.appendChild(newProductEntry);
 
     fetch('/products')
@@ -30,11 +34,10 @@ document.getElementById('addProductButton').addEventListener('click', function()
         .catch(error => console.error('Error:', error));
 });
 
-
 //remove products from announcement
 document.getElementById('productsContainer').addEventListener('click', function(event) {
     if (event.target.classList.contains('removeProductButton')) {
-        event.target.parentElement.remove();
+        event.target.closest('.productEntry').remove();
     }
 });
 

@@ -55,7 +55,7 @@ getTasksData();
 setInterval(getTasksData, 5000); // Refresh the table every 5 seconds
 
 //get products data and populate select elements
-pullProductsData = () => {
+const pullProductsData = () => {
     fetch('/products')
         .then(response => response.json())
         .then(data => {
@@ -144,7 +144,7 @@ document.getElementById('addProductsFromJson').addEventListener('change', async 
 let warehouseProducts = [];
 
 //get categories and populate select elements
-pullCategoriesData = () => {
+const pullCategoriesData = () => {
     fetch('/categories')
         .then(response => response.json())
         .then(data => {
@@ -170,7 +170,7 @@ pullCategoriesData = () => {
 }
 
 //get products from warehouse and populate select elements
-pullWarehouseData = () => {
+const pullWarehouseData = () => {
     fetch('/warehouse_products')
         .then(response => response.json())
         .then(data => {
