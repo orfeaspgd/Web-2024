@@ -47,25 +47,28 @@
         </ul>
     </div>
 </nav>
-
 <!-- Announcement Form -->
-<div class="container">
-    <h1 class="mb-4">Create New Announcement</h1>
-    <form id="createAnnouncement">
-        <div id="productsContainer">
-            <div class="productEntry row mb-3">
-                <div class="col">
-                    <label for="selectProduct" class="form-label">Product:</label>
-                    <select class="form-select selectProduct" id="selectProduct" name="selectProduct" required></select>
+<div class="container d-flex flex-column align-items-center mt-4 p-4">
+    <h1 class="mb-4 text-center">Create New Announcement</h1>
+    <div class="col-sm-10 col-md-8 col-lg-6">
+        <form id="createAnnouncement" class="bg-white p-4 rounded shadow-sm">
+            <div id="productsContainer">
+                <div class="productEntry row mb-3">
+                    <div class="col-12">
+                        <label for="selectProduct" class="form-label">Product:</label>
+                        <select class="form-select selectProduct" id="selectProduct" name="selectProduct" required>
+                            <option value="" disabled selected>Pick a product</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <button type="button" class="btn btn-primary" id="addProductButton">Add Product</button>
-        <div class="mt-3">
-            <button type="submit" class="btn btn-success">Post Announcement</button>
-        </div>
-        <div id="createAnnouncementMessage" class="mt-3"></div>
-    </form>
+            <button type="button" class="btn btn-primary btn-md mb-3" id="addProductButton">Add Product</button>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success btn-md">Post Announcement</button>
+            </div>
+            <div id="createAnnouncementMessage" class="mt-3"></div>
+        </form>
+    </div>
 </div>
 </body>
 </html>
