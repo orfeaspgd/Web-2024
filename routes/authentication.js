@@ -34,7 +34,7 @@ export default function authenticationRoutes(app) {
 
 //admin page create account
     app.post('/admin_create_account', async (req, res) => {
-        const { firstname, lastname, username, phone_number, email, password, role } = req.body;
+        const { firstname, lastname, username, phone_number, email, password} = req.body;
 
         if (!phoneRegex.test(phone_number)) {
             return res.json({ status: 'error', message: 'Invalid phone number format.' });
@@ -58,7 +58,7 @@ export default function authenticationRoutes(app) {
             return res.json({ status: 'error', message: 'Email is already being used.' });
         }
 
-        const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, role: role });
+        const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, role: "rescuer" });
         newUser.save()
             .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
             .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});

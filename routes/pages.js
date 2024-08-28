@@ -18,32 +18,60 @@ export default function pagesRoutes(app) {
 
     // Admin pages routes
     app.get('/create-announcement', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/admin/create-announcement.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/admin/create-announcement.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 
     app.get('/create-rescuer', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/admin/create-rescuer.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/admin/create-rescuer.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 
     app.get('/map-view', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/admin/map-view.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/admin/map-view.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 
     app.get('/service-statistics', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/admin/service-statistics.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/admin/service-statistics.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 
     // Citizen pages routes
     app.get('/announcement-offer-management', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/citizen/announcement-offer-management.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/citizen/announcement-offer-management.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 
     app.get('/account-creation', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/citizen/create-account.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/citizen/create-account.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 
     // Rescuer pages routes
     app.get('/map-view-rescuer', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/html/rescuer/map-view.html'));
+        if (req.session.user) {
+            res.sendFile(path.join(__dirname, '../frontend/html/rescuer/map-view.html'));
+        } else {
+            res.redirect("/login");
+        }
     });
 }

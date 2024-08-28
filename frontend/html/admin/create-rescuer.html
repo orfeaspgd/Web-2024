@@ -10,6 +10,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- External CSS Files -->
     <link rel="stylesheet" href="../../css/shared.css">
+    <link rel="stylesheet" href="../../css/admin/create-rescuer.css">
     <!-- External JS Files -->
     <script defer src="../../js/admin/create-rescuer.js"></script>
     <script defer src="../../js/shared.js"></script>
@@ -47,43 +48,55 @@
     </div>
 </nav>
 
-<form id="createAccount" action="/home" >
-    <h1>Create Account</h1>
-    <div>
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstname" required>
+<!-- Account Creation Form -->
+<div class="container mt-5">
+    <div class="form-container">
+        <h1 class="fs-2 text-center mb-4">Rescuer Account Creation</h1>
+        <form id="createAccount">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="firstName" class="form-label">First Name:</label>
+                    <input type="text" class="form-control form-control-sm" id="firstName" name="firstname" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="lastname" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control form-control-sm" id="lastname" name="lastname" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control form-control-sm" id="username" name="username" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="phone_number" class="form-label">Phone Number:</label>
+                    <input type="tel" class="form-control form-control-sm" id="phone_number" name="phone_number" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <input type="submit" class="btn btn-primary w-100" value="Create Account">
+                </div>
+            </div>
+            <div id="createAccountMessage" class="text-center form-message"></div>
+        </form>
     </div>
-    <div>
-        <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" name="lastname" required>
-    </div>
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-    </div>
-    <div>
-        <label for="phone_number">Phone Number:</label>
-        <input type="tel" id="phone_number" name="phone_number" required>
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <label for="role">Role:</label>
-        <select id="role" name="role">
-            <option value="rescuer">Rescuer</option>
-            <option value="admin">Admin</option>
-        </select>
-    </div>
-    <div>
-        <input type="submit" value="Create Account">
-    </div>
-    <div id="createAccountMessage"></div>
-</form>
+</div>
 </body>
 </html>
