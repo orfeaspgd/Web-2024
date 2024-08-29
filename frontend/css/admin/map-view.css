@@ -1,3 +1,46 @@
 #map {
     height: 650px;
 }
+
+.content-container {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .filters-markers-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .filters-markers-container > div {
+        flex-basis: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .filters-markers-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .filters-markers-container > div {
+        flex-basis: 35%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .filters-markers-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+    }
+}
