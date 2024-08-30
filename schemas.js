@@ -205,6 +205,18 @@ const vehicleSchema = new mongoose.Schema({
     ],
 }, { versionKey: false });
 
+const warehouseSchema = new mongoose.Schema({
+    location: {
+        latitude: {
+            type: Number,
+            required: true
+        },
+        longitude: {
+            type: Number,
+            required: true
+        }
+    }
+}, { versionKey: false });
 
 export const Users = mongoose.model('users', usersSchema);
 export const Announcements = mongoose.model('announcements', AnnouncementSchema);
@@ -213,3 +225,4 @@ export const Tasks = mongoose.model('tasks', taskSchema);
 export const Categories = mongoose.model('categories', categoriesSchema);
 export const WarehouseProducts = mongoose.model('warehouse_products', warehouseProductsSchema);
 export const Vehicles = mongoose.model('vehicles', vehicleSchema);
+export const Warehouse = mongoose.model('warehouse', warehouseSchema);

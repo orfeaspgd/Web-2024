@@ -149,3 +149,11 @@ db.announcements.insertOne({
     products: [product1._id, product2._id],
     createdAt: new Date("2024-07-18T08:03:00")
 });
+
+db.createCollection("warehouse");
+db.warehouse.insertOne({
+    location: {
+        latitude: 50.0,
+        longitude: 50.0
+    }
+});

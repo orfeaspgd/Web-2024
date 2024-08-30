@@ -4,7 +4,9 @@ import {
   Products,
   Tasks,
   Categories,
-  WarehouseProducts
+  WarehouseProducts,
+  Vehicles,
+  Warehouse
 } from '../schemas.js';
 
 export default function productsRoutes(app) {
