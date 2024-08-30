@@ -9,7 +9,10 @@ db.users.insertOne({
     email: "op@op.com",
     role: "admin",
     phone_number: "1234567890",
-    location: "38.24611574093171, 21.735170504383987"
+    location: {
+            latitude: null,
+            longitude: null
+        }
 });
 
 db.users.insertOne({
@@ -20,7 +23,10 @@ db.users.insertOne({
     email: "jg@jg.com",
     role: "rescuer",
     phone_number: "0987654321",
-    location: "38.245605967394575, 21.728534721333745"
+    location: {
+            latitude: 38.245605967394575,
+            longitude: 21.728534721333745
+        }
 });
 
 db.users.insertOne({
@@ -31,7 +37,10 @@ db.users.insertOne({
     email: "ap@ap.com",
     role: "citizen",
     phone_number: "1122334455",
-    location: "38.24884149654704, 21.745502373242417"
+    location: {
+            latitude: 38.24884149654704,
+            longitude: 21.745502373242417
+        }
 });
 
 db.categories.insertOne({

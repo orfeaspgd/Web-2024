@@ -41,9 +41,18 @@ const usersSchema = new mongoose.Schema({
         trim: true
     },
     location: {
-        type: String,
-        required: false,
-        trim: true
+        latitude: {
+            type: Number,
+            required: function() {
+                return this.role === 'rescuer' || this.role === 'citizen';
+                }
+            },
+        longitude: {
+            type: Number,
+            required: function() {
+                return this.role === 'rescuer' || this.role === 'citizen';
+            }
+        },
     }
 }, { versionKey: false });
 

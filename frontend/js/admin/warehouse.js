@@ -41,7 +41,7 @@ const getTasksData = () => {
                 row.appendChild(cell7);
                 cell8.textContent = task.type;
                 row.appendChild(cell8);
-                cell9.textContent = task.citizen_id.location;
+                cell9.textContent = task.citizen_id.location.latitude + ', ' + task.citizen_id.location.longitude;
                 row.appendChild(cell9);
 
                 table.appendChild(row);
