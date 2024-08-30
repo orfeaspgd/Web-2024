@@ -10,9 +10,9 @@ db.users.insertOne({
     role: "admin",
     phone_number: "1234567890",
     location: {
-            latitude: null,
-            longitude: null
-        }
+                latitude: 38.24884149654704,
+                longitude: 21.745502373242417
+            }
 });
 
 db.users.insertOne({
@@ -148,12 +148,4 @@ db.announcements.insertOne({
     admin_id: admin._id,
     products: [product1._id, product2._id],
     createdAt: new Date("2024-07-18T08:03:00")
-});
-
-db.createCollection("warehouse");
-db.warehouse.insertOne({
-    location: {
-        latitude: 50.0,
-        longitude: 50.0
-    }
 });

@@ -5,8 +5,7 @@ import {
     Tasks,
     Categories,
     WarehouseProducts,
-    Vehicles,
-    Warehouse
+    Vehicles
 } from '../schemas.js';
 
 import { body, validationResult } from 'express-validator';

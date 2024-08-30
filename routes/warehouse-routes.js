@@ -5,8 +5,7 @@ import {
     Tasks,
     Categories,
     WarehouseProducts,
-    Vehicles,
-    Warehouse
+    Vehicles
 } from '../schemas.js';
 
 export default function warehouseRoutes(app) {
