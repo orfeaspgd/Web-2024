@@ -172,6 +172,39 @@ const warehouseProductsSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
+const vehicleSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    rescuer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true,
+        trim: true
+    },
+    cargo: [
+        {
+            product_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'products',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }
+    ],
+    task_ids: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'tasks'
+        }
+    ],
+}, { versionKey: false });
+
 
 export const Users = mongoose.model('users', usersSchema);
 export const Announcements = mongoose.model('announcements', AnnouncementSchema);
@@ -179,4 +212,4 @@ export const Products = mongoose.model('products', productsSchema);
 export const Tasks = mongoose.model('tasks', taskSchema);
 export const Categories = mongoose.model('categories', categoriesSchema);
 export const WarehouseProducts = mongoose.model('warehouse_products', warehouseProductsSchema);
-
+export const Vehicles = mongoose.model('vehicles', vehicleSchema);
