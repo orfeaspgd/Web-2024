@@ -23,6 +23,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@types/leaflet": "^1.9.12",
     "mongodb": "^6.8.0",
     "nodemon": "^3.1.4"
   },
