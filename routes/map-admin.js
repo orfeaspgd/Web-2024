@@ -13,7 +13,7 @@ export default function mapAdminRoutes(app) {
     app.get('/map-admin-data', async (req, res) => {
         try {
             // Fetch warehouse's location which is the location of the admin
-            const warehouseLocation = await Users.findOne({ role: 'admin' }).select('location');
+            const warehouse = await Users.findOne({ role: 'admin' }).select('location');
 
             // Fetch all vehicles and their data
             const vehicles = await Vehicles.find()
@@ -27,7 +27,7 @@ export default function mapAdminRoutes(app) {
                 .populate('product_id', 'name')
 
             res.json({
-                warehouseLocation,
+                warehouse,
                 vehicles,
                 tasks
             });
@@ -43,14 +43,16 @@ export default function mapAdminRoutes(app) {
             const { latitude, longitude } = req.body;
 
             // Fetch warehouse's location which is the location of the admin
-            const warehouseLocation = await Users.findOne({ role: 'admin' }).select('location');
+            const warehouse = await Users.findOne({ role: 'admin' }).select('location');
 
             // Update the location of the warehouse
-            warehouseLocation.latitude = latitude;
-            warehouseLocation.longitude = longitude;
+            warehouse.longitude = latitude;
+            warehouse.longitude = longitude;
 
-            await warehouseLocation.save();
-            res.json({ message: 'Warehouse location updated successfully' });
+            await warehouse.save();
+            res.json(
+                { message: 'Warehouse location updated successfully.' }
+            );
         } catch (err) {
             console.error(err);
             res.status(500).send(err);
