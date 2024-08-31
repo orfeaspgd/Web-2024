@@ -123,7 +123,14 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
         required: true,
-        trim: true
+        trim: true,
+        validate: {
+            validator: function (value) {
+                // If the status is 'pending', rescuer_id should not be set
+                return this.status !== 'pending' || value == null;
+            },
+            message: 'Pending tasks should not have a rescuer assigned.'
+        }
     },
     product_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -133,7 +140,7 @@ const taskSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['request', 'donation'],
+        enum: ['request', 'offer'],
         required: true
     },
     quantity: {
@@ -144,6 +151,18 @@ const taskSchema = new mongoose.Schema({
         type: String,
         enum: ['pending', 'in_progress', 'completed'],
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    assignedAt: {
+        type: Date,
+        default: null
+    },
+    completedAt: {
+        type: Date,
+        default: null
     }
 }, { versionKey: false });
 
