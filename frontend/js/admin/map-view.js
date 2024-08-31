@@ -37,9 +37,3 @@ const pendingOfferIcon = L.icon({
     iconUrl: '../../assets/icons/pending-offer.png',
     iconSize: [25, 25]
 });
-
-
-
-// let warehouseMarker = L.marker([51.5, -0.09], { icon: warehouseIcon });
-//
-// warehouseMarker.addTo(map);
