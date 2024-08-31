@@ -55,14 +55,55 @@ async function initializeMap() {
                 .addTo(map);
 
             // Create the popup content for the vehicle marker using the vehicle data
+            let cargoContent = '';
+            if (vehicle.cargo.length > 0) {
+                cargoContent = vehicle.cargo.map(item =>
+                    `<br>&nbsp;&nbsp;&nbsp;Product: ${item.product_id.name}, Quantity: ${item.quantity}`
+                ).join('');
+            } else {
+                cargoContent = '-';
+            }
+
             vehicleMarker.bindPopup(`
                 Name: ${vehicle.name}<br>
-                Cargo:<br>${vehicle.cargo.map(item =>
-                    `&nbsp;&nbsp;&nbsp;Product: ${item.product_id.name}, Quantity: ${item.quantity}<br>`
-                ).join('')}
-                Tasks:<br>${vehicle.task_ids.map(task =>
-                    `&nbsp;&nbsp;&nbsp;Type: ${task.type}, Status: ${task.status}<br>`
-                ).join('')}
+                Cargo: ${cargoContent}<br>
+                Tasks: ${vehicle.task_ids.length}
+            `);
+        });
+
+        // Add the task markers and popups
+        data.tasks.forEach(task => {
+            let taskMarker;
+
+            if (task.type === 'request') {
+                if (task.status === 'in_progress') {
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedRequestIcon })
+                        .addTo(map);
+                } else {
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingRequestIcon })
+                        .addTo(map);
+                }
+            } else {
+                if (task.status === 'in_progress') {
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedOfferIcon })
+                        .addTo(map);
+                } else {
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingOfferIcon })
+                        .addTo(map);
+                }
+            }
+
+            // Format the assignment date
+            const assignmentDate = task.assignedAt ? new Date(task.assignedAt).toLocaleString() : '-';
+
+            // Create the popup content for the task marker using the task data
+            taskMarker.bindPopup(`
+                Name: ${task.citizen_id.name}<br> 
+                Surname: ${task.citizen_id.surname}<br>
+                Phone: ${task.citizen_id.phone_number}<br>
+                Product: ${task.product_id.name}<br>
+                Quantity: ${task.quantity}<br>
+                Assignment Date: ${assignmentDate}<br>
             `);
         });
     } catch (err) {

@@ -29,9 +29,9 @@ const getTasksData = () => {
                 row.appendChild(cell1);
                 cell2.textContent = task.citizen_id.surname;
                 row.appendChild(cell2);
-                cell3.textContent = task.rescuer_id.name;
+                cell3.textContent = task.rescuer_id ? task.rescuer_id.name : '-';
                 row.appendChild(cell3);
-                cell4.textContent = task.rescuer_id.surname;
+                cell4.textContent = task.rescuer_id ? task.rescuer_id.surname : '-';
                 row.appendChild(cell4);
                 cell5.textContent = task.product_id.name;
                 row.appendChild(cell5);
