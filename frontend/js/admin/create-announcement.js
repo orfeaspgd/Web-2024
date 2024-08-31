@@ -17,7 +17,7 @@ const pullWarehouseData = () => {
 
                 data.forEach(product => {
                     const option = document.createElement('option');
-                    option.value = product.warehouseId;
+                    option.value = product._id;
                     option.textContent = product.name;
                     selectProduct.appendChild(option);
                 });
