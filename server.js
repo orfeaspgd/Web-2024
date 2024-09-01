@@ -32,6 +32,9 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
+// Serve static files from the 'node_modules' directory
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+
 app.use(express.json()); //parse json bodies
 
 //MongoDb connection
