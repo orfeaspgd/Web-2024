@@ -68,11 +68,15 @@ async function updateWarehouseLocation(latitude, longitude) {
     }
 }
 
-// Variables to hold the different layer groups
+// Variables to hold the different task layer groups
 const assignedRequestsGroup = L.layerGroup();
 const pendingRequestsGroup = L.layerGroup();
 const assignedOffersGroup = L.layerGroup();
 const pendingOffersGroup = L.layerGroup();
+
+// Variables to hold the different vehicle layer groups
+const activeTasksVehiclesGroup = L.layerGroup();
+const inactiveTasksVehiclesGroup = L.layerGroup();
 
 // Function to handle filter changes for the different task types
 function handleFilterChange(checkboxId, layerGroup, clusterGroup, map) {
@@ -97,6 +101,21 @@ function handleFilterChange(checkboxId, layerGroup, clusterGroup, map) {
 
             // Refresh clusters to update their count and display
             clusterGroup.refreshClusters();
+        }
+    });
+}
+
+// Function to handle filter changes for vehicle types (active/inactive)
+function handleVehicleFilterChange(checkboxId, layerGroup, map) {
+    const checkbox = document.getElementById(checkboxId);
+
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            // Add layer group to the map
+            map.addLayer(layerGroup);
+        } else {
+            // Remove layer group from the map
+            map.removeLayer(layerGroup);
         }
     });
 }
@@ -146,8 +165,18 @@ fetchMapData().then(data => {
 
     // Add the vehicle markers and popups
     data.vehicles.forEach(vehicle => {
-        const vehicleMarker = L.marker([vehicle.rescuer_id.location.latitude, vehicle.rescuer_id.location.longitude], { icon: vehicleIcon})
-            .addTo(map);
+        // Create the vehicle marker
+        const vehicleMarker = L.marker([vehicle.rescuer_id.location.latitude, vehicle.rescuer_id.location.longitude], { icon: vehicleIcon});
+
+        // Check if the vehicle has any tasks (regardless of task status)
+        const hasActiveTasks = vehicle.task_ids.length > 0;
+
+        // Add the vehicle marker to the appropriate group based on whether it has tasks
+        if (hasActiveTasks) {
+            activeTasksVehiclesGroup.addLayer(vehicleMarker);
+        } else {
+            inactiveTasksVehiclesGroup.addLayer(vehicleMarker);
+        }
 
         // Create the popup content for the vehicle marker using the vehicle data
         let cargoContent = '';
@@ -230,12 +259,20 @@ fetchMapData().then(data => {
         }
     });
 
-    // Add the cluster group to the map
+    // Add the task cluster group to the map
     map.addLayer(taskClusters);
+
+    // Add the vehicle layer groups to the map
+    map.addLayer(activeTasksVehiclesGroup);
+    map.addLayer(inactiveTasksVehiclesGroup);
 
     // Apply the filter handlers for the different task types and statuses
     handleFilterChange('assigned-requests', assignedRequestsGroup, taskClusters, map);
     handleFilterChange('pending-requests', pendingRequestsGroup, taskClusters, map);
     handleFilterChange('assigned-offers', assignedOffersGroup, taskClusters, map);
     handleFilterChange('pending-offers', pendingOffersGroup, taskClusters, map);
+
+    // Apply the filter handlers for the different vehicle types (active/inactive)
+    handleVehicleFilterChange('active-tasks', activeTasksVehiclesGroup, map);
+    handleVehicleFilterChange('inactive-tasks', inactiveTasksVehiclesGroup, map);
 });
