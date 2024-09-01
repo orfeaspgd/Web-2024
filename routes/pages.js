@@ -59,11 +59,7 @@ export default function pagesRoutes(app) {
     });
 
     app.get('/account-creation', (req, res) => {
-        if (req.session.user) {
-            res.sendFile(path.join(__dirname, '../frontend/html/citizen/create-account.html'));
-        } else {
-            res.redirect("/login");
-        }
+        res.sendFile(path.join(__dirname, '../frontend/html/citizen/create-account.html'));
     });
 
     // Rescuer pages routes
