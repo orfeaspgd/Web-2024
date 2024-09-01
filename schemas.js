@@ -71,6 +71,38 @@ const AnnouncementSchema = new mongoose.Schema({
     },
 }, { versionKey: false });
 
+const OfferSchema = new mongoose.Schema({
+    citizen_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true,
+        trim: true
+    },
+    vehicle_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'vehicles',
+        trim: true
+    },
+    products: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'products',
+        required: true,
+        trim: true
+    }],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'taken', 'completed', 'cancelled', ],
+        default: 'pending',
+        required: true
+    },
+    takenAt: { type: Date },
+    completedAt: { type: Date },
+}, { versionKey: false });
+
 const productsSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -222,6 +254,7 @@ const vehicleSchema = new mongoose.Schema({
 
 export const Users = mongoose.model('users', usersSchema);
 export const Announcements = mongoose.model('announcements', AnnouncementSchema);
+export const Offers = mongoose.model('offers', OfferSchema);
 export const Products = mongoose.model('products', productsSchema);
 export const Tasks = mongoose.model('tasks', taskSchema);
 export const Categories = mongoose.model('categories', categoriesSchema);
