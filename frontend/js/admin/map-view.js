@@ -45,9 +45,12 @@ async function initializeMap() {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
+        // Create a marker cluster group for the markers
+        const taskClusters = L.markerClusterGroup();
+
         // Add the warehouse marker
         L.marker([data.warehouse.location.latitude, data.warehouse.location.longitude], { icon: warehouseIcon })
-            .addTo(map)
+            .addTo(map);
 
         // Add the vehicle markers and popups
         data.vehicles.forEach(vehicle => {
@@ -77,24 +80,29 @@ async function initializeMap() {
 
             if (task.type === 'request') {
                 if (task.status === 'in_progress') {
-                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedRequestIcon })
-                        .addTo(map);
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedRequestIcon });
                 } else {
-                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingRequestIcon })
-                        .addTo(map);
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingRequestIcon });
                 }
             } else {
                 if (task.status === 'in_progress') {
-                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedOfferIcon })
-                        .addTo(map);
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedOfferIcon });
                 } else {
-                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingOfferIcon })
-                        .addTo(map);
+                    taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingOfferIcon });
                 }
             }
 
             // Format the assignment date
             const assignmentDate = task.assignedAt ? new Date(task.assignedAt).toLocaleString() : '-';
+
+            // Find the associated vehicle if the task is assigned
+            let vehicleUsername = '-';
+            if (task.rescuer_id) {
+                const vehicle = data.vehicles.find(vehicle => vehicle.rescuer_id._id === task.rescuer_id);
+                if (vehicle) {
+                    vehicleUsername = vehicle.name;
+                }
+            }
 
             // Create the popup content for the task marker using the task data
             taskMarker.bindPopup(`
@@ -104,8 +112,15 @@ async function initializeMap() {
                 Product: ${task.product_id.name}<br>
                 Quantity: ${task.quantity}<br>
                 Assignment Date: ${assignmentDate}<br>
+                Vehicle: ${vehicleUsername}
             `);
+
+            // Add task marker to the cluster group
+            taskClusters.addLayer(taskMarker);
         });
+
+        // Add the cluster group to the map
+        map.addLayer(taskClusters);
     } catch (err) {
         console.error(err);
     }

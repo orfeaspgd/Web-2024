@@ -30,6 +30,20 @@ db.users.insertOne({
 });
 
 db.users.insertOne({
+    name: "Alex",
+    surname: "Smith",
+    username: "alexs",
+    password: "pass",
+    email: "alex.smith@example.com",
+    role: "rescuer",
+    phone_number: "1122334455",
+    location: {
+        latitude: 38.24104,
+        longitude: 21.727709
+    }
+});
+
+db.users.insertOne({
     name: "Akis",
     surname: "Papapanagiotou",
     username: "ap",
@@ -43,19 +57,47 @@ db.users.insertOne({
         }
 });
 
-db.users.insertOne({
-    name: "Alex",
-    surname: "Smith",
-    username: "alexs",
-    password: "pass",
-    email: "alex.smith@example.com",
-    role: "rescuer",
-    phone_number: "1122334455",
-    location: {
-        latitude: 38.24104,
-        longitude: 21.727709
+db.users.insertMany([
+    {
+        name: "John",
+        surname: "Smith",
+        username: "jsmith",
+        password: "password123",
+        email: "jsmith@example.com",
+        role: "citizen",
+        phone_number: "1122335566",
+        location: {
+            latitude: 38.24014,
+            longitude: 21.741208
+        }
+    },
+    {
+        name: "Emily",
+        surname: "Johnson",
+        username: "ejohnson",
+        password: "password456",
+        email: "ejohnson@example.com",
+        role: "citizen",
+        phone_number: "1122336677",
+        location: {
+            latitude: 38.244452,
+            longitude: 21.733299
+        }
+    },
+    {
+        name: "Michael",
+        surname: "Brown",
+        username: "mbrown",
+        password: "password789",
+        email: "mbrown@example.com",
+        role: "citizen",
+        phone_number: "1122337788",
+        location: {
+            latitude: 38.247319,
+            longitude: 21.732106
+        }
     }
-});
+]);
 
 db.categories.insertOne({
     "category_name": "Medical Supplies"
@@ -96,7 +138,10 @@ db.products.insertMany(
 var admin = db.users.findOne({ role: "admin" });
 var rescuer1 = db.users.findOne({ role: "rescuer", username: "jg" });
 var rescuer2 = db.users.findOne({ role: "rescuer", username: "alexs" });
-var citizen = db.users.findOne({ role: "citizen" });
+var citizen1 = db.users.findOne({ role: "citizen", username: "ap" });
+var citizen2 = db.users.findOne({ role: "citizen", username: "jsmith"});
+var citizen3 = db.users.findOne({ role: "citizen", username: "ejohnson" });
+var citizen4 = db.users.findOne({ role: "citizen", username: "mbrown" });
 
 var product1 = db.products.findOne({ name: "DEPON" });
 
@@ -111,7 +156,7 @@ var product2 = db.products.findOne({ name: "Painkillers" });
 db.createCollection("tasks");
 db.tasks.insertOne({
     type: "request",
-    citizen_id: citizen._id,
+    citizen_id: citizen1._id,
     rescuer_id: rescuer1._id,
     product_id: product1._id,
     quantity: 5,
@@ -123,10 +168,22 @@ db.tasks.insertOne({
 
 db.tasks.insertOne({
     type: "request",
-    citizen_id: citizen._id,
-    rescuer_id: rescuer1._id,
+    citizen_id: citizen2._id,
+    rescuer_id: null,
     product_id: product2._id,
     quantity: 3,
+    status: "pending",
+    createdAt: new Date("2024-07-18T08:00:00"),
+    assignedAt: null,
+    completedAt: null
+});
+
+db.tasks.insertOne({
+    type: "offer",
+    citizen_id: citizen3._id,
+    rescuer_id: rescuer2._id,
+    product_id: product1._id,
+    quantity: 2,
     status: "in_progress",
     createdAt: new Date("2024-07-18T08:00:00"),
     assignedAt: new Date("2024-07-18T08:00:30"),
@@ -135,19 +192,33 @@ db.tasks.insertOne({
 
 db.tasks.insertOne({
     type: "offer",
-    citizen_id: citizen._id,
+    citizen_id: citizen4._id,
     rescuer_id: null,
     product_id: product2._id,
-    quantity: 2,
+    quantity: 10,
     status: "pending",
     createdAt: new Date("2024-07-18T08:00:00"),
     assignedAt: null,
     completedAt: null
 });
 
-var task1 = db.tasks.findOne({ type: "request", citizen_id: citizen._id, rescuer_id: rescuer1._id, product_id: product1._id, quantity: 5 });
-var task2 = db.tasks.findOne({ type: "request", citizen_id: citizen._id, rescuer_id: rescuer1._id, product_id: product2._id, quantity: 3 });
-var task3 = db.tasks.findOne({ type: "offer", citizen_id: citizen._id, product_id: product2._id, quantity: 2 });
+db.tasks.insertOne({
+    type: "request",
+    citizen_id: citizen4._id,
+    rescuer_id: rescuer2._id,
+    product_id: product2._id,
+    quantity: 15,
+    status: "in_progress",
+    createdAt: new Date("2024-07-18T08:00:00"),
+    assignedAt: new Date("2024-07-18T08:00:30"),
+    completedAt: null
+});
+
+var task1 = db.tasks.findOne({ type: "request", citizen_id: citizen1._id, rescuer_id: rescuer1._id, product_id: product1._id, quantity: 5 });
+var task2 = db.tasks.findOne({ type: "request", citizen_id: citizen2._id, product_id: product2._id, quantity: 3 });
+var task3 = db.tasks.findOne({ type: "offer", citizen_id: citizen3._id, rescuer_id: rescuer2._id, product_id: product1._id, quantity: 2 });
+var task4 = db.tasks.findOne({ type: "offer", citizen_id: citizen4._id, product_id: product2._id, quantity: 10 });
+var task5 = db.tasks.findOne({ type: "request", citizen_id: citizen4._id, rescuer_id: rescuer2._id, product_id: product2._id, quantity: 15 });
 
 db.createCollection("vehicles");
 db.vehicles.insertOne({
@@ -164,8 +235,7 @@ db.vehicles.insertOne({
         }
     ],
     task_ids: [
-        task1._id,
-        task2._id
+        task1._id
     ]
 });
 
@@ -173,7 +243,10 @@ db.vehicles.insertOne({
     name: "Vehicle 2",
     rescuer_id: rescuer2._id,
     cargo: [],
-    task_ids: []
+    task_ids: [
+        task3._id,
+        task5._id
+    ]
 });
 
 db.createCollection("announcements");
