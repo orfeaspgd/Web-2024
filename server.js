@@ -16,7 +16,6 @@ import warehouseRoutes from "./routes/warehouse-routes.js"
 import importRoutes from "./routes/import.js";
 import categoriesRoutes from "./routes/categories.js";
 import announcementsRoutes from "./routes/announcements.js";
-import offersRoutes from "./routes/offers.js";
 import tasksRoutes from "./routes/tasks.js";
 import authenticationRoutes from "./routes/authentication.js";
 import pagesRoutes from "./routes/pages.js";
@@ -64,7 +63,6 @@ warehouseRoutes(app);
 importRoutes(app);
 categoriesRoutes(app);
 announcementsRoutes(app);
-offersRoutes(app);
 tasksRoutes(app);
 authenticationRoutes(app);
 pagesRoutes(app);

@@ -37,35 +37,29 @@ const getAnnouncementsData = () => {
                 cell4.textContent = announcement.createdAt;
                 row.appendChild(cell4);
                 cell5.innerHTML = `
-                    <button class="btn btn-primary mt-1">Create Offer</button>
-                    <div class="msg"></div>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary mt-1 ">Create Offer</button>
                 `
                 row.appendChild(cell5);
 
                 cell5.querySelector('button').addEventListener('click', () => {
-                    let formData = new URLSearchParams({
-                        announcement: announcement._id
-                    }).toString();
+                    document.getElementById('modal-form-div').innerHTML = `
+                        <p>Create Offers for the following products</p>
 
-                    fetch('/citizen_create_offer', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: formData
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            let messageElement = cell5.querySelector('.msg');
-                            if (data.status === 'success') {
-                                messageElement.style.color = 'green';
-                                getOffersData()
-                            } else {
-                                messageElement.style.color = 'red';
-                            }
-                            messageElement.textContent = data.message;
-                        })
-                        .catch(error => console.error('Error:', error));
+                        <div class="row mb-1">
+                            <div class="col-12">
+                            <input name="type" value="offer" type="hidden">
+                        ${
+                            announcement.products.map(product => {
+                                return `
+                                    <input name="products[]" type="hidden" value="${product._id}">
+                                    <label class="form-check-label">${product.name}:</label>
+                                    <input name="productQuantities[]" class="form-control" type="number" value="0" id="${product._id}-quantity">
+                                `
+                            }).join('<br>')
+                        }
+                            </div>
+                        </div>
+                    `
                 })
 
                 table.appendChild(row);
@@ -89,9 +83,10 @@ const getOffersData = () => {
             let columnNames = [
                 'ID',
                 'Products Offered',
+                'Quantity',
                 'Created At',
                 'Status',
-                'Taken At',
+                'Assigned At',
                 'Completed At'
             ];
             columnNames.forEach(name => {
@@ -101,7 +96,6 @@ const getOffersData = () => {
             });
             table.appendChild(headerRow);
             data.forEach(offer => {
-                console.log(offer);
                 let row = document.createElement('tr');
 
                 let cell1 = document.createElement('td');
@@ -111,19 +105,18 @@ const getOffersData = () => {
                 let cell5 = document.createElement('td');
                 let cell6 = document.createElement('td');
                 let cell7 = document.createElement('td');
+                let cell8 = document.createElement('td');
 
                 cell1.textContent = offer._id;
                 row.appendChild(cell1);
                 let productList = document.createElement('ul');
-                offer.products.forEach(product => {
-                    let listItem = document.createElement('li');
-                    listItem.textContent = product.name;
-                    productList.appendChild(listItem);
-                });
+                cell2.textContent = offer.product_id.name
                 cell2.appendChild(productList);
                 row.appendChild(cell2);
-                cell3.textContent = offer.createdAt;
+                cell3.textContent = offer.quantity;
                 row.appendChild(cell3);
+                cell4.textContent = offer.createdAt;
+                row.appendChild(cell4);
                 let color = ''
                 switch (offer.status) {
                     case 'cancelled':
@@ -135,30 +128,30 @@ const getOffersData = () => {
                     case 'completed':
                         color = 'success'
                         break
-                    case 'taken':
+                    case 'in_progress':
                         color = 'primary'
                         break
                 }
-                cell4.innerHTML = `<div><span class="badge text-bg-${color}">${offer.status}</span></div>`
-                row.appendChild(cell4);
-                cell5.textContent = offer.takenAt;
+                cell5.innerHTML = `<div><span class="badge text-bg-${color}">${offer.status}</span></div>`
                 row.appendChild(cell5);
-                cell6.textContent = offer.completedAt;
+                cell6.textContent = offer.assignedAt;
                 row.appendChild(cell6);
+                cell7.textContent = offer.completedAt;
+                row.appendChild(cell7);
                 if (offer.status !== 'cancelled') {
-                    cell7.innerHTML = `
+                    cell8.innerHTML = `
                         <button class="btn btn-danger mt-1">Cancel</button>
                         <div class="msg"></div>
                     `
                 }
-                row.appendChild(cell7);
+                row.appendChild(cell8);
 
-                cell7.querySelector('button')?.addEventListener('click', () => {
+                cell8.querySelector('button')?.addEventListener('click', () => {
                     let formData = new URLSearchParams({
-                        offer: offer._id
+                        task: offer._id
                     }).toString();
 
-                    fetch('/citizen_cancel_offer', {
+                    fetch('/citizen_cancel_task', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -167,7 +160,7 @@ const getOffersData = () => {
                     })
                         .then(response => response.json())
                         .then(data => {
-                            let messageElement = cell7.querySelector('.msg');
+                            let messageElement = cell8.querySelector('.msg');
                             if (data.status === 'success') {
                                 messageElement.style.color = 'green';
                                 getOffersData();
@@ -188,3 +181,32 @@ const getOffersData = () => {
 }
 getOffersData();
 setInterval(getOffersData, 5000); //refresh table every 5 seconds
+
+document.getElementById('modal-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let formData = new URLSearchParams(new FormData(this)).toString();
+
+    fetch('/citizen_create_tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            let messageElement = document.querySelector('#form-msg');
+            if (data.status === 'success') {
+                messageElement.textContent = '';
+                // Simulate click on modal cancel button to close the modal
+                document.querySelector('#cancel-modal').click()
+                getOffersData()
+            } else {
+                messageElement.style.color = 'red';
+                messageElement.textContent = data.message;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+})

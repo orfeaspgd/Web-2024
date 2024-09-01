@@ -16,7 +16,7 @@ export default function announcementsRoutes(app) {
         try {
             const tasks = await Announcements.find()
                 .populate('admin_id', 'name surname location username email role phone_number -_id')
-                .populate('products', 'name quantity storage_quantity -_id');
+                .populate('products', 'name quantity storage_quantity _id');
             res.json(tasks);
         } catch (err) {
             console.error(err);
