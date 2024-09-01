@@ -96,6 +96,15 @@ async function initializeMap() {
             // Format the assignment date
             const assignmentDate = task.assignedAt ? new Date(task.assignedAt).toLocaleString() : '-';
 
+            // Find the associated vehicle if the task is assigned
+            let vehicleUsername = '-';
+            if (task.rescuer_id) {
+                const vehicle = data.vehicles.find(vehicle => vehicle.rescuer_id._id === task.rescuer_id);
+                if (vehicle) {
+                    vehicleUsername = vehicle.name;
+                }
+            }
+
             // Create the popup content for the task marker using the task data
             taskMarker.bindPopup(`
                 Name: ${task.citizen_id.name}<br> 
@@ -104,6 +113,7 @@ async function initializeMap() {
                 Product: ${task.product_id.name}<br>
                 Quantity: ${task.quantity}<br>
                 Assignment Date: ${assignmentDate}<br>
+                Vehicle: ${vehicleUsername}
             `);
         });
     } catch (err) {
