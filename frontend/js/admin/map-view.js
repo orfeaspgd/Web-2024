@@ -70,6 +70,36 @@ async function updateWarehouseLocation(latitude, longitude) {
 
 // Variables to hold the different layer groups
 const assignedRequestsGroup = L.layerGroup();
+const pendingRequestsGroup = L.layerGroup();
+const assignedOffersGroup = L.layerGroup();
+const pendingOffersGroup = L.layerGroup();
+
+// Function to handle filter changes for the different task types
+function handleFilterChange(checkboxId, layerGroup, clusterGroup, map) {
+    const checkbox = document.getElementById(checkboxId);
+
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            // Add markers back to both the layer group and the marker cluster group
+            layerGroup.eachLayer(marker => {
+                clusterGroup.addLayer(marker);
+            });
+            map.addLayer(layerGroup);
+
+            // Refresh clusters to update their count and display
+            clusterGroup.refreshClusters();
+        } else {
+            // Remove markers from both the layer group and the marker cluster group
+            layerGroup.eachLayer(marker => {
+                clusterGroup.removeLayer(marker);
+            });
+            map.removeLayer(layerGroup);
+
+            // Refresh clusters to update their count and display
+            clusterGroup.refreshClusters();
+        }
+    });
+}
 
 // Fetch the data for the map display
 fetchMapData().then(data => {
@@ -146,12 +176,15 @@ fetchMapData().then(data => {
                 assignedRequestsGroup.addLayer(taskMarker);
             } else {
                 taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingRequestIcon });
+                pendingRequestsGroup.addLayer(taskMarker);
             }
         } else {
             if (task.status === 'in_progress') {
                 taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedOfferIcon });
+                assignedOffersGroup.addLayer(taskMarker);
             } else {
                 taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingOfferIcon });
+                pendingOffersGroup.addLayer(taskMarker);
             }
         }
 
@@ -200,26 +233,9 @@ fetchMapData().then(data => {
     // Add the cluster group to the map
     map.addLayer(taskClusters);
 
-    // Event listeners for filter checkboxes
-    document.getElementById('assigned-requests').addEventListener('change', function () {
-        if (this.checked) {
-            // Add markers back to both the layer group and the marker cluster group
-            assignedRequestsGroup.eachLayer(marker => {
-                taskClusters.addLayer(marker);
-            });
-            map.addLayer(assignedRequestsGroup);
-
-            // Refresh clusters to update their count and display
-            taskClusters.refreshClusters();
-        } else {
-            // Remove markers from both the layer group and the marker cluster group
-            assignedRequestsGroup.eachLayer(marker => {
-                taskClusters.removeLayer(marker);
-            });
-            map.removeLayer(assignedRequestsGroup);
-
-            // Refresh clusters to update their count and display
-            taskClusters.refreshClusters();
-        }
-    });
+    // Apply the filter handlers for the different task types and statuses
+    handleFilterChange('assigned-requests', assignedRequestsGroup, taskClusters, map);
+    handleFilterChange('pending-requests', pendingRequestsGroup, taskClusters, map);
+    handleFilterChange('assigned-offers', assignedOffersGroup, taskClusters, map);
+    handleFilterChange('pending-offers', pendingOffersGroup, taskClusters, map);
 });
