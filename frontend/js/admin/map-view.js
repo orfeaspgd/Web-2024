@@ -29,6 +29,7 @@ const pendingOfferIcon = L.icon({
     iconSize: [25, 25]
 });
 
+// Initialize the map with the warehouse location, the vehicles and tasks data
 async function initializeMap() {
     try {
         // Fetch the data for the map display
@@ -49,12 +50,35 @@ async function initializeMap() {
         const taskClusters = L.markerClusterGroup();
 
         // Add the warehouse marker
-        L.marker([data.warehouse.location.latitude, data.warehouse.location.longitude], { icon: warehouseIcon })
-            .addTo(map);
+        const warehouseMarker = L.marker([data.warehouse.location.latitude, data.warehouse.location.longitude],
+            { icon: warehouseIcon,
+                     draggable: true
+            }).addTo(map);
+
+        // Store the original position of the warehouse marker
+        let originalLatLng = warehouseMarker.getLatLng();
+
+        // Implement the functionality to update the warehouse location on dragend event of the marker
+        warehouseMarker.on('dragend', (event) => {
+            const marker = event.target;
+            const newPosition = marker.getLatLng();
+            const confirmed = confirm('Do you want to update the warehouse location to this new position?');
+
+            if (confirmed) {
+                updateWarehouseLocation(newPosition.lat, newPosition.lng);
+                // Update the data for next drag
+                data.warehouse.location.latitude = newPosition.lat;
+                data.warehouse.location.longitude = newPosition.lng;
+                originalLatLng = newPosition; // Update original position
+            } else {
+                // Reset the marker to the original position if not confirmed
+                marker.setLatLng(originalLatLng);
+            }
+        });
 
         // Add the vehicle markers and popups
         data.vehicles.forEach(vehicle => {
-            const vehicleMarker = L.marker([vehicle.rescuer_id.location.latitude, vehicle.rescuer_id.location.longitude], { icon: vehicleIcon })
+            const vehicleMarker = L.marker([vehicle.rescuer_id.location.latitude, vehicle.rescuer_id.location.longitude], { icon: vehicleIcon})
                 .addTo(map);
 
             // Create the popup content for the vehicle marker using the vehicle data
@@ -117,10 +141,43 @@ async function initializeMap() {
 
             // Add task marker to the cluster group
             taskClusters.addLayer(taskMarker);
+
+            // Draw lines from vehicles to assigned tasks
+            if (task.rescuer_id) {
+                const vehicle = data.vehicles.find(vehicle => vehicle.rescuer_id._id === task.rescuer_id);
+                if (vehicle) {
+                    const line = L.polyline([
+                        [task.citizen_id.location.latitude, task.citizen_id.location.longitude],
+                        [vehicle.rescuer_id.location.latitude, vehicle.rescuer_id.location.longitude]
+                    ], {
+                        color: 'blue',
+                        weight: 2,
+                        opacity: 0.6
+                    }).addTo(map);
+                }
+            }
         });
 
         // Add the cluster group to the map
         map.addLayer(taskClusters);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Update the warehouse location with the new latitude and longitude values
+async function updateWarehouseLocation(latitude, longitude) {
+    try {
+        const response = await fetch('/update-warehouse-location', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ latitude, longitude })
+        });
+
+        const data = await response.json();
+        alert(data.message);
     } catch (err) {
         console.error(err);
     }
