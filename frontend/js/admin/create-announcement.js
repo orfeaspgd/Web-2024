@@ -1,6 +1,6 @@
 //fetch products from the warehouse and populate the dropdown list
 const pullWarehouseData = () => {
-    fetch('/warehouse_products')
+    fetch('/products')
         .then(response => response.json())
         .then(data => {
             warehouseProducts = data;
