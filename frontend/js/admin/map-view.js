@@ -29,6 +29,7 @@ const pendingOfferIcon = L.icon({
     iconSize: [25, 25]
 });
 
+// Initialize the map with the warehouse location, the vehicles and tasks data
 async function initializeMap() {
     try {
         // Fetch the data for the map display
@@ -117,6 +118,21 @@ async function initializeMap() {
 
             // Add task marker to the cluster group
             taskClusters.addLayer(taskMarker);
+
+            // Draw lines from vehicles to assigned tasks
+            if (task.rescuer_id) {
+                const vehicle = data.vehicles.find(vehicle => vehicle.rescuer_id._id === task.rescuer_id);
+                if (vehicle) {
+                    const line = L.polyline([
+                        [task.citizen_id.location.latitude, task.citizen_id.location.longitude],
+                        [vehicle.rescuer_id.location.latitude, vehicle.rescuer_id.location.longitude]
+                    ], {
+                        color: 'blue',
+                        weight: 2,
+                        opacity: 0.6
+                    }).addTo(map);
+                }
+            }
         });
 
         // Add the cluster group to the map
