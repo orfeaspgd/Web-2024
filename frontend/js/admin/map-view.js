@@ -1,3 +1,14 @@
+window.addEventListener('load', () => {
+    // Set all filters to checked by default when the page loads
+    document.getElementById('assigned-requests').checked = true;
+    document.getElementById('pending-requests').checked = true;
+    document.getElementById('assigned-offers').checked = true;
+    document.getElementById('pending-offers').checked = true;
+    document.getElementById('active-tasks').checked = true;
+    document.getElementById('inactive-tasks').checked = true;
+    document.getElementById('straight-lines').checked = true;
+});
+
 // Create custom icons for our markers
 const warehouseIcon = L.icon({
     iconUrl: '../../assets/icons/warehouse.png',
@@ -56,6 +67,9 @@ async function updateWarehouseLocation(latitude, longitude) {
         console.error(err);
     }
 }
+
+// Variables to hold the different layer groups
+const assignedRequestsGroup = L.layerGroup();
 
 // Fetch the data for the map display
 fetchMapData().then(data => {
@@ -129,6 +143,7 @@ fetchMapData().then(data => {
         if (task.type === 'request') {
             if (task.status === 'in_progress') {
                 taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: assignedRequestIcon });
+                assignedRequestsGroup.addLayer(taskMarker);
             } else {
                 taskMarker = L.marker([task.citizen_id.location.latitude, task.citizen_id.location.longitude], { icon: pendingRequestIcon });
             }
@@ -184,4 +199,27 @@ fetchMapData().then(data => {
 
     // Add the cluster group to the map
     map.addLayer(taskClusters);
+
+    // Event listeners for filter checkboxes
+    document.getElementById('assigned-requests').addEventListener('change', function () {
+        if (this.checked) {
+            // Add markers back to both the layer group and the marker cluster group
+            assignedRequestsGroup.eachLayer(marker => {
+                taskClusters.addLayer(marker);
+            });
+            map.addLayer(assignedRequestsGroup);
+
+            // Refresh clusters to update their count and display
+            taskClusters.refreshClusters();
+        } else {
+            // Remove markers from both the layer group and the marker cluster group
+            assignedRequestsGroup.eachLayer(marker => {
+                taskClusters.removeLayer(marker);
+            });
+            map.removeLayer(assignedRequestsGroup);
+
+            // Refresh clusters to update their count and display
+            taskClusters.refreshClusters();
+        }
+    });
 });
