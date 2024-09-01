@@ -78,8 +78,11 @@ const pendingOffersGroup = L.layerGroup();
 const activeTasksVehiclesGroup = L.layerGroup();
 const inactiveTasksVehiclesGroup = L.layerGroup();
 
+// Variable to hold the lines layer group
+const linesGroup = L.layerGroup();
+
 // Function to handle filter changes for the different task types
-function handleFilterChange(checkboxId, layerGroup, clusterGroup, map) {
+function handleTaskFilterChanges(checkboxId, layerGroup, clusterGroup, map) {
     const checkbox = document.getElementById(checkboxId);
 
     checkbox.addEventListener('change', function () {
@@ -105,8 +108,8 @@ function handleFilterChange(checkboxId, layerGroup, clusterGroup, map) {
     });
 }
 
-// Function to handle filter changes for vehicle types (active/inactive)
-function handleVehicleFilterChange(checkboxId, layerGroup, map) {
+// Function to handle filter changes for vehicle types (active/inactive) as well as the lines
+function handleFilterChanges(checkboxId, layerGroup, map) {
     const checkbox = document.getElementById(checkboxId);
 
     checkbox.addEventListener('change', function () {
@@ -193,6 +196,10 @@ fetchMapData().then(data => {
                 Cargo: ${cargoContent}<br>
                 Tasks: ${vehicle.task_ids.length}
             `);
+
+        // Add the vehicle layer groups to the map
+        map.addLayer(activeTasksVehiclesGroup);
+        map.addLayer(inactiveTasksVehiclesGroup);
     });
 
     // Add the task markers and popups
@@ -243,6 +250,9 @@ fetchMapData().then(data => {
         // Add task marker to the cluster group
         taskClusters.addLayer(taskMarker);
 
+        // Add the task cluster group to the map
+        map.addLayer(taskClusters);
+
         // Draw lines from vehicles to assigned tasks
         if (task.rescuer_id) {
             const vehicle = data.vehicles.find(vehicle => vehicle.rescuer_id._id === task.rescuer_id);
@@ -254,25 +264,24 @@ fetchMapData().then(data => {
                     color: 'blue',
                     weight: 2,
                     opacity: 0.6
-                }).addTo(map);
+                }).addTo(linesGroup);
             }
+
+            // Add the lines layer group to the map
+            map.addLayer(linesGroup);
         }
     });
 
-    // Add the task cluster group to the map
-    map.addLayer(taskClusters);
-
-    // Add the vehicle layer groups to the map
-    map.addLayer(activeTasksVehiclesGroup);
-    map.addLayer(inactiveTasksVehiclesGroup);
-
     // Apply the filter handlers for the different task types and statuses
-    handleFilterChange('assigned-requests', assignedRequestsGroup, taskClusters, map);
-    handleFilterChange('pending-requests', pendingRequestsGroup, taskClusters, map);
-    handleFilterChange('assigned-offers', assignedOffersGroup, taskClusters, map);
-    handleFilterChange('pending-offers', pendingOffersGroup, taskClusters, map);
+    handleTaskFilterChanges('assigned-requests', assignedRequestsGroup, taskClusters, map);
+    handleTaskFilterChanges('pending-requests', pendingRequestsGroup, taskClusters, map);
+    handleTaskFilterChanges('assigned-offers', assignedOffersGroup, taskClusters, map);
+    handleTaskFilterChanges('pending-offers', pendingOffersGroup, taskClusters, map);
 
     // Apply the filter handlers for the different vehicle types (active/inactive)
-    handleVehicleFilterChange('active-tasks', activeTasksVehiclesGroup, map);
-    handleVehicleFilterChange('inactive-tasks', inactiveTasksVehiclesGroup, map);
+    handleFilterChanges('active-tasks', activeTasksVehiclesGroup, map);
+    handleFilterChanges('inactive-tasks', inactiveTasksVehiclesGroup, map);
+
+    // Apply the filter handlers for the lines
+    handleFilterChanges('straight-lines', linesGroup, map);
 });
