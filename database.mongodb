@@ -15,49 +15,62 @@ db.users.insertOne({
             }
 });
 
-db.users.insertOne({
-    name: "Johnny",
-    surname: "Georgoulis",
-    username: "jg",
-    password: "321",
-    email: "jg@jg.com",
-    role: "rescuer",
-    phone_number: "0987654321",
-    location: {
+db.users.insertMany([
+    {
+        name: "Johnny",
+        surname: "Georgoulis",
+        username: "jg",
+        password: "321",
+        email: "jg@jg.com",
+        role: "rescuer",
+        phone_number: "0987654321",
+        location: {
             latitude: 38.244581,
             longitude: 21.72701
         }
-});
-
-db.users.insertOne({
-    name: "Alex",
-    surname: "Smith",
-    username: "alexs",
-    password: "pass",
-    email: "alex.smith@example.com",
-    role: "rescuer",
-    phone_number: "1122334455",
-    location: {
-        latitude: 38.24104,
-        longitude: 21.727709
-    }
-});
-
-db.users.insertOne({
-    name: "Akis",
-    surname: "Papapanagiotou",
-    username: "ap",
-    password: "213",
-    email: "ap@ap.com",
-    role: "citizen",
-    phone_number: "1122334455",
-    location: {
-            latitude: 38.253706,
-            longitude: 21.74212
+    },
+    {
+        name: "Alex",
+        surname: "Smith",
+        username: "alexs",
+        password: "pass",
+        email: "alex.smith@example.com",
+        role: "rescuer",
+        phone_number: "1122334455",
+        location: {
+            latitude: 38.24104,
+            longitude: 21.727709
         }
-});
+    },
+    {
+        name: "John",
+        surname: "Doe",
+        username: "johndoe",
+        password: "password123",
+        email: "john.doe@example.com",
+        role: "rescuer",
+        phone_number: "9876543210",
+        location: {
+            latitude: 38.245155,
+            longitude: 21.739913
+        }
+    }
+]);
 
 db.users.insertMany([
+    {
+        name: "Akis",
+        surname: "Papapanagiotou",
+        username: "ap",
+        password: "213",
+        email: "ap@ap.com",
+        role: "citizen",
+        phone_number: "1122334455",
+        location: {
+                latitude: 38.253706,
+                longitude: 21.74212
+            }
+    },
     {
         name: "John",
         surname: "Smith",
@@ -138,6 +151,7 @@ db.products.insertMany(
 var admin = db.users.findOne({ role: "admin" });
 var rescuer1 = db.users.findOne({ role: "rescuer", username: "jg" });
 var rescuer2 = db.users.findOne({ role: "rescuer", username: "alexs" });
+var rescuer3 = db.users.findOne({ role: "rescuer", username: "johndoe" });
 var citizen1 = db.users.findOne({ role: "citizen", username: "ap" });
 var citizen2 = db.users.findOne({ role: "citizen", username: "jsmith"});
 var citizen3 = db.users.findOne({ role: "citizen", username: "ejohnson" });
@@ -247,6 +261,13 @@ db.vehicles.insertOne({
         task3._id,
         task5._id
     ]
+});
+
+db.vehicles.insertOne({
+    name: "Vehicle 3",
+    rescuer_id: rescuer3._id,
+    cargo: [],
+    task_ids: []
 });
 
 db.createCollection("announcements");
