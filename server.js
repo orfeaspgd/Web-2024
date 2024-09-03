@@ -20,6 +20,7 @@ import tasksRoutes from "./routes/tasks.js";
 import authenticationRoutes from "./routes/authentication.js";
 import pagesRoutes from "./routes/pages.js";
 import mapAdminRoutes from "./routes/map-admin.js";
+import mapRescuerRoutes from "./routes/map-rescuer.js";
 
 const app = express();
 const port = 3000;
@@ -71,3 +72,4 @@ tasksRoutes(app);
 authenticationRoutes(app);
 pagesRoutes(app);
 mapAdminRoutes(app);
+mapRescuerRoutes(app);
