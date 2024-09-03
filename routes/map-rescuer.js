@@ -77,4 +77,34 @@ export default function mapRescuerRoutes(app) {
             res.status(500).send(err);
         }
     });
+
+    // Claim a task
+    app.put('/claim-task', async (req, res) => {
+        // Check if user is logged in
+        if (!req.session.user) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+
+        const rescuerId = req.session.user._id;  // Access the user ID from the session user object
+        const taskId = req.body.taskId;
+
+        try {
+            // Ensure that the task exists and has not been claimed by another rescuer
+            const task = await Tasks.findOne({ _id: taskId, rescuer_id: null });
+
+            if (!task) {
+                return res.status(404).json({ message: 'Task not found or already claimed' });
+            }
+
+            // Update the task to assign it to the rescuer
+            await Tasks.findByIdAndUpdate(taskId, { rescuer_id: rescuerId, assignedAt: new Date() });
+
+            res.json({
+                message: 'Task claimed successfully'
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send(err);
+        }
+    });
 }
