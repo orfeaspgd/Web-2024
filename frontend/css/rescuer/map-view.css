@@ -14,6 +14,10 @@
     height: 25px;
 }
 
+.task-item p {
+    margin-bottom: 0.5rem;
+}
+
 @media (max-width: 768px) {
     #map {
         height: 500px;
