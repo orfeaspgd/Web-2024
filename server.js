@@ -19,6 +19,7 @@ import announcementsRoutes from "./routes/announcements.js";
 import tasksRoutes from "./routes/tasks.js";
 import authenticationRoutes from "./routes/authentication.js";
 import pagesRoutes from "./routes/pages.js";
+import mapAdminRoutes from "./routes/map-admin.js";
 
 const app = express();
 const port = 3000;
@@ -39,7 +40,7 @@ app.use(express.json()); //parse json bodies
 
 //MongoDb connection
 import mongoose from 'mongoose';
-import mapAdminRoutes from "./routes/map-admin.js";
+
 mongoose.connect(process.env.DB);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
