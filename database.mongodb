@@ -228,11 +228,24 @@ db.tasks.insertOne({
     completedAt: null
 });
 
+db.tasks.insertOne({
+    type: "offer",
+    citizen_id: citizen1._id,
+    rescuer_id: rescuer1._id,
+    product_id: product2._id,
+    quantity: 4,
+    status: "in_progress",
+    createdAt: new Date("2024-07-18T08:00:00"),
+    assignedAt: new Date("2024-07-18T08:00:30"),
+    completedAt: null
+});
+
 var task1 = db.tasks.findOne({ type: "request", citizen_id: citizen1._id, rescuer_id: rescuer1._id, product_id: product1._id, quantity: 5 });
 var task2 = db.tasks.findOne({ type: "request", citizen_id: citizen2._id, product_id: product2._id, quantity: 3 });
 var task3 = db.tasks.findOne({ type: "offer", citizen_id: citizen3._id, rescuer_id: rescuer2._id, product_id: product1._id, quantity: 2 });
 var task4 = db.tasks.findOne({ type: "offer", citizen_id: citizen4._id, product_id: product2._id, quantity: 10 });
 var task5 = db.tasks.findOne({ type: "request", citizen_id: citizen4._id, rescuer_id: rescuer2._id, product_id: product2._id, quantity: 15 });
+var task6 = db.tasks.findOne({ type: "offer", citizen_id: citizen1._id, rescuer_id: rescuer1._id, product_id: product2._id, quantity: 4 });
 
 db.createCollection("vehicles");
 db.vehicles.insertOne({
@@ -249,7 +262,8 @@ db.vehicles.insertOne({
         }
     ],
     task_ids: [
-        task1._id
+        task1._id,
+        task6._id
     ]
 });
 
