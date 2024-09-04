@@ -28,20 +28,19 @@ export default function mapRescuerRoutes(app) {
                 .populate('cargo.product_id', 'name')
                 .populate('task_ids', 'type status');
 
-            // Fetch tasks assigned to the rescuer
-            const assignedTasks = await Tasks.find({ rescuer_id: rescuerId })
-                .populate('citizen_id', 'name surname phone_number')
-                .populate('product_id', 'name');
-
-            // Fetch pending tasks
-            const pendingTasks = await Tasks.find({ rescuer_id: null, status: 'pending' })
-                .populate('citizen_id', 'name surname phone_number')
+            // Fetch tasks that are either assigned to the current rescuer or are pending and unassigned
+            const tasks = await Tasks.find({
+                $or: [
+                    { rescuer_id: rescuerId },
+                    { rescuer_id: null, status: 'pending' }
+                ]
+            })
+                .populate('citizen_id', 'name surname phone_number location')
                 .populate('product_id', 'name');
 
             res.json({
                 vehicle,
-                assignedTasks,
-                pendingTasks,
+                tasks,
                 warehouse
             });
         } catch (err) {
