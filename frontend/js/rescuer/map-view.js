@@ -68,7 +68,6 @@ async function updateRescuerLocation(latitude, longitude) {
     }
 }
 
-
 // Variables to hold the different task layer groups
 const assignedRequestsGroup = L.layerGroup();
 const pendingRequestsGroup = L.layerGroup();
@@ -77,6 +76,29 @@ const pendingOffersGroup = L.layerGroup();
 
 // Variable to hold the lines layer group
 const linesGroup = L.layerGroup();
+
+// Function to draw lines from the rescuer's vehicle to assigned tasks
+function drawLines(data, layerGroup, rescuerLatLng, map) {
+    // Clear existing lines before drawing new ones
+    linesGroup.clearLayers();
+
+    // Draw lines from rescuer's vehicle to its assigned tasks
+    data.tasks.forEach(task => {
+        if (task.rescuer_id) {
+            const line = L.polyline([
+                [task.citizen_id.location.latitude, task.citizen_id.location.longitude],
+                [rescuerLatLng.lat, rescuerLatLng.lng]
+            ], {
+                color: 'blue',
+                weight: 2,
+                opacity: 0.6
+            }).addTo(linesGroup);
+        }
+    });
+
+    // Add the lines layer group to the map
+    map.addLayer(linesGroup);
+}
 
 // Function to handle filter changes for the different task types
 function handleTaskFilterChanges(checkboxId, layerGroup, clusterGroup, map) {
@@ -155,6 +177,8 @@ fetchMapData().then(data => {
             data.vehicle.rescuer_id.location.latitude = newPosition.lat;
             data.vehicle.rescuer_id.location.longitude = newPosition.lng;
             originalLatLng = newPosition; // Update original position
+
+            drawLines(data, linesGroup, newPosition, map);
         } else {
             // Reset the marker to the original position if not confirmed
             marker.setLatLng(originalLatLng);
@@ -210,20 +234,8 @@ fetchMapData().then(data => {
         // Add the task cluster group to the map
         map.addLayer(taskClusters);
 
-        // Draw lines from rescuer's vehicle to its assigned tasks
-        if (task.rescuer_id) {
-            const line = L.polyline([
-                [task.citizen_id.location.latitude, task.citizen_id.location.longitude],
-                [data.vehicle.rescuer_id.location.latitude, data.vehicle.rescuer_id.location.longitude]
-            ], {
-                color: 'blue',
-                weight: 2,
-                opacity: 0.6
-            }).addTo(linesGroup);
-
-            // Add the lines layer group to the map
-            map.addLayer(linesGroup);
-        }
+        // Draw lines from the rescuer's vehicle to assigned tasks
+        drawLines(data, linesGroup, originalLatLng, map);
     });
 
     // Apply the filter handlers for the different task types and statuses
