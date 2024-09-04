@@ -61,7 +61,7 @@ export default function mapRescuerRoutes(app) {
         try {
             const { latitude, longitude } = req.body;
 
-            await Vehicles.findOneAndUpdate({ rescuer_id: rescuerId }, {
+            await Users.findOneAndUpdate({ _id: rescuerId }, {
                 location: {
                     latitude,
                     longitude
