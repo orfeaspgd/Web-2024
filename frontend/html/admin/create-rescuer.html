@@ -58,51 +58,40 @@
         <h1 class="fs-2 text-center mb-4">Rescuer Account Creation</h1>
         <form id="createAccount">
             <div class="row mb-2">
-                <div class="col-12">
+                <!-- Personal Information -->
+                <div class="col-md-6 mb-2">
                     <label for="firstName" class="form-label">First Name:</label>
                     <input type="text" class="form-control form-control-sm" id="firstName" name="firstname" required>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-md-6 mb-2">
                     <label for="lastname" class="form-label">Last Name:</label>
                     <input type="text" class="form-control form-control-sm" id="lastname" name="lastname" required>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-md-6 mb-2">
                     <label for="username" class="form-label">Username:</label>
                     <input type="text" class="form-control form-control-sm" id="username" name="username" required>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-md-6 mb-2">
                     <label for="phone_number" class="form-label">Phone Number:</label>
                     <input type="tel" class="form-control form-control-sm" id="phone_number" name="phone_number" required>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-md-6 mb-2">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control form-control-sm" id="email" name="email" required>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-md-6 mb-2">
                     <label for="password" class="form-label">Password:</label>
                     <input type="password" class="form-control form-control-sm" id="password" name="password" required>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-md-6 mb-2">
                     <label for="vehicleName" class="form-label">Vehicle Name:</label>
                     <input type="text" class="form-control form-control-sm" id="vehicleName" name="vehicleName" required>
                 </div>
             </div>
-            <!-- Map Container -->
             <div class="row mb-2">
+                <!-- Map and Hidden Coordinates -->
                 <div class="col-12">
-                    <label for="map" class="form-label">Rescuer Location:</label>
+                    <label for="map" class="form-label">Rescuer's Location:</label>
                     <div id="map"></div>
                     <input type="hidden" id="latitude" name="latitude">
                     <input type="hidden" id="longitude" name="longitude">
