@@ -92,11 +92,11 @@ export default function mapRescuerRoutes(app) {
             const task = await Tasks.findOne({ _id: taskId, rescuer_id: null });
 
             if (!task) {
-                return res.status(404).json({ message: 'Task not found or already claimed' });
+                return res.status(404).json({ message: 'Task not found.' });
             }
 
             // Update the task to assign it to the rescuer
-            await Tasks.findByIdAndUpdate(taskId, { rescuer_id: rescuerId, assignedAt: new Date() });
+            await Tasks.findByIdAndUpdate(taskId, { rescuer_id: rescuerId, status: "in_progress", assignedAt: new Date() });
 
             res.json({
                 message: 'Task claimed successfully'
