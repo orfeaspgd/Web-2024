@@ -10,3 +10,7 @@
 .form-message {
     font-size: 0.875rem;
 }
+
+#map {
+    height: 150px;
+}
