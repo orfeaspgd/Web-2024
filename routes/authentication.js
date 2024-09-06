@@ -94,12 +94,12 @@ export default function authenticationRoutes(app) {
         await newVehicle.save();
 
         // Respond with success
-        res.json({ status: 'success', message: 'Account and vehicle created successfully.' });
+        res.json({ status: 'success', message: 'Rescuer Account and vehicle created successfully.' });
     });
 
     // Create account for citizen in the login page redirect to create account page
     app.post('/login_create_account', async (req, res) => {
-        const { firstname, lastname, username, phone_number, email, password } = req.body;
+        const { firstname, lastname, username, phone_number, email, password, latitude, longitude } = req.body;
 
         if (!phoneRegex.test(phone_number)) {
             return res.json({ status: 'error', message: 'Invalid phone number format.' });
@@ -123,10 +123,25 @@ export default function authenticationRoutes(app) {
             return res.json({ status: 'error', message: 'Email is already being used.' });
         }
 
-        const newUser = new Users({ name: firstname, surname: lastname, username: username, phone_number: phone_number, email: email, password: password, role: "citizen" });
-        newUser.save()
-            .then(() => res.json({ status: 'success', message: 'Account created successfully.' }))
-            .catch((err) => { console.log(err); res.json({ status: 'error', message: 'Something went wrong.' }) });
+        // Create a new citizen account with the given details
+        const newUser = new Users({
+            name: firstname,
+            surname: lastname,
+            username: username,
+            phone_number: phone_number,
+            email: email,
+            password: password,
+            role: "citizen",
+            location: {
+                latitude: latitude,
+                longitude: longitude
+            }});
+
+        // Save the new citizen account
+        await newUser.save();
+
+        // Respond with success
+        res.json({ status: 'success', message: 'Citizen account created successfully.' });
     });
 
     // Get the warehouse location for the map in the admin's create rescuer page and the citizen's create account page

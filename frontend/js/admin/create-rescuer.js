@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                      draggable: true
             }).addTo(map);
 
+        // Update the form fields with the marker's location
         marker.on('moveend', function(event) {
             const { lat, lng } = event.target.getLatLng();
             document.getElementById('latitude').value = lat;
