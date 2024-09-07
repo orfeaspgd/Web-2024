@@ -90,8 +90,13 @@ export default function cargoManagementRoutes(app) {
             // Find the warehouse product by product ID
             const warehouseProduct = await WarehouseProducts.findOne({ product_id: productId });
 
-            // If the warehouse product does not exist or the quantity is insufficient
-            if (!warehouseProduct || warehouseProduct.quantity < quantity) {
+            // If the warehouse product does not exist
+            if (!warehouseProduct) {
+                return res.status(400).json({ message: 'Product not found in warehouse' });
+            }
+
+            // If the quantity is insufficient
+            if (warehouseProduct.quantity < quantity) {
                 return res.status(400).json({ message: 'Insufficient product quantity in warehouse' });
             }
 

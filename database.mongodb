@@ -58,8 +58,8 @@ db.users.insertMany([
     {
         name: "Jane",
         surname: "Smith",
-        username: "janesmith",
-        password: "password456",
+        username: "js",
+        password: "456",
         email: "jane.smith@example.com",
         role: "rescuer",
         phone_number: "9876543220",
@@ -176,7 +176,7 @@ var admin = db.users.findOne({ role: "admin" });
 var rescuer1 = db.users.findOne({ role: "rescuer", username: "jg" });
 var rescuer2 = db.users.findOne({ role: "rescuer", username: "alexs" });
 var rescuer3 = db.users.findOne({ role: "rescuer", username: "johndoe" });
-var rescuer4 = db.users.findOne({ role: "rescuer", username: "janesmith" });
+var rescuer4 = db.users.findOne({ role: "rescuer", username: "js" });
 var citizen1 = db.users.findOne({ role: "citizen", username: "ap" });
 var citizen2 = db.users.findOne({ role: "citizen", username: "jsmith"});
 var citizen3 = db.users.findOne({ role: "citizen", username: "ejohnson" });

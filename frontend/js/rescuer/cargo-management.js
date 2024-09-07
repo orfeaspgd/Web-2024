@@ -30,6 +30,7 @@ function populateWarehouseProducts() {
         .then(response => response.json())
         .then(data => {
             const selectProduct = document.getElementById('selectProduct');
+            const productQuantity = document.getElementById('productQuantity');
             selectProduct.innerHTML = '';
 
             // Add the placeholder option back after clearing
@@ -47,6 +48,9 @@ function populateWarehouseProducts() {
                 productOption.value = item.product_id;
                 selectProduct.appendChild(productOption);
             });
+
+            // Clear the quantity input field
+            productQuantity.value = '';
         })
         .catch(error => {
             console.error('Error fetching warehouse products:', error);
@@ -60,16 +64,44 @@ function checkDistanceToWarehouse() {
         .then(data => {
             if (data.withinDistance) {
                 // Enable the buttons if the rescuer is within 100 meters of the warehouse
-                document.getElementById('loadProductsButton').disabled = false;
+                document.getElementById('loadProductButton').disabled = false;
                 document.getElementById('unloadProductsButton').disabled = false;
             } else {
                 // Disable the buttons if the rescuer is not within 100 meters of the warehouse
-                document.getElementById('loadProductsButton').disabled = true;
+                document.getElementById('loadProductButton').disabled = true;
                 document.getElementById('unloadProductsButton').disabled = true;
             }
         })
         .catch(error => {
             console.error('Error checking distance to warehouse:', error);
+        });
+}
+
+// Function to load selected product into the vehicle cargo
+function loadProductIntoVehicle() {
+    const product = document.getElementById('selectProduct').value;
+    const quantity = document.getElementById('productQuantity').value;
+
+    if (!product || !quantity) {
+        alert('Please select a product and enter a quantity.');
+        return;
+    }
+
+    fetch('/load-product-to-vehicle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ product, quantity })
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            populateVehicleCargo();
+            populateWarehouseProducts();
+        })
+        .catch(error => {
+            console.error('Error loading product into vehicle:', error);
         });
 }
 
@@ -84,3 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Regularly check if the rescuer is within 100 meters of the warehouse every 10 seconds
     setInterval(checkDistanceToWarehouse, 10000);
 });
+
+// Add event listeners to the buttons
+document.getElementById('loadProductButton').addEventListener('click', loadProductIntoVehicle);
