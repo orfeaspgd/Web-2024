@@ -57,10 +57,12 @@ export default function cargoManagementRoutes(app) {
         try {
             // Find all warehouse products and populate the product_id field
             const warehouse = await WarehouseProducts.find()
-                .populate('product_id');
+                .populate('product_id', 'name');
 
             // Map the warehouse products to only include the product name and quantity
             const warehouseProducts = warehouse.map(item => ({
+                warehouseId: item._id,
+                productId: item.product_id._id,
                 product: item.product_id.name,
                 quantity: item.quantity
             }));
@@ -100,12 +102,12 @@ export default function cargoManagementRoutes(app) {
                 return res.status(400).json({ message: 'Insufficient product quantity in warehouse' });
             }
 
-            // Check if the product is already in the vehicle
-            const cargoItem = vehicle.cargo.find(item => item.product_id.equals(product_id));
+            // Check if the product is already in the vehicle's cargo
+            const cargoItem = vehicle.cargo.find(item => item.product_id.equals(productId));
             if (cargoItem) {
-                cargoItem.quantity += quantity;
+                cargoItem.quantity += parseInt(quantity, 10);
             } else {
-                vehicle.cargo.push({ product_id, quantity });
+                vehicle.cargo.push({ product_id: productId, quantity: parseInt(quantity, 10) });
             }
 
             // Update the quantity of the warehouse product
