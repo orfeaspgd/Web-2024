@@ -54,6 +54,19 @@ db.users.insertMany([
             latitude: 38.245155,
             longitude: 21.739913
         }
+    },
+    {
+        name: "Jane",
+        surname: "Smith",
+        username: "janesmith",
+        password: "password456",
+        email: "jane.smith@example.com",
+        role: "rescuer",
+        phone_number: "9876543220",
+        location: {
+            latitude: 38.246127,
+            longitude: 21.7343
+        }
     }
 ]);
 
@@ -163,6 +176,7 @@ var admin = db.users.findOne({ role: "admin" });
 var rescuer1 = db.users.findOne({ role: "rescuer", username: "jg" });
 var rescuer2 = db.users.findOne({ role: "rescuer", username: "alexs" });
 var rescuer3 = db.users.findOne({ role: "rescuer", username: "johndoe" });
+var rescuer4 = db.users.findOne({ role: "rescuer", username: "janesmith" });
 var citizen1 = db.users.findOne({ role: "citizen", username: "ap" });
 var citizen2 = db.users.findOne({ role: "citizen", username: "jsmith"});
 var citizen3 = db.users.findOne({ role: "citizen", username: "ejohnson" });
@@ -301,6 +315,13 @@ db.vehicles.insertOne({
 db.vehicles.insertOne({
     name: "Vehicle 3",
     rescuer_id: rescuer3._id,
+    cargo: [],
+    task_ids: []
+});
+
+db.vehicles.insertOne({
+    name: "Vehicle 4",
+    rescuer_id: rescuer4._id,
     cargo: [],
     task_ids: []
 });

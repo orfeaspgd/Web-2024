@@ -153,7 +153,7 @@ export default function cargoManagementRoutes(app) {
     });
 
     // Check if the distance between the rescuer's location and the warehouse is within 100metres
-    app.post('/check-distance-to-warehouse-for-cargo', async (req, res) => {
+    app.get('/check-distance-to-warehouse-for-cargo', async (req, res) => {
         // Check if user is logged in
         if (!req.session.user) {
             return res.status(401).json({ message: 'Not authenticated' });
@@ -164,23 +164,31 @@ export default function cargoManagementRoutes(app) {
 
         try {
             // Fetch warehouse's location which is the location of the admin
-            const warehouseLocation = await Users.findOne({role: 'admin'}).select('location');
+            const warehouse = await Users.findOne({role: 'admin'}).select('location');
 
             // Fetch the rescuer's location
-            const rescuerLocation = await Users.findById(rescuerId).select('location');
+            const rescuer = await Users.findById(rescuerId).select('location');
 
             // Calculate the distance between the two locations
             const distance = calculateDistance(
-                warehouseLocation.latitude,
-                warehouseLocation.longitude,
-                rescuerLocation.latitude,
-                rescuerLocation.longitude
+                warehouse.location.latitude,
+                warehouse.location.longitude,
+                rescuer.location.latitude,
+                rescuer.location.longitude
             );
 
             if (distance < 100) {
-                res.json({ message: 'Rescuer is within 100 metres of the warehouse' }, {withinDistance: true});
+                res.json({
+                    distance: distance,
+                    message: 'Rescuer is within 100 metres of the warehouse',
+                    withinDistance: true
+                });
             } else {
-                res.status(400).json({ message: 'Rescuer is not within 100 metres of the warehouse' });
+                res.status(400).json({
+                    distance: distance,
+                    message: 'Rescuer is not within 100 metres of the warehouse',
+                    withinDistance: false
+                });
             }
         } catch (error) {
             res.status(500).json({ message: 'Server error' });

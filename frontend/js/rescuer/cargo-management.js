@@ -54,24 +54,24 @@ function populateWarehouseProducts() {
 }
 
 // Function to check if the rescuer is within 100 meters of the warehouse
-// function checkDistanceToWarehouse() {
-//     fetch('/check-distance-to-warehouse-for-cargo')
-//         .then(response => response.json())
-//         .then(data => {
-//             if (data.withinDistance) {
-//                 // Enable the buttons if the rescuer is within 100 meters of the warehouse
-//                 document.getElementById('loadProductsButton').disabled = false;
-//                 document.getElementById('unloadProductsButton').disabled = false;
-//             } else {
-//                 // Disable the buttons if the rescuer is not within 100 meters of the warehouse
-//                 document.getElementById('loadProductsButton').disabled = true;
-//                 document.getElementById('unloadProductsButton').disabled = true;
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error checking distance to warehouse:', error);
-//         });
-// }
+function checkDistanceToWarehouse() {
+    fetch('/check-distance-to-warehouse-for-cargo')
+        .then(response => response.json())
+        .then(data => {
+            if (data.withinDistance) {
+                // Enable the buttons if the rescuer is within 100 meters of the warehouse
+                document.getElementById('loadProductsButton').disabled = false;
+                document.getElementById('unloadProductsButton').disabled = false;
+            } else {
+                // Disable the buttons if the rescuer is not within 100 meters of the warehouse
+                document.getElementById('loadProductsButton').disabled = true;
+                document.getElementById('unloadProductsButton').disabled = true;
+            }
+        })
+        .catch(error => {
+            console.error('Error checking distance to warehouse:', error);
+        });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Populate the cargo list and warehouse products list when the page loads
@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
     populateWarehouseProducts();
 
     // Initially check if the rescuer is within 100 meters of the warehouse
-    // checkDistanceToWarehouse();
+    checkDistanceToWarehouse();
 
     // Regularly check if the rescuer is within 100 meters of the warehouse every 10 seconds
-    // setInterval(checkDistanceToWarehouse, 10000);
+    setInterval(checkDistanceToWarehouse, 10000);
 });
