@@ -60,15 +60,12 @@
             <div class="mb-3">
                 <label for="selectProduct" class="form-label">Select Products to Load:</label>
                 <select class="form-select" id="selectProduct" multiple>
-                    <!-- Products from warehouse inventory -->
-                    <option value="firstAid">First Aid Kit</option>
-                    <option value="waterBottles">Water Bottles</option>
-                    <option value="foodSupplies">Food Supplies</option>
+                    <!-- Product options will be dynamically populated with available quantities -->
                 </select>
             </div>
             <div class="mb-3">
-                <label for="productQuantity" class="form-label">Quantity:</label>
-                <input type="number" class="form-control" id="productQuantity" placeholder="Enter quantity">
+                <label for="productQuantity" class="form-label">Quantity to Load:</label>
+                <input type="number" class="form-control" id="productQuantity" placeholder="Enter quantity" min="1">
             </div>
             <div class="d-flex justify-content-center">
                 <button type="button" class="btn btn-primary" id="loadProductsButton" disabled>Load Selected Products</button>
