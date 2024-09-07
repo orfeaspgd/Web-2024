@@ -142,6 +142,31 @@ function handleFilterChanges(checkboxId, layerGroup, map) {
     });
 }
 
+// Function to claim a task
+async function claimTask(taskId) {
+    try {
+        const response = await fetch('/claim-task', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ taskId })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert('Task claimed successfully!');
+            window.location.reload();  // Reload the page to update the map
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error claiming task:', error);
+        alert('Failed to claim the task. Please try again.');
+    }
+}
+
 // Fetch the data for the map display
 fetchMapData().then(data => {
 
@@ -217,6 +242,9 @@ fetchMapData().then(data => {
         // Get vehicle name if the task is assigned to it
         const vehicleUsername = task.rescuer_id ? data.vehicle.name : '-';
 
+        // If the task is not assigned yet, include the Claim Task button
+        const claimButton = !task.rescuer_id ? `<button class="btn btn-primary mt-3" onclick="claimTask('${task._id}')">Claim Task</button>` : '';
+
         // Create the popup content for the task marker using the task data
         taskMarker.bindPopup(`
                 Name: ${task.citizen_id.name}<br> 
@@ -225,7 +253,8 @@ fetchMapData().then(data => {
                 Product: ${task.product_id.name}<br>
                 Quantity: ${task.quantity}<br>
                 Assignment Date: ${assignmentDate}<br>
-                Vehicle: ${vehicleUsername}
+                Vehicle: ${vehicleUsername}<br>
+                ${claimButton}
             `);
 
         // Add task marker to the cluster group

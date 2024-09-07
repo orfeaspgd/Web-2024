@@ -9,6 +9,7 @@
     <!-- Bootstrap JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- External CSS Files -->
+    <link rel="stylesheet" href="../../css/rescuer/cargo-management.css">
     <link rel="stylesheet" href="../../css/shared.css">
     <!-- External JS Files -->
     <script defer src="../../js/rescuer/cargo-management.js"></script>
@@ -37,5 +38,49 @@
         </ul>
     </div>
 </nav>
+
+<!-- Main Content -->
+<div class="container content-container mt-4">
+    <h1 class="text-center mb-5">Cargo Management</h1>
+
+    <!-- Products currently loaded on the vehicle -->
+    <section class="mb-5">
+        <h3 class="mb-3">Products loaded on the Vehicle:</h3>
+        <ul class="list-group" id="vehicleProducts">
+            <!-- Product list will be displayed here -->
+        </ul>
+    </section>
+
+    <!-- Load products from warehouse -->
+    <section class="mb-5">
+        <h3 class="mb-3 text-center">Load Products from Warehouse (within 100 meters):</h3>
+        <form id="loadForm">
+            <div class="mb-3">
+                <label for="selectProduct" class="form-label">Select a Product to Load:</label>
+                <select class="form-select" id="selectProduct" required>
+                    <option value="" disabled selected>Pick a product</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="productQuantity" class="form-label">Quantity to Load:</label>
+                <input type="number" class="form-control" id="productQuantity" placeholder="Enter quantity" min="1">
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" id="loadProductButton" disabled>Load Selected Product</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Unload products back to warehouse -->
+    <section class="mb-2">
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mb-3">
+            <h3 class="me-3">Unload All Products to Warehouse (within 100 meters):</h3>
+            <button type="button" class="btn btn-danger" id="unloadProductsButton" disabled>Unload All Products</button>
+        </div>
+    </section>
+
+    <!-- Message display -->
+    <div id="message" class="text-center mt-4"></div>
+</div>
 </body>
 </html>

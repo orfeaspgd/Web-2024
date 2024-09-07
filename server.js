@@ -21,6 +21,7 @@ import authenticationRoutes from "./routes/authentication.js";
 import pagesRoutes from "./routes/pages.js";
 import mapAdminRoutes from "./routes/map-admin.js";
 import mapRescuerRoutes from "./routes/map-rescuer.js";
+import cargoManagementRoutes from "./routes/cargo-management.js";
 
 const app = express();
 const port = 3000;
@@ -73,3 +74,4 @@ authenticationRoutes(app);
 pagesRoutes(app);
 mapAdminRoutes(app);
 mapRescuerRoutes(app);
+cargoManagementRoutes(app);

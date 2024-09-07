@@ -54,6 +54,19 @@ db.users.insertMany([
             latitude: 38.245155,
             longitude: 21.739913
         }
+    },
+    {
+        name: "Jane",
+        surname: "Smith",
+        username: "js",
+        password: "456",
+        email: "jane.smith@example.com",
+        role: "rescuer",
+        phone_number: "9876543220",
+        location: {
+            latitude: 38.246127,
+            longitude: 21.7343
+        }
     }
 ]);
 
@@ -139,6 +152,17 @@ products = [
         ],
         "id": 15,
     },
+    {
+            "name": "Bandages",
+            "category": "Medical Supplies",
+            "details": [
+                {
+                    "detail_name": "Type",
+                    "detail_value": "Adhesive bandages"
+                }
+            ],
+            "id": 16,
+        }
 ];
 
 db.products.insertMany(
@@ -152,12 +176,15 @@ var admin = db.users.findOne({ role: "admin" });
 var rescuer1 = db.users.findOne({ role: "rescuer", username: "jg" });
 var rescuer2 = db.users.findOne({ role: "rescuer", username: "alexs" });
 var rescuer3 = db.users.findOne({ role: "rescuer", username: "johndoe" });
+var rescuer4 = db.users.findOne({ role: "rescuer", username: "js" });
 var citizen1 = db.users.findOne({ role: "citizen", username: "ap" });
 var citizen2 = db.users.findOne({ role: "citizen", username: "jsmith"});
 var citizen3 = db.users.findOne({ role: "citizen", username: "ejohnson" });
 var citizen4 = db.users.findOne({ role: "citizen", username: "mbrown" });
 
 var product1 = db.products.findOne({ name: "DEPON" });
+var product2 = db.products.findOne({ name: "Painkillers" });
+var product3 = db.products.findOne({ name: "Bandages" });
 
 db.createCollection("warehouse_products");
 db.warehouse_products.insertOne({
@@ -165,7 +192,10 @@ db.warehouse_products.insertOne({
     quantity: 10
 });
 
-var product2 = db.products.findOne({ name: "Painkillers" });
+db.warehouse_products.insertOne({
+    product_id: product3._id,
+    quantity: 30
+});
 
 db.createCollection("tasks");
 db.tasks.insertOne({
@@ -270,7 +300,12 @@ db.vehicles.insertOne({
 db.vehicles.insertOne({
     name: "Vehicle 2",
     rescuer_id: rescuer2._id,
-    cargo: [],
+    cargo: [
+        {
+                product_id: product1._id,
+                quantity: 9
+            }
+    ],
     task_ids: [
         task3._id,
         task5._id
@@ -280,6 +315,13 @@ db.vehicles.insertOne({
 db.vehicles.insertOne({
     name: "Vehicle 3",
     rescuer_id: rescuer3._id,
+    cargo: [],
+    task_ids: []
+});
+
+db.vehicles.insertOne({
+    name: "Vehicle 4",
+    rescuer_id: rescuer4._id,
     cargo: [],
     task_ids: []
 });

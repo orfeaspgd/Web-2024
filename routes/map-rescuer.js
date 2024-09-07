@@ -88,18 +88,26 @@ export default function mapRescuerRoutes(app) {
         const taskId = req.body.taskId;
 
         try {
-            // Ensure that the task exists and has not been claimed by another rescuer
-            const task = await Tasks.findOne({ _id: taskId, rescuer_id: null });
+            // Count tasks assigned to the rescuer and that are still 'in_progress'
+            const taskCount = await Tasks.countDocuments({ rescuer_id: rescuerId, status: 'in_progress' });
 
-            if (!task) {
-                return res.status(404).json({ message: 'Task not found or already claimed' });
+            // If the rescuer already has 4 tasks, prevent assigning more
+            if (taskCount >= 4) {
+                return res.status(400).json({ message: 'You can only have up to 4 assigned tasks.' });
             }
 
             // Update the task to assign it to the rescuer
-            await Tasks.findByIdAndUpdate(taskId, { rescuer_id: rescuerId, assignedAt: new Date() });
+            await Tasks.findByIdAndUpdate(taskId, { rescuer_id: rescuerId, status: "in_progress", assignedAt: new Date() });
+
+            // Find the vehicle associated with this rescuer
+            const vehicle = await Vehicles.findOne({ rescuer_id: rescuerId });
+
+            // Add the taskId to the vehicle's task_ids array
+            vehicle.task_ids.push(taskId);
+            await vehicle.save();
 
             res.json({
-                message: 'Task claimed successfully'
+                message: 'Task claimed successfully and assigned to rescuer vehicle'
             });
         } catch (err) {
             console.error(err);

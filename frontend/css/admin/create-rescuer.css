@@ -1,5 +1,5 @@
 .form-container {
-    max-width: 400px;
+    max-width: 500px;
     margin: auto;
     padding: 1rem;
     border: 1px solid #ddd;
@@ -9,4 +9,8 @@
 
 .form-message {
     font-size: 0.875rem;
+}
+
+#map {
+    height: 300px;
 }
