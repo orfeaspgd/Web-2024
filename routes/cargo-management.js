@@ -138,6 +138,11 @@ export default function cargoManagementRoutes(app) {
             const vehicle = await Vehicles.findOne({ rescuer_id: rescuerId })
                 .populate('cargo.product_id');
 
+            // Check if the vehicle's cargo is empty
+            if (vehicle.cargo.length === 0) {
+                return res.status(400).json({ message: 'No products to unload' });
+            }
+
             // For each product in the vehicle cargo
             for (const item of vehicle.cargo) {
                 const warehouseProduct = await WarehouseProducts.findOne({ product_id: item.product_id._id });

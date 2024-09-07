@@ -107,6 +107,22 @@ function loadProductIntoVehicle() {
         });
 }
 
+// Function to unload all products from the vehicle cargo to the warehouse
+function unloadProductsFromVehicle() {
+    fetch('/unload-all-products-from-vehicle', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            populateVehicleCargo();
+            populateWarehouseProducts();
+        })
+        .catch(error => {
+            console.error('Error unloading products from vehicle:', error);
+        });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Populate the cargo list and warehouse products list when the page loads
     populateVehicleCargo();
@@ -121,3 +137,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Add event listeners to the buttons
 document.getElementById('loadProductButton').addEventListener('click', loadProductIntoVehicle);
+document.getElementById('unloadProductsButton').addEventListener('click', unloadProductsFromVehicle);
