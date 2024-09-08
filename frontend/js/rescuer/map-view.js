@@ -304,6 +304,12 @@ async function loadTasks() {
     // Clear existing tasks
     tasksContainer.innerHTML = '';
 
+    // Check if there are tasks
+    if (tasks.length === 0) {
+        tasksContainer.innerHTML = '<p class="text-center">No tasks assigned.</p>';
+        return;
+    }
+
     // Populate tasks dynamically
     tasks.forEach((task, index) => {
         const taskHTML = `
