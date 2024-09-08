@@ -8,7 +8,7 @@ import {
     Vehicles
 } from '../schemas.js';
 
-export default function mapAdminRoutes(app) {
+export default function mapAdminRoutes(app, cache) {
     // Get data for the map display
     app.get('/map-admin-data', async (req, res) => {
         try {

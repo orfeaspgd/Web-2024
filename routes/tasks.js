@@ -9,7 +9,7 @@ import {
 } from '../schemas.js';
 import { body, validationResult } from 'express-validator';
 
-export default function tasksRoutes(app) {
+export default function tasksRoutes(app, cache) {
     //populate task table for admin
     app.get('/admin_tasks_table', async (req, res) => {
         try {

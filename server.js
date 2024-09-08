@@ -36,6 +36,9 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
+import NodeCache from 'node-cache';
+const cache = new NodeCache();
+
 // Serve static files from the 'node_modules' directory
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
@@ -65,15 +68,15 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-productsRoutes(app);
-warehouseRoutes(app);
-importRoutes(app);
-categoriesRoutes(app);
-announcementsRoutes(app);
-tasksRoutes(app);
-authenticationRoutes(app);
-pagesRoutes(app);
-mapAdminRoutes(app);
-mapRescuerRoutes(app);
-cargoManagementRoutes(app);
-taskManagementRoutes(app);
+productsRoutes(app, cache);
+warehouseRoutes(app, cache);
+importRoutes(app, cache);
+categoriesRoutes(app, cache);
+announcementsRoutes(app, cache);
+tasksRoutes(app, cache);
+authenticationRoutes(app, cache);
+pagesRoutes(app, cache);
+mapAdminRoutes(app, cache);
+mapRescuerRoutes(app, cache);
+cargoManagementRoutes(app, cache);
+taskManagementRoutes(app, cache);
