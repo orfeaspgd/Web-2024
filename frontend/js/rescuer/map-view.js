@@ -1,5 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 // Map View Section
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
 window.addEventListener('load', () => {
@@ -281,9 +283,10 @@ fetchMapData().then(data => {
     handleFilterChanges('straight-lines', linesGroup, map);
 });
 
-
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 // Task Management Section
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
 // Fetch the data for the tasks assigned to the rescuer
@@ -304,11 +307,17 @@ async function loadTasks() {
     // Clear existing tasks
     tasksContainer.innerHTML = '';
 
+    // Check if there are tasks
+    if (tasks.length === 0) {
+        tasksContainer.innerHTML = '<p class="text-center">No tasks assigned.</p>';
+        return;
+    }
+
     // Populate tasks dynamically
     tasks.forEach((task, index) => {
         const taskHTML = `
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                <div class="task-item p-3 border">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2 task-item" data-task-id="${task.task_id}">
+                <div class="p-3 border">
                     <h3 class="mb-3 text-center">Task ${index + 1}:</h3>
                     <p><strong>Citizen Name: </strong>${task.citizen_name}</p>
                     <p><strong>Citizen Surname: </strong>${task.citizen_surname}</p>
@@ -319,14 +328,110 @@ async function loadTasks() {
                     <p><strong>Quantity: </strong>${task.quantity}</p>
                     <div class="text-center">
                         <button class="btn btn-success me-2 complete-task-btn" data-task-id="${task.task_id}" disabled>Complete</button>
-                        <button class="btn btn-danger cancel-task-btn" data-task-id="${task.task_id}" disabled>Cancel</button>
+                        <button class="btn btn-danger cancel-task-btn" data-task-id="${task.task_id}">Cancel</button>
                     </div>
                 </div>
             </div>
         `;
         tasksContainer.innerHTML += taskHTML;
     });
+
+    // Select all complete buttons
+    const completeButtons = document.querySelectorAll('.complete-task-btn');
+
+    // Add click event listener to each button
+    completeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            completeTask(taskId);
+        });
+    });
 }
 
-// Load tasks on page load
-loadTasks();
+// Function to check if the rescuer is within 50 meters of the tasks
+async function checkDistanceToTasks() {
+    try {
+        const response = await fetch('/check-distance-to-task-for-complete-button');
+        const data = await response.json();
+
+        if (response.ok) {
+            // Check if there are no tasks assigned or in progress
+            if (data.message === 'No tasks assigned or in progress') {
+                return;
+            }
+
+            // Enable the "Complete" button for tasks within range
+            data.forEach(task => {
+                const completeButton = document.querySelector(`.complete-task-btn[data-task-id="${task.task_id}"]`);
+                if (task.withinRange) {
+                    completeButton.removeAttribute('disabled');
+                } else {
+                    completeButton.setAttribute('disabled', 'true');
+                }
+            });
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error checking distance to tasks:', error);
+        alert('Failed to check the distance to tasks. Please try again.');
+    }
+}
+
+// Helper function to reassign task numbers dynamically
+function renumberTasks() {
+    const taskItems = document.querySelectorAll('.task-item');
+
+    // Reassign task numbers based on the current index of each task-item
+    taskItems.forEach((task, index) => {
+        const taskTitle = task.querySelector('h3');
+        taskTitle.textContent = `Task ${index + 1}:`;
+    });
+}
+
+// Function to complete a task
+async function completeTask(taskId) {
+    try {
+        const response = await fetch(`/complete-task/${taskId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Remove the completed task from the UI
+            const taskElement = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
+            if (taskElement) {
+                taskElement.remove();
+            }
+            alert('Task completed successfully!');
+
+            // Re-number remaining tasks after removal
+            renumberTasks();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error completing task:', error);
+        alert('Failed to complete the task. Please try again.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Load tasks when the page is loaded
+    loadTasks()
+        .then(() => {
+            // Check the distance to tasks after they have been loaded
+            checkDistanceToTasks();
+
+            // Regularly check the distance to tasks every 10 seconds
+            setInterval(checkDistanceToTasks, 10000);
+        })
+        .catch(error => {
+            console.error('Error loading tasks:', error);
+            alert('Failed to load tasks. Please try again.');
+        });
+});
