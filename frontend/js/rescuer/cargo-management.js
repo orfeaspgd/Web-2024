@@ -45,7 +45,7 @@ function populateWarehouseProducts() {
             data.forEach(item => {
                 const productOption = document.createElement('option');
                 productOption.textContent = `${item.product} (${item.quantity} units are available)`;
-                productOption.value = item.product_id;
+                productOption.value = item.productId;
                 selectProduct.appendChild(productOption);
             });
 
@@ -79,20 +79,22 @@ function checkDistanceToWarehouse() {
 
 // Function to load selected product into the vehicle cargo
 function loadProductIntoVehicle() {
-    const product = document.getElementById('selectProduct').value;
+    const productId = document.getElementById('selectProduct').value;
     const quantity = document.getElementById('productQuantity').value;
 
-    if (!product || !quantity) {
+    if (!productId || !quantity) {
         alert('Please select a product and enter a quantity.');
         return;
     }
+
+    const data = { productId, quantity };
 
     fetch('/load-product-to-vehicle', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ product, quantity })
+        body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(data => {
@@ -102,6 +104,22 @@ function loadProductIntoVehicle() {
         })
         .catch(error => {
             console.error('Error loading product into vehicle:', error);
+        });
+}
+
+// Function to unload all products from the vehicle cargo to the warehouse
+function unloadProductsFromVehicle() {
+    fetch('/unload-all-products-from-vehicle', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            populateVehicleCargo();
+            populateWarehouseProducts();
+        })
+        .catch(error => {
+            console.error('Error unloading products from vehicle:', error);
         });
 }
 
@@ -119,3 +137,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Add event listeners to the buttons
 document.getElementById('loadProductButton').addEventListener('click', loadProductIntoVehicle);
+document.getElementById('unloadProductsButton').addEventListener('click', unloadProductsFromVehicle);

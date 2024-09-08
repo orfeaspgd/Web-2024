@@ -215,6 +215,9 @@ const vehicleSchema = new mongoose.Schema({
     ],
 }, { versionKey: false });
 
+// Disable automatic _id creation for cargo subdocuments
+vehicleSchema.path('cargo').schema.set('_id', false);
+
 export const Users = mongoose.model('users', usersSchema);
 export const Announcements = mongoose.model('announcements', AnnouncementSchema);
 export const Products = mongoose.model('products', productsSchema);
