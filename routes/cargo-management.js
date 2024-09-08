@@ -196,7 +196,7 @@ export default function cargoManagementRoutes(app) {
                     withinDistance: true
                 });
             } else {
-                res.status(400).json({
+                res.json({
                     distance: distance,
                     message: 'Rescuer is not within 100 metres of the warehouse',
                     withinDistance: false
