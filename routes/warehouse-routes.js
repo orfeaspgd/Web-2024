@@ -16,7 +16,12 @@ export default function warehouseRoutes(app) {
             const products = await Products.find({ _id: { $in: warehouse.map(warehouseProduct => warehouseProduct.product_id) } });
             const warehouseData = products.map(product => {
                 let current_warehouse = warehouse.find(warehouse => warehouse.product_id.equals(product._id));
-                return {...product._doc, warehouseId: current_warehouse._id, warehouseQuantity: current_warehouse.quantity}; //creates copu of "product", instead of acting like a pointer
+                return {
+                    //creates copy of "product", instead of acting like a pointer
+                    ...product._doc,
+                    warehouseId: current_warehouse._id,
+                    warehouseQuantity: current_warehouse.quantity
+                };
             })
             res.json(warehouseData);
         } catch (err) {
@@ -24,6 +29,57 @@ export default function warehouseRoutes(app) {
             res.status(500).send(err);
         }
     });
+
+    //get warehouse products
+    app.get('/admin_warehouse_table', async (req, res) => {
+        try {
+            const products = await WarehouseProducts.find()
+                .populate({
+                    path: 'product_id',
+                    populate: {
+                        path: 'category',
+                    }
+                })
+            const vehicles = await Vehicles.find()
+            console.log(vehicles, JSON.stringify(vehicles))
+
+            // Create a map with all the product quantities in the form of:
+            // {
+            //   'my_first_product_id': 15,
+            //   'my_second_product_id': 21
+            //   ...
+            // }
+            const productVehicleQuantities = {}
+
+            vehicles.forEach(currentVehicle => {
+                currentVehicle.cargo.forEach(currentProduct => {
+                    if (!productVehicleQuantities[currentProduct.product_id]) {
+                        // If current product doesn't exist in the map add it and its quantity to the map
+                        productVehicleQuantities[currentProduct.product_id] = currentProduct.quantity
+                    } else {
+                        // Else add the quantity of this vehicle to the map
+                        productVehicleQuantities[currentProduct.product_id] += currentProduct.quantity
+                    }
+                })
+            })
+
+            const productsWithVehicleQuantities = products.map(product => {
+                const warehouseProduct = product._doc
+                const productId = warehouseProduct.product_id._id
+                return {
+                    // Create copy of product otherwise we can't set any properties on it
+                    ...warehouseProduct,
+                    vehicle_quantity: productVehicleQuantities[productId]
+                };
+            })
+
+            res.json(productsWithVehicleQuantities);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send(err);
+        }
+    });
+
     //admin warehouse delete product
     app.delete('/delete_product', async (req, res) => {
         try {
