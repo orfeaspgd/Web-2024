@@ -118,4 +118,71 @@ export default function taskManagementRoutes(app) {
             res.status(500).json({ message: 'Internal server error' });
         }
     });
+
+    // Complete a task
+    app.post('/complete-task/:taskId', async (req, res) => {
+        try {
+            // Check if user is logged in
+            if (!req.session.user) {
+                return res.status(401).json({ message: 'Not authenticated' });
+            }
+
+            // Access the rescuer ID from the session user object
+            const rescuerId = req.session.user._id;
+
+            // Access the task ID from the request parameters
+            const taskId = req.params.taskId;
+
+            // Find the task
+            const task = await Tasks.findById(taskId);
+
+            // Update the task status to 'completed', remove the rescuer ID, and set the completion date
+            task.status = 'completed';
+            task.rescuer_id = null;
+            task.completedAt = new Date();
+            await task.save();
+
+            // Find the vehicle that belongs to the rescuer
+            const vehicle = await Vehicles.findOne({ rescuer_id: rescuerId });
+
+            // Remove the task_id from the task_ids array of the vehicle
+            vehicle.task_ids = vehicle.task_ids.filter(id => !id.equals(taskId));
+
+            const product = task.product_id;
+            const quantity = task.quantity;
+
+            if (task.type === 'offer') {
+                // Add product and quantity to the vehicle's cargo
+                const cargoItem = vehicle.cargo.find(item => item.product_id.equals(product._id));
+
+                if (cargoItem) {
+                    cargoItem.quantity += quantity;
+                } else {
+                    vehicle.cargo.push({ product_id: product._id, quantity: taskQuantity });
+                }
+            } else if (task.type === 'request') {
+                // Remove product and quantity from the vehicle's cargo
+                const cargoProduct = vehicle.cargo.find(item => item.product_id.equals(product._id));
+
+                if (cargoProduct) {
+                    if (cargoProduct.quantity >= quantity) {
+                        cargoProduct.quantity -= quantity;
+                        if (cargoProduct.quantity === 0) {
+                            vehicle.cargo = vehicle.cargo.filter(item => !item.product_id.equals(product._id));
+                        }
+                    } else {
+                        return res.status(400).json({ message: 'Insufficient quantity in cargo' });
+                    }
+                } else {
+                    return res.status(404).json({ message: 'Product not found in cargo' });
+                }
+            }
+
+            await vehicle.save();
+
+        } catch (error) {
+            console.error('Error completing task:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    });
 }
