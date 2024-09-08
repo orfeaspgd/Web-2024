@@ -399,6 +399,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Check the distance to tasks after they have been loaded
             checkDistanceToTasks();
 
+            // Select all complete buttons
+            const completeButtons = document.querySelectorAll('.complete-task-btn');
+
+            // Add click event listener to each button
+            completeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const taskId = this.getAttribute('data-task-id');
+                    completeTask(taskId);
+                });
+            });
+
             // Regularly check the distance to tasks every 10 seconds
             setInterval(checkDistanceToTasks, 10000);
         })
