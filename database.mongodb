@@ -577,5 +577,5 @@ db.announcements.insertOne({
     createdAt: new Date("2024-07-18T08:03:00")
 });
 
-db.products.createIndex({ name: 1, category: 1}, { unique: true });
-db.warehouse_products.createIndex({ product_id: 1, quantity: 1}, { unique: true });
+db.products.createIndex({ name: 1, category: 1}, { unique: false });
+db.warehouse_products.createIndex({ product_id: 1, quantity: 1}, { unique: false });
