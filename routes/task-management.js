@@ -188,4 +188,44 @@ export default function taskManagementRoutes(app) {
             res.status(500).json({ message: 'Internal server error' });
         }
     });
+
+    // Cancel a task
+    app.post('/cancel-task/:taskId', async (req, res) => {
+        try {
+            // Check if user is logged in
+            if (!req.session.user) {
+                return res.status(401).json({ message: 'Not authenticated' });
+            }
+
+            // Access the rescuer ID from the session user object
+            const rescuerId = req.session.user._id;
+
+            // Access the task ID from the request parameters
+            const taskId = req.params.taskId;
+
+            // Find the task by ID
+            const task = await Tasks.findById(taskId);
+
+            // Find the vehicle that belongs to the rescuer
+            const vehicle = await Vehicles.findOne({ rescuer_id: rescuerId });
+
+            // Update the task status to 'pending', remove the rescuer ID and set the assignment date to null
+            task.status = 'pending';
+            task.rescuer_id = null;
+            task.assignedAt = null;
+
+            // Remove the task_id from the task_ids array of the vehicle
+            vehicle.task_ids = vehicle.task_ids.filter(id => !id.equals(taskId));
+
+            // Save the updated task and vehicle
+            await task.save();
+            await vehicle.save();
+
+            // Send a success response
+            res.status(200).json({ message: 'Task cancelled successfully' });
+        } catch (error) {
+            console.error('Error cancelling task:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    });
 }
