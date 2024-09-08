@@ -50,7 +50,6 @@ export default function tasksRoutes(app) {
 
         Tasks.insertMany(
             products
-                .filter((_product, index) => productQuantities[index] > 0)
                 .map((product, index) => {
                     return {
                         citizen_id: req.session.user._id,
@@ -59,6 +58,7 @@ export default function tasksRoutes(app) {
                         type: type
                     }
                 })
+                .filter((_product, index) => productQuantities[index] > 0)
         ).then(() => res.json({ status: 'success', message: 'Task posted.' }))
             .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
     });
