@@ -1,5 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 // Map View Section
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
 window.addEventListener('load', () => {
@@ -281,9 +283,10 @@ fetchMapData().then(data => {
     handleFilterChanges('straight-lines', linesGroup, map);
 });
 
-
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 // Task Management Section
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
 // Fetch the data for the tasks assigned to the rescuer
@@ -313,8 +316,8 @@ async function loadTasks() {
     // Populate tasks dynamically
     tasks.forEach((task, index) => {
         const taskHTML = `
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                <div class="task-item p-3 border">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2 task-item" data-task-id="${task.task_id}">
+                <div class="p-3 border">
                     <h3 class="mb-3 text-center">Task ${index + 1}:</h3>
                     <p><strong>Citizen Name: </strong>${task.citizen_name}</p>
                     <p><strong>Citizen Surname: </strong>${task.citizen_surname}</p>
@@ -331,6 +334,17 @@ async function loadTasks() {
             </div>
         `;
         tasksContainer.innerHTML += taskHTML;
+    });
+
+    // Select all complete buttons
+    const completeButtons = document.querySelectorAll('.complete-task-btn');
+
+    // Add click event listener to each button
+    completeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            completeTask(taskId);
+        });
     });
 }
 
@@ -398,17 +412,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(() => {
             // Check the distance to tasks after they have been loaded
             checkDistanceToTasks();
-
-            // Select all complete buttons
-            const completeButtons = document.querySelectorAll('.complete-task-btn');
-
-            // Add click event listener to each button
-            completeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const taskId = this.getAttribute('data-task-id');
-                    completeTask(taskId);
-                });
-            });
 
             // Regularly check the distance to tasks every 10 seconds
             setInterval(checkDistanceToTasks, 10000);

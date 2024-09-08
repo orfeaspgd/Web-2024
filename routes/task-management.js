@@ -158,7 +158,7 @@ export default function taskManagementRoutes(app) {
                 if (cargoItem) {
                     cargoItem.quantity += quantity;
                 } else {
-                    vehicle.cargo.push({ product_id: product._id, quantity: taskQuantity });
+                    vehicle.cargo.push({ product_id: product._id, quantity: quantity });
                 }
             } else if (task.type === 'request') {
                 // Remove product and quantity from the vehicle's cargo
@@ -179,6 +179,9 @@ export default function taskManagementRoutes(app) {
             }
 
             await vehicle.save();
+
+            // Send a success response
+            res.status(200).json({ message: 'Task completed successfully' });
 
         } catch (error) {
             console.error('Error completing task:', error);
