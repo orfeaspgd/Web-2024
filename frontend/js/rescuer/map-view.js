@@ -299,7 +299,7 @@ async function fetchRescuerTasks() {
 // Function to load the tasks assigned to the rescuer in HTML
 async function loadTasks() {
     const tasks = await fetchRescuerTasks();
-    const tasksContainer = document.querySelector('.row.justify-content-center');
+    const tasksContainer = document.querySelector('.current-tasks');
 
     // Clear existing tasks
     tasksContainer.innerHTML = '';
@@ -311,6 +311,7 @@ async function loadTasks() {
                 <div class="task-item p-3 border">
                     <h3 class="mb-3 text-center">Task ${index + 1}:</h3>
                     <p><strong>Citizen Name: </strong>${task.citizen_name}</p>
+                    <p><strong>Citizen Surname: </strong>${task.citizen_surname}</p>
                     <p><strong>Phone Number: </strong>${task.citizen_phone}</p>
                     <p><strong>Date Created: </strong>${new Date(task.date_created).toLocaleDateString()}</p>
                     <p><strong>Type: </strong>${task.type === 'request' ? 'Request' : 'Offer'}</p>

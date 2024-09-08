@@ -54,7 +54,8 @@ export default function taskManagementRoutes(app) {
             // Map the tasks to extract the required information
             const tasks = vehicle.task_ids.map(task => ({
                 task_id: task._id,
-                citizen_name: `${task.citizen_id.name} ${task.citizen_id.surname}`,
+                citizen_name: task.citizen_id.name,
+                citizen_surname: task.citizen_id.surname,
                 citizen_phone: task.citizen_id.phone_number,
                 date_created: task.createdAt,
                 type: task.type,
