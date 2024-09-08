@@ -8,7 +8,10 @@ import {
     Vehicles
 } from '../schemas.js';
 
-export default function warehouseRoutes(app) {
+import NodeCache from 'node-cache';
+const cache = new NodeCache();
+
+export default function warehouseRoutes(app, cache) {
     //get warehouse products
     app.get('/warehouse_products', async (req, res) => {
         try {
@@ -142,6 +145,7 @@ export default function warehouseRoutes(app) {
                 }
             }
             await Announcements.deleteMany({products: []});
+            cache.del('categories');
             res.json({ status: 'success', message: 'Category deleted.' });
         } catch (err) {
             console.error(err);
