@@ -8,7 +8,4 @@ server.js is the main server file for the backend operations
 
 schemas.js is used in server.js to include the mongoose schemas for every mongodb document (aka table) in our database
 
-getTasksData in home_admin.js is used to display a table that queries the database for the available admin tasks. home_admin.js is called within home_admin.html where home_admin.js sends a get request to the server.js file to execute the query and send it back to home_admin.js as a json file where it gets converted into table rows. then the table gets sent back to home_admin and gets displayed where the `<div id="taskTable"></div>` tags are
-additional css properties are also used to display the table correctly
-
 
