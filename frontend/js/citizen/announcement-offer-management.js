@@ -13,7 +13,6 @@ const getAnnouncementsData = () => {
             });
             table.appendChild(headerRow);
             data.forEach(announcement => {
-                console.log(announcement);
                 let row = document.createElement('tr');
 
                 let cell1 = document.createElement('td');
