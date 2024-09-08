@@ -17,8 +17,8 @@ db.users.insertOne({
 
 db.users.insertMany([
     {
-        name: "Johnny",
-        surname: "Georgoulis",
+        name: "Jonny",
+        surname: "Greenwood",
         username: "jg",
         password: "321",
         email: "jg@jg.com",
