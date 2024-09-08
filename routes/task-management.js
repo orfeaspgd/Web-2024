@@ -25,5 +25,47 @@ export default function taskManagementRoutes(app) {
         return R * c; // in metres
     }
 
-    
+    // View Tasks Assigned to Rescuer (Vehicle)
+    app.get('/view-rescuer-tasks', async (req, res) => {
+        // Check if user is logged in
+        if (!req.session.user) {
+            return res.status(401).json({ message: 'Not authenticated' });
+        }
+
+        // Access the rescuer ID from the session user object
+        const rescuerId = req.session.user._id;
+
+        try {
+            // Find the vehicle that belongs to the rescuer
+            const vehicle = await Vehicles.findOne({ rescuer_id: rescuerId })
+                .populate({
+                    path: 'task_ids',
+                    populate: [
+                        { path: 'citizen_id', select: 'name surname phone_number' },
+                        { path: 'product_id', select: 'name details' }
+                    ]
+                });
+
+            // Check if vehicle was found
+            if (!vehicle) {
+                return res.status(404).json({ message: 'Vehicle not found for the rescuer.' });
+            }
+
+            // Map the tasks to extract the required information
+            const tasks = vehicle.task_ids.map(task => ({
+                task_id: task._id,
+                citizen_name: `${task.citizen_id.name} ${task.citizen_id.surname}`,
+                citizen_phone: task.citizen_id.phone_number,
+                date_created: task.createdAt,
+                type: task.type,
+                quantity: task.quantity,
+                product_name: task.product_id.name
+            }));
+
+            res.json(tasks);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Server error' });
+        }
+    });
 }

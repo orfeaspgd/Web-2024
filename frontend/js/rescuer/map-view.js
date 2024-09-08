@@ -1,3 +1,7 @@
+///////////////////////////////////////////////////////////////////////////////////
+// Map View Section
+///////////////////////////////////////////////////////////////////////////////////
+
 window.addEventListener('load', () => {
     // Set all filters to checked by default when the page loads
     document.getElementById('assigned-requests').checked = true;
@@ -276,3 +280,52 @@ fetchMapData().then(data => {
     // Apply the filter handlers for the lines
     handleFilterChanges('straight-lines', linesGroup, map);
 });
+
+
+///////////////////////////////////////////////////////////////////////////////////
+// Task Management Section
+///////////////////////////////////////////////////////////////////////////////////
+
+// Fetch the data for the tasks assigned to the rescuer
+async function fetchRescuerTasks() {
+    try {
+        const response = await fetch('/view-rescuer-tasks');
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching rescuer tasks:', error);
+    }
+}
+
+// Function to load the tasks assigned to the rescuer in HTML
+async function loadTasks() {
+    const tasks = await fetchRescuerTasks();
+    const tasksContainer = document.querySelector('.row.justify-content-center');
+
+    // Clear existing tasks
+    tasksContainer.innerHTML = '';
+
+    // Populate tasks dynamically
+    tasks.forEach((task, index) => {
+        const taskHTML = `
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                <div class="task-item p-3 border">
+                    <h3 class="mb-3 text-center">Task ${index + 1}:</h3>
+                    <p><strong>Citizen Name: </strong>${task.citizen_name}</p>
+                    <p><strong>Phone Number: </strong>${task.citizen_phone}</p>
+                    <p><strong>Date Created: </strong>${new Date(task.date_created).toLocaleDateString()}</p>
+                    <p><strong>Type: </strong>${task.type === 'request' ? 'Request' : 'Offer'}</p>
+                    <p><strong>Product: </strong>${task.product_name}</p>
+                    <p><strong>Quantity: </strong>${task.quantity}</p>
+                    <div class="text-center">
+                        <button class="btn btn-success me-2 complete-task-btn" data-task-id="${task.task_id}" disabled>Complete</button>
+                        <button class="btn btn-danger cancel-task-btn" data-task-id="${task.task_id}" disabled>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        tasksContainer.innerHTML += taskHTML;
+    });
+}
+
+// Load tasks on page load
+loadTasks();
