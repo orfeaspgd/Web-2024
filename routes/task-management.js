@@ -69,4 +69,56 @@ export default function taskManagementRoutes(app) {
             res.status(500).json({ message: 'Server error' });
         }
     });
+
+    // Check if the distance between the rescuer's location and the task location is within 50 meters
+    app.get('/check-distance-to-task-for-complete-button', async (req, res) => {
+        try {
+            // Check if user is logged in
+            if (!req.session.user) {
+                return res.status(401).json({ message: 'Not authenticated' });
+            }
+
+            // Access the rescuer ID from the session user object
+            const rescuerId = req.session.user._id;
+
+            // Fetch the rescuer's location
+            const rescuer = await Users.findById(rescuerId).select('location');
+
+            // Fetch the tasks assigned to this rescuer
+            const tasks = await Tasks.find({ rescuer_id: rescuerId, status: 'in_progress' })
+                .populate('citizen_id', 'location');
+
+            // Check if there are no tasks assigned or in progress
+            if (!tasks.length) {
+                return res.status(404).json({ message: 'No tasks assigned or in progress' });
+            }
+
+            // Array to store task distances and status of completion button activation
+            const taskDistances = tasks.map((task) => {
+                const citizenLocation = task.citizen_id.location;
+                const rescuerLocation = rescuer.location;
+                const distance = calculateDistance(
+                    rescuerLocation.latitude,
+                    rescuerLocation.longitude,
+                    citizenLocation.latitude,
+                    citizenLocation.longitude
+                );
+
+                return {
+                    task_id: task._id,
+                    distance,
+                    withinRange: distance <= 50
+                };
+            });
+
+            // Respond with task distances and whether the "Complete" button should be enabled
+            res.status(200).json({
+                message: 'Distance check complete',
+                taskDistances,
+            });
+        } catch (error) {
+            console.error('Error checking task distance:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    });
 }
