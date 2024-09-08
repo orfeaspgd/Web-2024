@@ -420,6 +420,9 @@ async function completeTask(taskId) {
 
             // Re-number remaining tasks after removal
             renumberTasks();
+
+            // Reload the page to update the map
+            window.location.reload();
         } else {
             alert(data.message);
         }
@@ -451,6 +454,9 @@ async function cancelTask(taskId) {
 
             // Re-number remaining tasks after removal
             renumberTasks();
+
+            // Reload the page to update the map
+            window.location.reload();
         } else {
             alert(data.message);
         }
