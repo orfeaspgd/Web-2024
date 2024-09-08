@@ -325,7 +325,7 @@ async function loadTasks() {
                     <p><strong>Quantity: </strong>${task.quantity}</p>
                     <div class="text-center">
                         <button class="btn btn-success me-2 complete-task-btn" data-task-id="${task.task_id}" disabled>Complete</button>
-                        <button class="btn btn-danger cancel-task-btn" data-task-id="${task.task_id}" disabled>Cancel</button>
+                        <button class="btn btn-danger cancel-task-btn" data-task-id="${task.task_id}">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -334,5 +334,48 @@ async function loadTasks() {
     });
 }
 
-// Load tasks on page load
-loadTasks();
+// Function to check if the rescuer is within 50 meters of the tasks
+async function checkDistanceToTasks() {
+    try {
+        const response = await fetch('/check-distance-to-task-for-complete-button');
+        const data = await response.json();
+
+        if (response.ok) {
+            // Check if there are no tasks assigned or in progress
+            if (data.message === 'No tasks assigned or in progress') {
+                return;
+            }
+
+            // Enable the "Complete" button for tasks within range
+            data.forEach(task => {
+                const completeButton = document.querySelector(`.complete-task-btn[data-task-id="${task.task_id}"]`);
+                if (task.withinRange) {
+                    completeButton.removeAttribute('disabled');
+                } else {
+                    completeButton.setAttribute('disabled', 'true');
+                }
+            });
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error checking distance to tasks:', error);
+        alert('Failed to check the distance to tasks. Please try again.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Load tasks when the page is loaded
+    loadTasks()
+        .then(() => {
+            // Check the distance to tasks after they have been loaded
+            checkDistanceToTasks();
+
+            // Regularly check the distance to tasks every 10 seconds
+            setInterval(checkDistanceToTasks, 10000);
+        })
+        .catch(error => {
+            console.error('Error loading tasks:', error);
+            alert('Failed to load tasks. Please try again.');
+        });
+});

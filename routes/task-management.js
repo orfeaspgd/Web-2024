@@ -90,7 +90,7 @@ export default function taskManagementRoutes(app) {
 
             // Check if there are no tasks assigned or in progress
             if (!tasks.length) {
-                return res.status(404).json({ message: 'No tasks assigned or in progress' });
+                return res.status(200).json({ message: 'No tasks assigned or in progress' });
             }
 
             // Array to store task distances and status of completion button activation
@@ -112,10 +112,7 @@ export default function taskManagementRoutes(app) {
             });
 
             // Respond with task distances and whether the "Complete" button should be enabled
-            res.status(200).json({
-                message: 'Distance check complete',
-                taskDistances,
-            });
+            res.status(200).json(taskDistances);
         } catch (error) {
             console.error('Error checking task distance:', error);
             res.status(500).json({ message: 'Internal server error' });
