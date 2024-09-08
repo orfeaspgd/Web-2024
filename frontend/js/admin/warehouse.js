@@ -1,18 +1,44 @@
-//populate task table for admin
-const getTasksData = () => {
-    fetch('/admin_tasks_table')
+//populate warehouse table for admin
+const getWarehouseData = () => {
+    // Convert result of querySelectorAll to array otherwise some
+    // actions seem to not work, funky business with NodeArray?
+    const categoryCheckboxes = [ ...document.querySelectorAll('#warehouse-table-filter-ul input') ]
+
+    let searchParams = new URLSearchParams('')
+    let activeCategoryIds
+
+    // If `all` checkbox not selected
+    if (!categoryCheckboxes[0].checked) {
+        activeCategoryIds = categoryCheckboxes
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.name)
+
+        if (activeCategoryIds.length) {
+            searchParams.set('categories', activeCategoryIds)
+        } else {
+            searchParams.set('no-categories', true)
+        }
+    }
+
+    fetch('/admin_warehouse_table?' + searchParams.toString())
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
             let table = document.createElement('table');
             let headerRow = document.createElement('tr');
-            let columnNames = ['Citizen Name', 'Citizen Surname', 'Rescuer Name', 'Rescuer Surname', 'Product Name', 'Requested Quantity', 'Status', 'Type', 'Location'];
+            let columnNames = [
+                'Product',
+                'Category',
+                'Details',
+                'Quantity in house',
+                'Quantity in Vehicles'
+            ];
             columnNames.forEach(name => {
                 let th = document.createElement('th');
                 th.textContent = name;
                 headerRow.appendChild(th);
             });
             table.appendChild(headerRow);
-            data.forEach(task => {
+            data.forEach(product => {
                 let row = document.createElement('tr');
 
                 let cell1 = document.createElement('td');
@@ -20,39 +46,37 @@ const getTasksData = () => {
                 let cell3 = document.createElement('td');
                 let cell4 = document.createElement('td');
                 let cell5 = document.createElement('td');
-                let cell6 = document.createElement('td');
-                let cell7 = document.createElement('td');
-                let cell8 = document.createElement('td');
-                let cell9 = document.createElement('td');
 
-                cell1.textContent = task.citizen_id.name;
+                cell1.textContent = product.product_id.name
                 row.appendChild(cell1);
-                cell2.textContent = task.citizen_id.surname;
+                cell2.textContent = product.product_id.category.category_name
                 row.appendChild(cell2);
-                cell3.textContent = task.rescuer_id ? task.rescuer_id.name : '-';
+                let detailList = document.createElement('ul');
+                product.product_id.details
+                    // Only filter to details that are not empty
+                    .filter(detail => detail.detail_value || detail.detail_name)
+                    .forEach(detail => {
+                        let listItem = document.createElement('li');
+                        listItem.textContent = detail.detail_name + ': ' + detail.detail_value
+                        detailList.appendChild(listItem);
+                    });
+                if (!detailList.textContent) detailList.textContent = 'N/A'
+                cell3.appendChild(detailList);
                 row.appendChild(cell3);
-                cell4.textContent = task.rescuer_id ? task.rescuer_id.surname : '-';
+                cell4.textContent = product.quantity
                 row.appendChild(cell4);
-                cell5.textContent = task.product_id.name;
+                cell5.textContent = product.vehicle_quantity
                 row.appendChild(cell5);
-                cell6.textContent = task.quantity;
-                row.appendChild(cell6);
-                cell7.textContent = task.status;
-                row.appendChild(cell7);
-                cell8.textContent = task.type;
-                row.appendChild(cell8);
-                cell9.textContent = task.citizen_id.location.latitude + ', ' + task.citizen_id.location.longitude;
-                row.appendChild(cell9);
 
                 table.appendChild(row);
             });
-            document.getElementById('taskTable').innerHTML = '';
-            document.getElementById('taskTable').appendChild(table);
+            document.getElementById('warehouseTable').innerHTML = '';
+            document.getElementById('warehouseTable').appendChild(table);
         })
         .catch(error => console.error('Error:', error));
 }
-getTasksData();
-setInterval(getTasksData, 5000); // Refresh the table every 5 seconds
+getWarehouseData();
+setInterval(getWarehouseData, 5000); // Refresh the table every 5 seconds
 
 //get products data and populate select elements
 const pullProductsData = () => {
@@ -165,6 +189,55 @@ const pullCategoriesData = () => {
                     selectCategory.appendChild(option);
                 });
             });
+
+            // --------For the filter of the warehouse table----------------
+            const ul = document.querySelector('#warehouse-table-filter-ul')
+
+            ul.innerHTML = `
+                <li>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="all" value="all" id="flexCheckDefault" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            All
+                        </label>
+                    </div>
+                </li>
+                ${
+                    data.map(category => `
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="${category._id}" value="${category._id}" id="flexCheckDefault" checked>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ${category.category_name}
+                                </label>
+                            </div>
+                        </li>
+                    `).join('')
+                }
+            `
+
+            // Convert result of querySelectorAll to array otherwise some
+            // actions seem to not work, funky business with NodeArray?
+            const checkboxes = [ ...document.querySelectorAll('#warehouse-table-filter-ul input') ]
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', e => {
+                    const categoryId = e.currentTarget.name;
+                    const checked = e.currentTarget.checked;
+
+                    if (categoryId === 'all') {
+                        if (checked) {
+                            checkboxes.forEach(currentCheckbox => currentCheckbox.checked = true)
+                        } else {
+                            checkboxes.forEach(currentCheckbox => currentCheckbox.checked = false)
+                        }
+                    } else {
+                        if (!checked) checkboxes[0].checked = false
+                    }
+                    getWarehouseData()
+                })
+            })
+
         })
         .catch(error => console.error('Error:', error));
 }
