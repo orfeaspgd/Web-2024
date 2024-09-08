@@ -4,6 +4,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default function pagesRoutes(app, cache) {
     // Home page route for all users (admin, citizen, rescuer)
+    app.get('/', (req, res) => {
+        res.redirect('/home')
+    })
     app.get('/home', (req, res) => {
         if (req.session.user && req.session.user.role === 'admin') {
             res.sendFile(path.join(__dirname, '../frontend/html/admin/warehouse.html'));
