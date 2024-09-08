@@ -138,11 +138,129 @@ db.users.insertMany([
     }
 ]);
 
-db.categories.insertOne({
-    "category_name": "Medical Supplies"
-});
+db.categories.insertMany([
+    {
+        category_name: "Personal Hygiene"
+    },
+    {
+        category_name: "Car Supplies"
+    },
+    {
+        category_name: "Medical Supplies"
+    }
+]);
 
 products = [
+    {
+        "name": "Toothbrush",
+        "category": "Personal Hygiene",
+        "details": [
+            {
+                "detail_name": "",
+                "detail_value": ""
+            }
+        ],
+        "id": 4,
+    },
+    {
+        "name": "Toilet Paper",
+        "category": "Personal Hygiene",
+        "details": [
+            {
+                "detail_name": "Quantity",
+                "detail_value": "10"
+            }
+        ],
+        "id": 5,
+    },
+    {
+        "name": "Toothpaste",
+        "category": "Personal Hygiene",
+        "details": [
+            {
+                "detail_name": "Volume",
+                "detail_value": "100ml"
+            }
+        ],
+        "id": 6,
+    },
+    {
+        "name": "Windshield Wipers",
+        "category": "Car Supplies",
+        "details": [
+            {
+                "detail_name": "",
+                "detail_value": ""
+            }
+        ],
+        "id": 7,
+    },
+    {
+        "name": "Car Battery",
+        "category": "Car Supplies",
+        "details": [
+            {
+                "detail_name": "",
+                "detail_value": ""
+            }
+        ],
+        "id": 8,
+    },
+    {
+        "name": "Brake Fluid",
+        "category": "Car Supplies",
+        "details": [
+            {
+                "detail_name": "Volume",
+                "detail_value": "1L"
+            }
+        ],
+        "id": 9,
+    },
+    {
+        "name": "Tires",
+        "category": "Car Supplies",
+        "details": [
+            {
+                "detail_name": "",
+                "detail_value": ""
+            }
+        ],
+        "id": 10,
+    },
+    {
+        "name": "Car Oil",
+        "category": "Car Supplies",
+        "details": [
+            {
+                "detail_name": "Volume",
+                "detail_value": "1L"
+            }
+        ],
+        "id": 11,
+    },
+    {
+        "name": "Petrol",
+        "category": "Car Supplies",
+        "details": [
+            {
+                "detail_name": "Volume",
+                "detail_value": "2L"
+            }
+        ],
+        "id": 12,
+    },
+    {
+        "name": "Bandages",
+        "category": "Medical Supplies",
+        "details": [
+            {
+                "detail_name": "Type",
+                "detail_value": "Adhesive bandages"
+            }
+        ],
+        "id": 13,
+    },
     {
         "name": "DEPON",
         "category": "Medical Supplies",
@@ -164,18 +282,7 @@ products = [
             }
         ],
         "id": 15,
-    },
-    {
-            "name": "Bandages",
-            "category": "Medical Supplies",
-            "details": [
-                {
-                    "detail_name": "Type",
-                    "detail_value": "Adhesive bandages"
-                }
-            ],
-            "id": 16,
-        }
+    }
 ];
 
 db.products.insertMany(
