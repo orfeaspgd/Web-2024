@@ -27,7 +27,7 @@ export default function tasksRoutes(app) {
     //populate offers table for citizen
     app.get('/citizen_offers_table', async (req, res) => {
         try {
-            const offers = await Tasks.find()
+            const offers = await Tasks.find({type: 'offer', citizen_id: req.session.user._id})
                 .populate('product_id', 'name quantity storage_quantity -_id');
             res.json(offers);
         } catch (err) {
@@ -47,11 +47,9 @@ export default function tasksRoutes(app) {
             return res.status(400).json({ status: 'error', message: 'Invalid input.' });
         }
         const { products, type, productQuantities } = req.body;
-        console.log('----products----', products)
 
         Tasks.insertMany(
             products
-                .filter((_product, index) => productQuantities[index] > 0)
                 .map((product, index) => {
                     return {
                         citizen_id: req.session.user._id,
@@ -60,6 +58,7 @@ export default function tasksRoutes(app) {
                         type: type
                     }
                 })
+                .filter((_product, index) => productQuantities[index] > 0)
         ).then(() => res.json({ status: 'success', message: 'Task posted.' }))
             .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
     });
