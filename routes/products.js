@@ -8,12 +8,18 @@ import {
   Vehicles
 } from '../schemas.js';
 
-export default function productsRoutes(app) {
+export default function productsRoutes(app, cache) {
 //get all products
   app.get('/products', async (req, res) => {
     try {
-      const products = await Products.find({}, 'name');
-      res.json(products);
+      const cachedData = cache.get('products');
+      if(cachedData) {
+        return res.json(cachedData);
+      } else {
+        const products = await Products.find({}, 'name');
+        cache.set('products', products);
+        res.json(products);
+      }
     } catch (err) {
       console.error(err);
       res.status(500).send(err);

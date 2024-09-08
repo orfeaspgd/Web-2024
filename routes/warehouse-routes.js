@@ -146,6 +146,7 @@ export default function warehouseRoutes(app, cache) {
             }
             await Announcements.deleteMany({products: []});
             cache.del('categories');
+            cache.del('products');
             res.json({ status: 'success', message: 'Category deleted.' });
         } catch (err) {
             console.error(err);
@@ -185,6 +186,7 @@ export default function warehouseRoutes(app, cache) {
 
         // Create and save the new product
         const newProduct = new Products({ name: productName, category: selectCategory, details: productDetails });
+        cache.del('products');
         newProduct.save()
             .then(() => res.json({ status: 'success', message: 'Product created.' }))
             .catch((err) => {
@@ -201,6 +203,7 @@ export default function warehouseRoutes(app, cache) {
             return res.json({ status: 'error', message: 'Category already exists.' });
         }
         const newCategory = new Categories({ category_name: categoryName});
+        cache.del('categories');
         newCategory.save()
             .then(() => res.json({ status: 'success', message: 'Category created.' }))
             .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
@@ -238,6 +241,7 @@ export default function warehouseRoutes(app, cache) {
             if (!product) {
                 return res.status(404).json({ status: 'error', message: 'Product not found' });
             }
+            cache.del('products');
             res.json({ status: 'success', message: 'Product updated successfully.' });
         } catch (err) {
             console.error('Error updating product:', err);

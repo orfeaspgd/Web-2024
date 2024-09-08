@@ -10,7 +10,7 @@ import {
 
 import { body, validationResult } from 'express-validator';
 
-export default function announcementsRoutes(app) {
+export default function announcementsRoutes(app, cache) {
     //populate announcements table for citizen
     app.get('/citizen_announcements_table', async (req, res) => {
         try {

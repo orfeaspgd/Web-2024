@@ -8,7 +8,7 @@ import {
     Vehicles
 } from '../schemas.js';
 
-export default function taskManagementRoutes(app) {
+export default function taskManagementRoutes(app, cache) {
     // Helper function to calculate the distance between two points using the Haversine formula (in meters)
     function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371e3; // metres

@@ -11,7 +11,7 @@ import {
 const phoneRegex = /^\d{10}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   //phone number and email regular expressions
 
-export default function authenticationRoutes(app) {
+export default function authenticationRoutes(app, cache) {
     // Login page
     app.post('/login', async (req, res) => {
         const { username, password } = req.body;

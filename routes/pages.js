@@ -2,7 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default function pagesRoutes(app) {
+export default function pagesRoutes(app, cache) {
     // Home page route for all users (admin, citizen, rescuer)
     app.get('/home', (req, res) => {
         if (req.session.user && req.session.user.role === 'admin') {

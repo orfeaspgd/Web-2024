@@ -8,7 +8,7 @@ import {
     Vehicles
 } from '../schemas.js';
 
-export default function importRoutes(app) {
+export default function importRoutes(app, cache) {
     //populate database with data from usidas
     app.post('/pull_from_usidas', async (req, res) => {
         try{const usidasJson = await fetch("http://usidas.ceid.upatras.gr/web/2023/export.php")
@@ -47,6 +47,8 @@ export default function importRoutes(app) {
                     return current_product
                 })
             )
+            cache.del('categories');
+            cache.del('products');
             res.json({ status: 'success', message: 'Products added.' })
         }
         catch (err) {
@@ -91,6 +93,8 @@ export default function importRoutes(app) {
                     return current_product
                 })
             )
+            cache.del('categories');
+            cache.del('products');
             res.json({ status: 'success', message: 'Products added.' })
         }
         catch (err) {

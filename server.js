@@ -68,15 +68,15 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-productsRoutes(app);
+productsRoutes(app, cache);
 warehouseRoutes(app, cache);
-importRoutes(app);
+importRoutes(app, cache);
 categoriesRoutes(app, cache);
-announcementsRoutes(app);
-tasksRoutes(app);
-authenticationRoutes(app);
-pagesRoutes(app);
-mapAdminRoutes(app);
-mapRescuerRoutes(app);
-cargoManagementRoutes(app);
-taskManagementRoutes(app);
+announcementsRoutes(app, cache);
+tasksRoutes(app, cache);
+authenticationRoutes(app, cache);
+pagesRoutes(app, cache);
+mapAdminRoutes(app, cache);
+mapRescuerRoutes(app, cache);
+cargoManagementRoutes(app, cache);
+taskManagementRoutes(app, cache);

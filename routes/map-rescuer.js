@@ -8,7 +8,7 @@ import {
     Vehicles
 } from '../schemas.js';
 
-export default function mapRescuerRoutes(app) {
+export default function mapRescuerRoutes(app, cache) {
     // Get data for the map display
     app.get('/map-rescuer-data', async (req, res) => {
         // Check if user is logged in
