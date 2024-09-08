@@ -364,6 +364,34 @@ async function checkDistanceToTasks() {
     }
 }
 
+// Function to complete a task
+async function completeTask(taskId) {
+    try {
+        const response = await fetch(`/complete-task/${taskId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Remove the completed task from the UI
+            const taskElement = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
+            if (taskElement) {
+                taskElement.remove();
+            }
+            alert('Task completed successfully!');
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error completing task:', error);
+        alert('Failed to complete the task. Please try again.');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Load tasks when the page is loaded
     loadTasks()
