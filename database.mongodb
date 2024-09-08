@@ -122,6 +122,19 @@ db.users.insertMany([
             latitude: 38.247319,
             longitude: 21.732106
         }
+    },
+    {
+        name: "Mary",
+        surname: "Jane",
+        username: "mj",
+        password: "pass123",
+        email: "mj@.com",
+        role: "rescuer",
+        phone_number: "9283843210",
+        location: {
+            latitude: 38.245155,
+            longitude: 21.739913
+        }
     }
 ]);
 
