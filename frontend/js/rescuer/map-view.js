@@ -378,6 +378,17 @@ async function checkDistanceToTasks() {
     }
 }
 
+// Helper function to reassign task numbers dynamically
+function renumberTasks() {
+    const taskItems = document.querySelectorAll('.task-item');
+
+    // Reassign task numbers based on the current index of each task-item
+    taskItems.forEach((task, index) => {
+        const taskTitle = task.querySelector('h3');
+        taskTitle.textContent = `Task ${index + 1}:`;
+    });
+}
+
 // Function to complete a task
 async function completeTask(taskId) {
     try {
@@ -397,6 +408,9 @@ async function completeTask(taskId) {
                 taskElement.remove();
             }
             alert('Task completed successfully!');
+
+            // Re-number remaining tasks after removal
+            renumberTasks();
         } else {
             alert(data.message);
         }
