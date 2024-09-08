@@ -33,7 +33,24 @@ export default function warehouseRoutes(app) {
     //get warehouse products
     app.get('/admin_warehouse_table', async (req, res) => {
         try {
-            const products = await WarehouseProducts.find()
+            const requestedCategoryIds = req.query.categories?.split(',')
+
+            // No categories found
+            if (req.query['no-categories']) return res.json([])
+
+            let where = {}
+            if (requestedCategoryIds?.length) {
+                const productIds = await Products.find(
+                    {category: { $in: requestedCategoryIds }},
+                    { _id: true } // only get the _id field
+                )
+
+                where = {
+                    product_id: { $in: productIds.map(product => product._id) }
+                }
+            }
+
+            const products = await WarehouseProducts.find(where)
                 .populate({
                     path: 'product_id',
                     populate: {
@@ -41,7 +58,6 @@ export default function warehouseRoutes(app) {
                     }
                 })
             const vehicles = await Vehicles.find()
-            console.log(vehicles, JSON.stringify(vehicles))
 
             // Create a map with all the product quantities in the form of:
             // {

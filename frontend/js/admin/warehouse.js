@@ -1,6 +1,26 @@
 //populate warehouse table for admin
 const getWarehouseData = () => {
-    fetch('/admin_warehouse_table')
+    // Convert result of querySelectorAll to array otherwise some
+    // actions seem to not work, funky business with NodeArray?
+    const categoryCheckboxes = [ ...document.querySelectorAll('#warehouse-table-filter-ul input') ]
+
+    let searchParams = new URLSearchParams('')
+    let activeCategoryIds
+
+    // If `all` checkbox not selected
+    if (!categoryCheckboxes[0].checked) {
+        activeCategoryIds = categoryCheckboxes
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.name)
+
+        if (activeCategoryIds.length) {
+            searchParams.set('categories', activeCategoryIds)
+        } else {
+            searchParams.set('no-categories', true)
+        }
+    }
+
+    fetch('/admin_warehouse_table?' + searchParams.toString())
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
             let table = document.createElement('table');
@@ -169,6 +189,55 @@ const pullCategoriesData = () => {
                     selectCategory.appendChild(option);
                 });
             });
+
+            // --------For the filter of the warehouse table----------------
+            const ul = document.querySelector('#warehouse-table-filter-ul')
+
+            ul.innerHTML = `
+                <li>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="all" value="all" id="flexCheckDefault" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            All
+                        </label>
+                    </div>
+                </li>
+                ${
+                    data.map(category => `
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="${category._id}" value="${category._id}" id="flexCheckDefault" checked>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ${category.category_name}
+                                </label>
+                            </div>
+                        </li>
+                    `).join('')
+                }
+            `
+
+            // Convert result of querySelectorAll to array otherwise some
+            // actions seem to not work, funky business with NodeArray?
+            const checkboxes = [ ...document.querySelectorAll('#warehouse-table-filter-ul input') ]
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', e => {
+                    const categoryId = e.currentTarget.name;
+                    const checked = e.currentTarget.checked;
+
+                    if (categoryId === 'all') {
+                        if (checked) {
+                            checkboxes.forEach(currentCheckbox => currentCheckbox.checked = true)
+                        } else {
+                            checkboxes.forEach(currentCheckbox => currentCheckbox.checked = false)
+                        }
+                    } else {
+                        if (!checked) checkboxes[0].checked = false
+                    }
+                    getWarehouseData()
+                })
+            })
+
         })
         .catch(error => console.error('Error:', error));
 }
