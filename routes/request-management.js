@@ -27,9 +27,8 @@ export default function categoriesRoutes(app, cache) {
     app.get('/get-products-by-searching/:searchTerm', async (req, res) => {
         try {
             const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' } }, 'name');
-            if (!products || products.length === 0) {
-                return res.status(404).json({ message: 'No products found for this search term' });
-            }
+
+            // Respond with the products found
             res.json(products);
         } catch (err) {
             console.error('Error fetching products by search term:', err);
