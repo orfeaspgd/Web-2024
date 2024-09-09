@@ -1,3 +1,56 @@
+// Function to fetch and display requests
+async function fetchAndDisplayRequests() {
+    try {
+        const response = await fetch('/get-requests-by-citizen');
+        if (!response.ok) {
+            throw new Error('Failed to fetch requests');
+        }
+
+        const requests = await response.json();
+
+        const requestsList = document.getElementById('requests');
+        requestsList.innerHTML = ''; // Clear existing list
+
+        requests.forEach(request => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item');
+
+            // Check if there are no requests
+            if (requests.length === 0) {
+                const message = document.createElement('li');
+                message.classList.add('list-group-item');
+                message.textContent = 'You have no requests at this time.';
+                requestsList.appendChild(message);
+                return;
+            }
+
+            // Define a mapping for status codes
+            const statusMapping = {
+                'pending': 'Pending',
+                'in_progress': 'In Progress',
+                'completed': 'Completed',
+                'cancelled': 'Cancelled'
+            };
+
+            // Create request details
+            let details = `
+                <strong>Product:</strong> ${request.product_id.name} <br>
+                <strong>Quantity:</strong> ${request.quantity} <br>
+                <strong>Status:</strong> ${statusMapping[request.status]} <br>
+                <strong>Created At:</strong> ${new Date(request.createdAt).toLocaleDateString()} <br>
+                <strong>Assigned At:</strong> ${request.assignedAt ? new Date(request.assignedAt).toLocaleDateString() : 'N/A'} <br>
+                <strong>Completed At:</strong> ${request.completedAt ? new Date(request.completedAt).toLocaleDateString() : 'N/A'}
+            `;
+
+            listItem.innerHTML = details;
+            requestsList.appendChild(listItem);
+        });
+
+    } catch (error) {
+        console.error('Error fetching and displaying requests:', error);
+    }
+}
+
 // Function to fetch categories from the server and populate the category dropdown
 async function fetchCategories() {
     try {
@@ -74,7 +127,10 @@ async function fetchProductSuggestions(query) {
 }
 
 // When the page loads
-window.addEventListener('DOMContentLoaded', fetchCategories);
+window.addEventListener('DOMContentLoaded', function() {
+    fetchCategories();
+    fetchAndDisplayRequests();
+});
 
 // Event listener for category selection
 document.getElementById('category').addEventListener('change', function () {
