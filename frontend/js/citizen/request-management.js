@@ -11,26 +11,26 @@ async function fetchAndDisplayRequests() {
         const requestsList = document.getElementById('requests');
         requestsList.innerHTML = ''; // Clear existing list
 
+        // Check if there are no requests
+        if (requests.length === 0) {
+            const message = document.createElement('li');
+            message.classList.add('list-group-item');
+            message.textContent = 'You have no requests at this time.';
+            requestsList.appendChild(message);
+            return;
+        }
+
+        // Define a mapping for status codes
+        const statusMapping = {
+            'pending': 'Pending',
+            'in_progress': 'In Progress',
+            'completed': 'Completed',
+            'cancelled': 'Cancelled'
+        };
+
         requests.forEach(request => {
             const listItem = document.createElement('li');
             listItem.classList.add('list-group-item');
-
-            // Check if there are no requests
-            if (requests.length === 0) {
-                const message = document.createElement('li');
-                message.classList.add('list-group-item');
-                message.textContent = 'You have no requests at this time.';
-                requestsList.appendChild(message);
-                return;
-            }
-
-            // Define a mapping for status codes
-            const statusMapping = {
-                'pending': 'Pending',
-                'in_progress': 'In Progress',
-                'completed': 'Completed',
-                'cancelled': 'Cancelled'
-            };
 
             // Create request details
             let details = `
