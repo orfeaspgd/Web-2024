@@ -9,6 +9,7 @@
     <!-- Bootstrap JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- External CSS Files -->
+    <link rel="stylesheet" href="../../css/citizen/request-management.css">
     <link rel="stylesheet" href="../../css/shared.css">
     <!-- External JS Files -->
     <script defer src="../../js/citizen/request-management.js"></script>
@@ -37,5 +38,56 @@
         </ul>
     </div>
 </nav>
+
+<!-- Main Content -->
+<div class="container content-container mt-3">
+    <h1 class="text-center mb-4">Request Management</h1>
+
+    <section class="mb-4">
+        <h3 class="mb-3">Current & Past Requests:</h3>
+        <div class="row" id="requests">
+            <!-- Request items will be dynamically added here -->
+        </div>
+    </section>
+
+    <section class="mb-1">
+        <h3 class="mb-3">Create a new Request:</h3>
+        <form id="createRequest">
+            <!-- Selecting a category -->
+            <div class="mb-2">
+                <label for="category" class="form-label">Category:</label>
+                <select class="form-select" id="category" required>
+                    <option value="" disabled selected>Select a category</option>
+                    <!-- Categories will be dynamically populated here from the backend -->
+                </select>
+            </div>
+
+            <!-- Selecting a product -->
+            <div class="mb-2">
+                <label for="product" class="form-label">Product:</label>
+                <select class="form-select" id="product" required>
+                    <option value="" disabled selected>Select a product</option>
+                    <!-- Products will be dynamically populated here based on selected category -->
+                </select>
+            </div>
+
+            <!-- Autocomplete search for selecting a specific product -->
+            <div class="mb-2">
+                <label for="productSearch" class="form-label">Search for a product:</label>
+                <input type="text" class="form-control" id="productSearch" placeholder="Type to search for a product..." required>
+                <div id="productSuggestions" class="list-group"></div>
+            </div>
+
+            <!-- Number of people the request is for -->
+            <div class="mb-2">
+                <label for="peopleCount" class="form-label">Number of people:</label>
+                <input type="number" class="form-control" id="peopleCount" min="1" value="1" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+        </form>
+    </section>
+</div>
 </body>
 </html>

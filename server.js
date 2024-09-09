@@ -23,6 +23,7 @@ import mapAdminRoutes from "./routes/map-admin.js";
 import mapRescuerRoutes from "./routes/map-rescuer.js";
 import cargoManagementRoutes from "./routes/cargo-management.js";
 import taskManagementRoutes from "./routes/task-management.js";
+import requestManagementRoutes from "./routes/request-management.js";
 
 const app = express();
 const port = 3000;
@@ -80,3 +81,4 @@ mapAdminRoutes(app, cache);
 mapRescuerRoutes(app, cache);
 cargoManagementRoutes(app, cache);
 taskManagementRoutes(app, cache);
+requestManagementRoutes(app, cache);

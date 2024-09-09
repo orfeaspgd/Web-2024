@@ -1,0 +1,17 @@
+.content-container {
+    max-width: 1000px;
+    padding: 1rem 3rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Reduce padding inside the card body */
+.card-body {
+    padding: 0.5rem;
+}
+
+/* Remove margins from p tags inside card body */
+.card-body p {
+    margin-bottom: 0.25rem;
+}
