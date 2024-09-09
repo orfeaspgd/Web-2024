@@ -36,4 +36,43 @@ export default function categoriesRoutes(app, cache) {
             res.status(500).json({ message: 'Server error' });
         }
     });
+
+    // Create a new request
+    app.post('/create-request', async (req, res) => {
+        try {
+            // Check if user is logged in
+            if (!req.session.user) {
+                return res.status(401).json({message: 'Not authenticated'});
+            }
+
+            // Access the citizen ID from the session user object
+            const citizenId = req.session.user._id;
+
+            // Access the product ID and quantity from the request body
+            const { product_id, peopleCount } = req.body;
+
+            // Create a new request
+            const newRequest = new Tasks({
+                citizen_id: citizenId,
+                rescuer_id: null,
+                product_id: product_id,
+                // We assume that the quantity of the requested product is the number of people to be rescued
+                quantity: peopleCount,
+                type: 'request',
+                status: 'pending',
+                createdAt: new Date(),
+                assignedAt: null,
+                completedAt: null
+            });
+
+            // Save the new task in the database
+            await newRequest.save();
+
+            // Respond with the created request
+            res.status(201).json(newRequest);
+        } catch (error) {
+            console.error('Error creating request:', error);
+            res.status(500).json({ message: 'Server error' });
+        }
+    });
 }
