@@ -2,21 +2,15 @@
 async function fetchAndDisplayRequests() {
     try {
         const response = await fetch('/get-requests-by-citizen');
-        if (!response.ok) {
-            throw new Error('Failed to fetch requests');
-        }
 
         const requests = await response.json();
 
-        const requestsList = document.getElementById('requests');
-        requestsList.innerHTML = ''; // Clear existing list
+        const requestsContainer  = document.getElementById('requests');
+        requestsContainer .innerHTML = ''; // Clear existing list
 
         // Check if there are no requests
         if (requests.length === 0) {
-            const message = document.createElement('li');
-            message.classList.add('list-group-item');
-            message.textContent = 'You have no requests at this time.';
-            requestsList.appendChild(message);
+            requestsContainer.innerHTML = '<p>No requests found.</p>';
             return;
         }
 
@@ -29,21 +23,23 @@ async function fetchAndDisplayRequests() {
         };
 
         requests.forEach(request => {
-            const listItem = document.createElement('li');
-            listItem.classList.add('list-group-item');
+            const requestElement = document.createElement('div');
+            requestElement.classList.add('col-md-3');
 
-            // Create request details
-            let details = `
-                <strong>Product:</strong> ${request.product_id.name} <br>
-                <strong>Quantity:</strong> ${request.quantity} <br>
-                <strong>Status:</strong> ${statusMapping[request.status]} <br>
-                <strong>Created At:</strong> ${new Date(request.createdAt).toLocaleDateString()} <br>
-                <strong>Assigned At:</strong> ${request.assignedAt ? new Date(request.assignedAt).toLocaleDateString() : 'N/A'} <br>
-                <strong>Completed At:</strong> ${request.completedAt ? new Date(request.completedAt).toLocaleDateString() : 'N/A'}
+            requestElement.innerHTML = `
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <p class="card-text"><strong>Product:</strong> ${request.product_id.name}</p>
+                        <p class="card-text"><strong>Status:</strong> ${statusMapping[request.status]}</p>
+                        <p class="card-text"><strong>Quantity:</strong> ${request.quantity}</p>
+                        <p class="card-text"><strong>Created At:</strong> ${new Date(request.createdAt).toLocaleDateString()}</p>
+                        <p class="card-text"><strong>Assigned At:</strong> ${request.assignedAt ? new Date(request.assignedAt).toLocaleDateString() : 'N/A'}</p>
+                        <p class="card-text"><strong>Completed At:</strong> ${request.completedAt ? new Date(request.completedAt).toLocaleDateString() : 'N/A'}</p>
+                    </div>
+                </div>
             `;
 
-            listItem.innerHTML = details;
-            requestsList.appendChild(listItem);
+            requestsContainer.appendChild(requestElement);
         });
 
     } catch (error) {

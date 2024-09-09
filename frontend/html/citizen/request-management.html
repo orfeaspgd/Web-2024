@@ -40,21 +40,21 @@
 </nav>
 
 <!-- Main Content -->
-<div class="container content-container mt-4">
-    <h1 class="text-center mb-5">Request Management</h1>
+<div class="container content-container mt-3">
+    <h1 class="text-center mb-4">Request Management</h1>
 
-    <section class="mb-5">
+    <section class="mb-4">
         <h3 class="mb-3">Current & Past Requests:</h3>
-        <ul class="list-group" id="requests">
-            <!-- Product list will be displayed here -->
-        </ul>
+        <div class="row" id="requests">
+            <!-- Request items will be dynamically added here -->
+        </div>
     </section>
 
-    <section class="mb-5">
+    <section class="mb-1">
         <h3 class="mb-3">Create a new Request:</h3>
         <form id="createRequest">
             <!-- Selecting a category -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="category" class="form-label">Category:</label>
                 <select class="form-select" id="category" required>
                     <option value="" disabled selected>Select a category</option>
@@ -63,7 +63,7 @@
             </div>
 
             <!-- Selecting a product -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="product" class="form-label">Product:</label>
                 <select class="form-select" id="product" required>
                     <option value="" disabled selected>Select a product</option>
@@ -72,14 +72,14 @@
             </div>
 
             <!-- Autocomplete search for selecting a specific product -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="productSearch" class="form-label">Search for a product:</label>
                 <input type="text" class="form-control" id="productSearch" placeholder="Type to search for a product..." required>
                 <div id="productSuggestions" class="list-group"></div>
             </div>
 
             <!-- Number of people the request is for -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="peopleCount" class="form-label">Number of people:</label>
                 <input type="number" class="form-control" id="peopleCount" min="1" value="1" required>
             </div>
