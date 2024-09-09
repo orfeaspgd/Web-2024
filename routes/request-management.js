@@ -75,4 +75,29 @@ export default function categoriesRoutes(app, cache) {
             res.status(500).json({ message: 'Server error' });
         }
     });
+
+    // Get all requests by a citizen
+    app.get('/get-requests-by-citizen', async (req, res) => {
+        try {
+            // Check if user is logged in
+            if (!req.session.user) {
+                return res.status(401).json({message: 'Not authenticated'});
+            }
+
+            // Access the citizen ID from the session user object
+            const citizenId = req.session.user._id;
+
+            // Find all requests by the citizen
+            const requests = await Tasks.find({ citizen_id: citizenId, type: 'request' })
+                .populate('product_id', 'name')
+                .populate('rescuer_id', 'name surname')
+                .select('status quantity createdAt assignedAt completedAt');
+
+            // Respond with the requests
+            res.json(requests);
+        } catch (error) {
+            console.error('Error fetching requests by citizen:', error);
+            res.status(500).json({ message: 'Server error' });
+        }
+    });
 }
