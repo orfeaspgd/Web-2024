@@ -336,14 +336,23 @@ async function loadTasks() {
         tasksContainer.innerHTML += taskHTML;
     });
 
-    // Select all complete buttons
+    // Select all complete and cancel buttons
     const completeButtons = document.querySelectorAll('.complete-task-btn');
+    const cancelButtons = document.querySelectorAll('.cancel-task-btn');
 
-    // Add click event listener to each button
+    // Add click event listener to each complete button
     completeButtons.forEach(button => {
         button.addEventListener('click', function() {
             const taskId = this.getAttribute('data-task-id');
             completeTask(taskId);
+        });
+    });
+
+    // Add click event listener to each cancel button
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            cancelTask(taskId);
         });
     });
 }
@@ -411,12 +420,49 @@ async function completeTask(taskId) {
 
             // Re-number remaining tasks after removal
             renumberTasks();
+
+            // Reload the page to update the map
+            window.location.reload();
         } else {
             alert(data.message);
         }
     } catch (error) {
         console.error('Error completing task:', error);
         alert('Failed to complete the task. Please try again.');
+    }
+}
+
+// Function to cancel a task
+async function cancelTask(taskId) {
+    try {
+        const response = await fetch(`/cancel-task/${taskId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Remove the cancelled task from the UI
+            const taskElement = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
+            if (taskElement) {
+                taskElement.remove();
+            }
+            alert('Task cancelled successfully!');
+
+            // Re-number remaining tasks after removal
+            renumberTasks();
+
+            // Reload the page to update the map
+            window.location.reload();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error cancelling task:', error);
+        alert('Failed to cancel the task. Please try again.');
     }
 }
 

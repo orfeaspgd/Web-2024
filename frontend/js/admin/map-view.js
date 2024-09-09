@@ -204,6 +204,10 @@ fetchMapData().then(data => {
 
     // Add the task markers and popups
     data.tasks.forEach(task => {
+        if (task.status === 'completed') {
+            return; // Skip completed tasks
+        }
+
         let taskMarker;
 
         if (task.type === 'request') {
