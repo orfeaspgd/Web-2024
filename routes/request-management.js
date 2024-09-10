@@ -16,12 +16,39 @@ export default function categoriesRoutes(app, cache) {
         try {
             // Get the category ID from the request parameters
             const { categoryId } = req.params;
+            const cachedData = cache.get('get-products-by-category/:categoryId');
+            if(cachedData){
+                if(cachedData.some(product => product.category === categoryId)){
+                    console.log('cache hit');
+                    console.log('cachedData:', cachedData);
 
-            const products = await Products.find({ category: categoryId }, 'name').exec();
-            if (!products || products.length === 0) {
-                return res.json([]);
+                    const products = cachedData
+                        .filter(product => product.category === categoryId)
+                        .map(product => product.category);
+
+                    console.log('matchingCategories:', products);
+                    if (!products || products.length === 0) {
+                        return res.json([]);
+                    }
+                    return res.json(products);
+                } else {
+                    console.log('cache miss');
+                    const products = await Products.find({ category: categoryId }, 'name category').exec();
+                    cache.set('get-products-by-category/:categoryId', products);
+                    if (!products || products.length === 0) {
+                        return res.json([]);
+                    }
+                    res.json(products);
+                }
+            } else {
+                console.log('cache miss');
+                const products = await Products.find({ category: categoryId }, 'name category').exec();
+                cache.set('get-products-by-category/:categoryId', products);
+                if (!products || products.length === 0) {
+                    return res.json([]);
+                }
+                res.json(products);
             }
-            res.json(products);
         } catch (err) {
             console.error('Error fetching products by category:', err);
             res.status(500).json({ message: 'Server error' });
