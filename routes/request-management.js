@@ -16,34 +16,15 @@ export default function categoriesRoutes(app, cache) {
         try {
             // Get the category ID from the request parameters
             const { categoryId } = req.params;
-            const cachedData = cache.get('get-products-by-category/:categoryId');
+            const cachedData = cache.get('get-products-by-category/' + categoryId);
             if(cachedData){
-                if(cachedData.some(product => product.category === categoryId)){
-                    console.log('cache hit');
-                    console.log('cachedData:', cachedData);
-
-                    const products = cachedData
-                        .filter(product => product.category === categoryId)
-                        .map(product => product.category);
-
-                    console.log('matchingCategories:', products);
-                    if (!products || products.length === 0) {
+                    if (!cachedData || cachedData.length === 0) {
                         return res.json([]);
                     }
-                    return res.json(products);
-                } else {
-                    console.log('cache miss');
-                    const products = await Products.find({ category: categoryId }, 'name category').exec();
-                    cache.set('get-products-by-category/:categoryId', products);
-                    if (!products || products.length === 0) {
-                        return res.json([]);
-                    }
-                    res.json(products);
-                }
+                    return res.json(cachedData);
             } else {
-                console.log('cache miss');
-                const products = await Products.find({ category: categoryId }, 'name category').exec();
-                cache.set('get-products-by-category/:categoryId', products);
+                const products = await Products.find({ category: categoryId }, 'name').exec();
+                cache.set('get-products-by-category/' + categoryId, products, 5);
                 if (!products || products.length === 0) {
                     return res.json([]);
                 }
@@ -56,9 +37,9 @@ export default function categoriesRoutes(app, cache) {
     });
 
     // Get products by searching (autocomplete)
-    app.get('/get-products-by-searching/:searchTerm', async (req, res) => {
+    app.get('/get-products-by-searching/:searchTerm/:categoryId', async (req, res) => {
         try {
-            const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' } }, 'name');
+            const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' }, category: req.params.categoryId }, 'name');
 
             // Respond with the products found
             res.json(products);
