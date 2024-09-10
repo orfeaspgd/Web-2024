@@ -1,3 +1,9 @@
+// Get elements from the DOM for interaction
+const categorySelect = document.getElementById('category');
+const productSelect = document.getElementById('product');
+const productSearch = document.getElementById('productSearch');
+const suggestionsContainer = document.getElementById('productSuggestions');
+
 // Function to fetch and display requests
 async function fetchAndDisplayRequests() {
     try {
@@ -53,7 +59,6 @@ async function fetchCategories() {
         const response = await fetch('/categories');
         const categories = await response.json();
 
-        const categorySelect = document.getElementById('category');
         categorySelect.innerHTML = `<option value="" disabled selected>Select a category</option>`; // Reset
 
         categories.forEach(category => {
@@ -73,7 +78,6 @@ async function fetchProductsByCategory(categoryId) {
         const response = await fetch(`/get-products-by-category/${categoryId}`);
         const products = await response.json();
 
-        const productSelect = document.getElementById('product');
         productSelect.innerHTML = `<option value="" disabled selected>Select a product</option>`; // Reset
 
         products.forEach(product => {
@@ -86,9 +90,6 @@ async function fetchProductsByCategory(categoryId) {
         console.error('Error fetching products:', error);
     }
 }
-
-// Define suggestions container element for product search
-const suggestionsContainer = document.getElementById('productSuggestions');
 
 // Function to get products by search term and populate the product dropdown (for search functionality)
 async function fetchProductSuggestions(query) {
@@ -110,7 +111,7 @@ async function fetchProductSuggestions(query) {
                 // Handle suggestion selection
                 suggestion.addEventListener('click', (e) => {
                     e.preventDefault();
-                    document.getElementById('productSearch').value = product.name;
+                    productSearch.value = product.name;
                     suggestionsContainer.innerHTML = '';
                 });
 
@@ -122,37 +123,56 @@ async function fetchProductSuggestions(query) {
     }
 }
 
-// Get the category, the product dropdown and the product search input field elements
-const categorySelectElement = document.getElementById('category');
-const productSelectElement = document.getElementById('product');
-const productSearchElement = document.getElementById('productSearch');
+// Function to create a new request
+async function createRequest(product_id, peopleCount) {
+    try {
+        const response = await fetch('/create-request', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ product_id, peopleCount })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert('Request created successfully.');
+            fetchAndDisplayRequests();
+        } else {
+            alert(data.message || 'Failed to create request.');
+        }
+    } catch (error) {
+        console.error('Error creating request:', error);
+    }
+}
 
 // Disable autocomplete search if a product is selected from the dropdown
-productSelectElement.addEventListener('change', () => {
-    productSearchElement.disabled = true;
-    productSearchElement.value = '';
+productSelect.addEventListener('change', () => {
+    productSearch.disabled = true;
+    productSearch.value = '';
     suggestionsContainer.innerHTML = '';
 });
 
 // Disable the product dropdown and category selection if a product is searched for
-productSearchElement.addEventListener('input', () => {
-    if (productSearchElement.value.trim().length > 0) {
-        productSelectElement.disabled = true;
-        categorySelectElement.disabled = true;
+productSearch.addEventListener('input', () => {
+    if (productSearch.value.trim().length > 0) {
+        productSelect.disabled = true;
+        categorySelect.disabled = true;
     } else {
-        productSelectElement.disabled = false;
-        categorySelectElement.disabled = false;
+        productSelect.disabled = false;
+        categorySelect.disabled = false;
     }
 });
 
 // Event listener for category selection
-categorySelectElement.addEventListener('change', function () {
+categorySelect.addEventListener('change', function () {
     const categoryId = this.value;
     fetchProductsByCategory(categoryId);
 });
 
 // Event listener for input changes on the product search field
-productSearchElement.addEventListener('input', function () {
+productSearch.addEventListener('input', function () {
     const query = this.value.trim();
 
     // Fetch product suggestions if the input has at least one character
@@ -164,8 +184,48 @@ productSearchElement.addEventListener('input', function () {
     }
 });
 
+// Event listener for form submission (request creation)
+document.getElementById('createRequest').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    let selectedProduct;
+
+    // Check if a product was selected from the dropdown or typed in the autocomplete field
+    const peopleCountInput = document.getElementById('peopleCount').value;
+    const responseMessageDiv = document.getElementById('responseMessage');
+
+    if (!productSearch.disabled && productSearch.value.trim() !== "") {
+        selectedProduct = productSearch.value;  // Use the search value
+    } else {
+        selectedProduct = productSelect.options[productSelect.selectedIndex].value;  // Use the dropdown value
+    }
+
+    // Ensure a product is selected and people count is valid
+    if (selectedProduct && peopleCountInput) {
+        // Call the createRequest function
+        const result = await createRequest(selectedProduct, peopleCountInput);
+
+        // Display the result
+        if (result.success) {
+            responseMessageDiv.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+        } else {
+            responseMessageDiv.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
+        }
+    } else {
+        alert('Please select a product and specify the number of people.');
+    }
+});
+
 // When the page loads
 window.addEventListener('DOMContentLoaded', function() {
+    // Clear the product search field and suggestions
+    productSearch.value = '';
+    suggestionsContainer.innerHTML = '';
+
+    // Set the people count to 1 when the page loads
+    document.getElementById('peopleCount').value = '1';
+
+    // Fetch categories and requests
     fetchCategories();
     fetchAndDisplayRequests();
 });
