@@ -37,9 +37,9 @@ export default function categoriesRoutes(app, cache) {
     });
 
     // Get products by searching (autocomplete)
-    app.get('/get-products-by-searching/:searchTerm/:categoryId', async (req, res) => {
+    app.get('/get-products-by-searching/:searchTerm', async (req, res) => {
         try {
-            const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' }, category: req.params.categoryId }, 'name');
+            const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' }}, 'name');
 
             // Respond with the products found
             res.json(products);
