@@ -16,12 +16,20 @@ export default function categoriesRoutes(app, cache) {
         try {
             // Get the category ID from the request parameters
             const { categoryId } = req.params;
-
-            const products = await Products.find({ category: categoryId }, 'name').exec();
-            if (!products || products.length === 0) {
-                return res.json([]);
+            const cachedData = cache.get('get-products-by-category/' + categoryId);
+            if(cachedData){
+                    if (!cachedData || cachedData.length === 0) {
+                        return res.json([]);
+                    }
+                    return res.json(cachedData);
+            } else {
+                const products = await Products.find({ category: categoryId }, 'name').exec();
+                cache.set('get-products-by-category/' + categoryId, products, 5);
+                if (!products || products.length === 0) {
+                    return res.json([]);
+                }
+                res.json(products);
             }
-            res.json(products);
         } catch (err) {
             console.error('Error fetching products by category:', err);
             res.status(500).json({ message: 'Server error' });
@@ -29,9 +37,9 @@ export default function categoriesRoutes(app, cache) {
     });
 
     // Get products by searching (autocomplete)
-    app.get('/get-products-by-searching/:searchTerm', async (req, res) => {
+    app.get('/get-products-by-searching/:searchTerm/:categoryId', async (req, res) => {
         try {
-            const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' } }, 'name');
+            const products = await Products.find({ name: { $regex: req.params.searchTerm, $options: 'i' }, category: req.params.categoryId }, 'name');
 
             // Respond with the products found
             res.json(products);
