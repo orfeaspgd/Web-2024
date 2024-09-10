@@ -112,6 +112,8 @@ async function fetchProductSuggestions(query) {
                 suggestion.addEventListener('click', (e) => {
                     e.preventDefault();
                     productSearch.value = product.name;
+                    // Store the product ID as a data attribute
+                    productSearch.dataset.productId = product._id;
                     suggestionsContainer.innerHTML = '';
                 });
 
@@ -137,10 +139,10 @@ async function createRequest(product_id, peopleCount) {
         const data = await response.json();
 
         if (response.ok) {
-            alert('Request created successfully.');
-            fetchAndDisplayRequests();
+            fetchAndDisplayRequests(); // Refresh the requests list
+            return { success: true, message: 'Request created successfully.' };
         } else {
-            alert(data.message || 'Failed to create request.');
+            return { success: false, message: data.message || 'Failed to create request.' };
         }
     } catch (error) {
         console.error('Error creating request:', error);
@@ -194,10 +196,12 @@ document.getElementById('createRequest').addEventListener('submit', async functi
     const peopleCountInput = document.getElementById('peopleCount').value;
     const responseMessageDiv = document.getElementById('responseMessage');
 
-    if (!productSearch.disabled && productSearch.value.trim() !== "") {
-        selectedProduct = productSearch.value;  // Use the search value
+    if (!productSearch.disabled && productSearch.dataset.productId) {
+        // Use the selected product ID from the suggestion
+        selectedProduct = productSearch.dataset.productId;
     } else {
-        selectedProduct = productSelect.options[productSelect.selectedIndex].value;  // Use the dropdown value
+        // Use the selected product ID from the dropdown
+        selectedProduct = productSelect.options[productSelect.selectedIndex].value;
     }
 
     // Ensure a product is selected and people count is valid
