@@ -94,7 +94,7 @@ async function fetchProductsByCategory(categoryId) {
 // Function to get products by search term and populate the product dropdown (for search functionality)
 async function fetchProductSuggestions(query) {
     try {
-        const response = await fetch(`/get-products-by-searching/${query}`);
+        const response = await fetch(`/get-products-by-searching/${query}/${categorySelect.value}`);
         const suggestions = await response.json();
 
         // Clear previous suggestions
