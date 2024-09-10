@@ -8,13 +8,18 @@ import {
     Vehicles
 } from '../schemas.js';
 
+import mongoose from 'mongoose';
+
 export default function categoriesRoutes(app, cache) {
     // Get products by category id
     app.get('/get-products-by-category/:categoryId', async (req, res) => {
         try {
-            const products = await Products.find({ category: req.params.categoryId }, 'name');
+            // Get the category ID from the request parameters
+            const { categoryId } = req.params;
+
+            const products = await Products.find({ category: categoryId }, 'name').exec();
             if (!products || products.length === 0) {
-                return res.status(404).json({ message: 'No products found for this category' });
+                return res.json([]);
             }
             res.json(products);
         } catch (err) {
