@@ -38,9 +38,9 @@ async function fetchAndDisplayRequests() {
                         <p class="card-text"><strong>Product:</strong> ${request.product_id.name}</p>
                         <p class="card-text"><strong>Status:</strong> ${statusMapping[request.status]}</p>
                         <p class="card-text"><strong>Quantity:</strong> ${request.quantity}</p>
-                        <p class="card-text"><strong>Created At:</strong> ${new Date(request.createdAt).toLocaleDateString()}</p>
-                        <p class="card-text"><strong>Assigned At:</strong> ${request.assignedAt ? new Date(request.assignedAt).toLocaleDateString() : 'N/A'}</p>
-                        <p class="card-text"><strong>Completed At:</strong> ${request.completedAt ? new Date(request.completedAt).toLocaleDateString() : 'N/A'}</p>
+                        <p class="card-text"><strong>Created At:</strong> ${new Date(request.createdAt).toLocaleString()}</p>
+                        <p class="card-text"><strong>Assigned At:</strong> ${request.assignedAt ? new Date(request.assignedAt).toLocaleString() : 'N/A'}</p>
+                        <p class="card-text"><strong>Completed At:</strong> ${request.completedAt ? new Date(request.completedAt).toLocaleString() : 'N/A'}</p>
                     </div>
                 </div>
             `;
