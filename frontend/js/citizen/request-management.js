@@ -12,7 +12,7 @@ async function fetchAndDisplayRequests() {
         const requests = await response.json();
 
         const requestsContainer  = document.getElementById('requests');
-        requestsContainer .innerHTML = ''; // Clear existing list
+        requestsContainer.innerHTML = ''; // Clear existing list
 
         // Check if there are no requests
         if (requests.length === 0) {
@@ -30,10 +30,10 @@ async function fetchAndDisplayRequests() {
 
         requests.forEach(request => {
             const requestElement = document.createElement('div');
-            requestElement.classList.add('col-md-3');
+            requestElement.classList.add('col-md-4');
 
             requestElement.innerHTML = `
-                <div class="card mb-1">
+                <div class="card">
                     <div class="card-body">
                         <p class="card-text"><strong>Product:</strong> ${request.product_id.name}</p>
                         <p class="card-text"><strong>Status:</strong> ${statusMapping[request.status]}</p>
@@ -177,8 +177,8 @@ categorySelect.addEventListener('change', function () {
 productSearch.addEventListener('input', function () {
     const query = this.value.trim();
 
-    // Fetch product suggestions if the input has at least one character
-    if (query.length > 0) {
+    // Fetch product suggestions if the input has at least two characters
+    if (query.length > 1) {
         fetchProductSuggestions(query);
     } else {
         // Clear suggestions if the query is empty
@@ -215,6 +215,11 @@ document.getElementById('createRequest').addEventListener('submit', async functi
         } else {
             responseMessageDiv.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
         }
+
+        // Clear the message after 3 seconds
+        setTimeout(() => {
+            responseMessageDiv.innerHTML = '';
+        }, 3000);
     } else {
         alert('Please select a product and specify the number of people.');
     }
