@@ -122,20 +122,37 @@ async function fetchProductSuggestions(query) {
     }
 }
 
-// When the page loads
-window.addEventListener('DOMContentLoaded', function() {
-    fetchCategories();
-    fetchAndDisplayRequests();
+// Get the category, the product dropdown and the product search input field elements
+const categorySelectElement = document.getElementById('category');
+const productSelectElement = document.getElementById('product');
+const productSearchElement = document.getElementById('productSearch');
+
+// Disable autocomplete search if a product is selected from the dropdown
+productSelectElement.addEventListener('change', () => {
+    productSearchElement.disabled = true;
+    productSearchElement.value = '';
+    suggestionsContainer.innerHTML = '';
+});
+
+// Disable the product dropdown and category selection if a product is searched for
+productSearchElement.addEventListener('input', () => {
+    if (productSearchElement.value.trim().length > 0) {
+        productSelectElement.disabled = true;
+        categorySelectElement.disabled = true;
+    } else {
+        productSelectElement.disabled = false;
+        categorySelectElement.disabled = false;
+    }
 });
 
 // Event listener for category selection
-document.getElementById('category').addEventListener('change', function () {
+categorySelectElement.addEventListener('change', function () {
     const categoryId = this.value;
     fetchProductsByCategory(categoryId);
 });
 
 // Event listener for input changes on the product search field
-document.getElementById('productSearch').addEventListener('input', function () {
+productSearchElement.addEventListener('input', function () {
     const query = this.value.trim();
 
     // Fetch product suggestions if the input has at least one character
@@ -145,4 +162,10 @@ document.getElementById('productSearch').addEventListener('input', function () {
         // Clear suggestions if the query is empty
         suggestionsContainer.innerHTML = '';
     }
+});
+
+// When the page loads
+window.addEventListener('DOMContentLoaded', function() {
+    fetchCategories();
+    fetchAndDisplayRequests();
 });
