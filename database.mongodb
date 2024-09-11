@@ -307,6 +307,22 @@ var product12 = db.products.findOne({ name: "Painkillers" });
 db.createCollection("warehouse_products");
 db.warehouse_products.insertMany([
     {
+        "product_id": product1._id,
+        "quantity": 0
+    },
+    {
+        "product_id": product2._id,
+        "quantity": 1
+    },
+    {
+        "product_id": product3._id,
+        "quantity": 1
+    },
+    {
+        "product_id": product4._id,
+        "quantity": 0
+    },
+    {
         "product_id": product5._id,
         "quantity": 3
     },
