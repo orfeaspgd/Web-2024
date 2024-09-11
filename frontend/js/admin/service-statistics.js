@@ -90,5 +90,9 @@ dateRangeForm.addEventListener('submit', function (event) {
 
 // Fetch task statistics when the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Clear the date input fields
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+
     displayTaskStatistics();
 });
