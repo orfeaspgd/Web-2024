@@ -1,7 +1,31 @@
 .content-container {
-    max-width: 900px;
+    max-width: 1000px;
     padding: 1rem 3rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .chart-container {
+        height: 200px;
+    }
+}
+
+#tasksChart {
+    height: 100%;
+    width: 100%;
 }

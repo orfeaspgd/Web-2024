@@ -55,20 +55,22 @@
     <h1 class="text-center mb-4">Service Statistics</h1>
 
     <!-- Date Range Selection -->
-    <div class="row mb-4">
-        <div class="col-md-6 offset-md-3">
-            <form id="dateRangeForm" class="d-flex justify-content-between">
-                <input type="date" id="startDate" class="form-control" placeholder="Start Date">
-                <input type="date" id="endDate" class="form-control ms-2" placeholder="End Date">
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <form id="dateRangeForm" class="d-flex flex-column flex-sm-row justify-content-between">
+                <input type="date" id="startDate" class="form-control mb-2 mb-sm-0 me-sm-2 input-date" placeholder="Start Date">
+                <input type="date" id="endDate" class="form-control mb-2 mb-sm-0 me-sm-2 input-date" placeholder="End Date">
                 <button type="submit" class="btn btn-primary ms-2">Filter</button>
             </form>
         </div>
     </div>
 
     <!-- Chart Container -->
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <canvas id="tasksChart"></canvas>
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-10">
+            <div class="chart-container">
+                <canvas id="tasksChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
