@@ -305,15 +305,40 @@ var product11 = db.products.findOne({ name: "DEPON" });
 var product12 = db.products.findOne({ name: "Painkillers" });
 
 db.createCollection("warehouse_products");
-db.warehouse_products.insertOne({
-    product_id: product1._id,
-    quantity: 10
-});
-
-db.warehouse_products.insertOne({
-    product_id: product3._id,
-    quantity: 30
-});
+db.warehouse_products.insertMany([
+    {
+        "product_id": product5._id,
+        "quantity": 3
+    },
+    {
+        "product_id": product6._id,
+        "quantity": 9
+    },
+    {
+        "product_id": product7._id,
+        "quantity": 11
+    },
+    {
+        "product_id": product8._id,
+        "quantity": 16
+    },
+    {
+        "product_id": product9._id,
+        "quantity": 12
+    },
+    {
+        "product_id": product10._id,
+        "quantity": 9
+    },
+    {
+        "product_id": product11._id,
+        "quantity": 5
+    },
+    {
+        "product_id": product12._id,
+        "quantity": 12
+    }
+]);
 
 db.createCollection("tasks");
 db.tasks.insertMany([
@@ -451,11 +476,30 @@ db.vehicles.insertMany([
 ]);
 
 db.createCollection("announcements");
-db.announcements.insertOne({
-    admin_id: admin._id,
-    products: [product1._id, product2._id],
-    createdAt: new Date("2024-07-18T08:03:00")
-});
+db.announcements.insertMany([
+    {
+        "admin_id": admin._id,
+        "products": [
+            product1._id,
+            product2._id
+        ],
+        "createdAt": new Date("2024-07-18T08:03:00")
+    },
+    {
+        "admin_id": admin._id,
+        "products": [
+            product3._id
+        ],
+        "createdAt": new Date("2024-08-03T14:22:00")
+    },
+    {
+        "admin_id": admin._id,
+        "products": [
+            product4._id
+        ],
+        "createdAt": new Date("2024-08-29T15:22:00")
+    }
+]);
 
 db.products.createIndex({ name: 1, category: 1}, { unique: false });
 db.warehouse_products.createIndex({ product_id: 1, quantity: 1}, { unique: false });
