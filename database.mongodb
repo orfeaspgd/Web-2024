@@ -25,8 +25,8 @@ db.users.insertMany([
         role: "rescuer",
         phone_number: "8325517789",
         location: {
-            latitude: 38.244581,
-            longitude: 21.72701
+            latitude: 38.251632760706855,
+            longitude: 21.74129901845413
         }
     },
     {
@@ -38,8 +38,8 @@ db.users.insertMany([
         role: "rescuer",
         phone_number: "7024146592",
         location: {
-            latitude: 38.24104,
-            longitude: 21.727709
+            latitude: 38.235018558792504,
+            longitude: 21.747193587853868
         }
     },
     {
@@ -51,8 +51,8 @@ db.users.insertMany([
         role: "rescuer",
         phone_number: "3104629701",
         location: {
-            latitude: 38.245155,
-            longitude: 21.739913
+            latitude: 38.24061853604818,
+            longitude: 21.731085964339442
         }
     }
 ]);
@@ -67,8 +67,8 @@ db.users.insertMany([
         role: "citizen",
         phone_number: "9013567824",
         location: {
-            latitude: 38.253706,
-            longitude: 21.74212
+            latitude: 38.24156227175115,
+            longitude: 21.73743106710218
         }
     },
     {
@@ -80,8 +80,8 @@ db.users.insertMany([
         role: "citizen",
         phone_number: "4087291635",
         location: {
-            latitude: 38.24014,
-            longitude: 21.741208
+            latitude: 38.25412552912689,
+            longitude: 21.737234299577715
         }
     },
     {
@@ -93,8 +93,8 @@ db.users.insertMany([
         role: "citizen",
         phone_number: "5624783920",
         location: {
-            latitude: 38.244452,
-            longitude: 21.733299
+            latitude: 38.24265951848061,
+            longitude: 21.75000452430459
         }
     },
     {
@@ -106,8 +106,8 @@ db.users.insertMany([
         role: "citizen",
         phone_number: "7139425810",
         location: {
-            latitude: 38.247319,
-            longitude: 21.732106
+            latitude: 38.24574885902723,
+            longitude: 21.738890907772227
         }
     },
     {
@@ -119,8 +119,8 @@ db.users.insertMany([
         role: "citizen",
         phone_number: "9196342705",
         location: {
-            latitude: 38.245005,
-            longitude: 21.739855
+            latitude: 38.23529048005788,
+            longitude: 21.736203001582112
         }
     }
 ]);
