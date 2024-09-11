@@ -8,11 +8,11 @@ db.users.insertOne({
     password: "123",
     email: "op@op.com",
     role: "admin",
-    phone_number: "1234567890",
+    phone_number: "4156892043",
     location: {
-                latitude: 38.246639,
-                longitude: 21.734573
-            }
+        latitude: 38.246639,
+        longitude: 21.734573
+    }
 });
 
 db.users.insertMany([
@@ -23,7 +23,7 @@ db.users.insertMany([
         password: "321",
         email: "jg@jg.com",
         role: "rescuer",
-        phone_number: "0987654321",
+        phone_number: "8325517789",
         location: {
             latitude: 38.244581,
             longitude: 21.72701
@@ -32,11 +32,11 @@ db.users.insertMany([
     {
         name: "Alex",
         surname: "Smith",
-        username: "alexs",
-        password: "pass",
-        email: "alex.smith@example.com",
+        username: "as",
+        password: "322",
+        email: "as@as.com",
         role: "rescuer",
-        phone_number: "1122334455",
+        phone_number: "7024146592",
         location: {
             latitude: 38.24104,
             longitude: 21.727709
@@ -45,27 +45,14 @@ db.users.insertMany([
     {
         name: "John",
         surname: "Doe",
-        username: "johndoe",
-        password: "password123",
-        email: "john.doe@example.com",
+        username: "jd",
+        password: "323",
+        email: "jd@jd.com",
         role: "rescuer",
-        phone_number: "9876543210",
+        phone_number: "3104629701",
         location: {
             latitude: 38.245155,
             longitude: 21.739913
-        }
-    },
-    {
-        name: "Jane",
-        surname: "Smith",
-        username: "js",
-        password: "456",
-        email: "jane.smith@example.com",
-        role: "rescuer",
-        phone_number: "9876543220",
-        location: {
-            latitude: 38.246127,
-            longitude: 21.7343
         }
     }
 ]);
@@ -78,20 +65,20 @@ db.users.insertMany([
         password: "213",
         email: "ap@ap.com",
         role: "citizen",
-        phone_number: "1122334455",
+        phone_number: "9013567824",
         location: {
-                latitude: 38.253706,
-                longitude: 21.74212
-            }
+            latitude: 38.253706,
+            longitude: 21.74212
+        }
     },
     {
-        name: "John",
+        name: "Leo",
         surname: "Smith",
-        username: "jsmith",
-        password: "password123",
-        email: "jsmith@example.com",
+        username: "ls",
+        password: "214",
+        email: "ls@ls.com",
         role: "citizen",
-        phone_number: "1122335566",
+        phone_number: "4087291635",
         location: {
             latitude: 38.24014,
             longitude: 21.741208
@@ -100,11 +87,11 @@ db.users.insertMany([
     {
         name: "Emily",
         surname: "Johnson",
-        username: "ejohnson",
-        password: "password456",
-        email: "ejohnson@example.com",
+        username: "ej",
+        password: "215",
+        email: "ej@ej.com",
         role: "citizen",
-        phone_number: "1122336677",
+        phone_number: "5624783920",
         location: {
             latitude: 38.244452,
             longitude: 21.733299
@@ -113,40 +100,27 @@ db.users.insertMany([
     {
         name: "Michael",
         surname: "Brown",
-        username: "mbrown",
-        password: "password789",
-        email: "mbrown@example.com",
+        username: "mb",
+        password: "216",
+        email: "mb@mb.com",
         role: "citizen",
-        phone_number: "1122337788",
+        phone_number: "7139425810",
         location: {
             latitude: 38.247319,
             longitude: 21.732106
         }
     },
     {
-        "name": "Alex",
-        "surname": "Miller",
-        "username": "am",
-        "password": "pass",
-        "email": "alex.miller@example.com",
-        "role": "citizen",
-        "phone_number": "9876543210",
-        "location": {
-            "latitude": 38.245005,
-            "longitude": 21.739855
-        }
-    },
-    {
-        "name": "Elena",
-        "surname": "Ross",
-        "username": "er",
-        "password": "pass",
-        "email": "elena.rossi2024@example.com",
-        "role": "citizen",
-        "phone_number": "3456789012",
-        "location": {
-            "latitude": 38.24533,
-            "longitude": 21.740105
+        name: "Alex",
+        surname: "Miller",
+        username: "am",
+        password: "217",
+        email: "am@am.com",
+        role: "citizen",
+        phone_number: "9196342705",
+        location: {
+            latitude: 38.245005,
+            longitude: 21.739855
         }
     }
 ]);
@@ -308,21 +282,27 @@ db.products.insertMany(
 var admin = db.users.findOne({ role: "admin" });
 
 var rescuer1 = db.users.findOne({ role: "rescuer", username: "jg" });
-var rescuer2 = db.users.findOne({ role: "rescuer", username: "alexs" });
-var rescuer3 = db.users.findOne({ role: "rescuer", username: "johndoe" });
-var rescuer4 = db.users.findOne({ role: "rescuer", username: "js" });
+var rescuer2 = db.users.findOne({ role: "rescuer", username: "as" });
+var rescuer3 = db.users.findOne({ role: "rescuer", username: "jd" });
 
 var citizen1 = db.users.findOne({ role: "citizen", username: "ap" });
-var citizen2 = db.users.findOne({ role: "citizen", username: "jsmith"});
-var citizen3 = db.users.findOne({ role: "citizen", username: "ejohnson" });
-var citizen4 = db.users.findOne({ role: "citizen", username: "mbrown" });
-var citizen5 = db.users.findOne({ role: "citizen", username: "mj" });
-var citizen6 = db.users.findOne({ role: "citizen", username: "am" });
-var citizen7 = db.users.findOne({ role: "citizen", username: "er" });
+var citizen2 = db.users.findOne({ role: "citizen", username: "ls"});
+var citizen3 = db.users.findOne({ role: "citizen", username: "ej" });
+var citizen4 = db.users.findOne({ role: "citizen", username: "mb" });
+var citizen5 = db.users.findOne({ role: "citizen", username: "am" });
 
-var product1 = db.products.findOne({ name: "DEPON" });
-var product2 = db.products.findOne({ name: "Painkillers" });
-var product3 = db.products.findOne({ name: "Bandages" });
+var product1 = db.products.findOne({ name: "Toothbrush" });
+var product2 = db.products.findOne({ name: "Toilet Paper" });
+var product3 = db.products.findOne({ name: "Toothpaste" });
+var product4 = db.products.findOne({ name: "Windshield Wipers" });
+var product5 = db.products.findOne({ name: "Car Battery" });
+var product6 = db.products.findOne({ name: "Brake Fluid" });
+var product7 = db.products.findOne({ name: "Tires" });
+var product8 = db.products.findOne({ name: "Car Oil" });
+var product9 = db.products.findOne({ name: "Petrol" });
+var product10 = db.products.findOne({ name: "Bandages" });
+var product11 = db.products.findOne({ name: "DEPON" });
+var product12 = db.products.findOne({ name: "Painkillers" });
 
 db.createCollection("warehouse_products");
 db.warehouse_products.insertOne({
@@ -336,226 +316,139 @@ db.warehouse_products.insertOne({
 });
 
 db.createCollection("tasks");
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen1._id,
-    rescuer_id: rescuer1._id,
-    product_id: product1._id,
-    quantity: 5,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-18T08:00:30"),
-    completedAt: null
-});
+db.tasks.insertMany([
+    {
+        type: "request",
+        citizen_id: citizen1._id,
+        rescuer_id: null,
+        product_id: product1._id,
+        quantity: 5,
+        status: "pending",
+        createdAt: new Date("2024-08-15T14:32:00"),
+        assignedAt: null,
+        completedAt: null
+    },
+    {
+        type: "request",
+        citizen_id: citizen1._id,
+        rescuer_id: null,
+        product_id: product2._id,
+        quantity: 3,
+        status: "pending",
+        createdAt: "2024-09-05T09:15:00",
+        assignedAt: null,
+        completedAt: null
+    },
+    {
+        type: "request",
+        citizen_id: citizen2._id,
+        rescuer_id: null,
+        product_id: product3._id,
+        quantity: 2,
+        status: "pending",
+        createdAt: "2024-07-25T10:30:00",
+        assignedAt: null,
+        completedAt: null
+    },
+    {
+        type: "request",
+        citizen_id: citizen3._id,
+        rescuer_id: rescuer1._id,
+        product_id: product10._id,
+        quantity: 4,
+        status: "in_progress",
+        createdAt: "2024-06-15T09:00:00",
+        assignedAt: "2024-06-18T11:00:00",
+        completedAt: null
+    },
+    {
+        type: "offer",
+        citizen_id: citizen4._id,
+        rescuer_id: rescuer2._id,
+        product_id: product1._id,
+        quantity: 7,
+        status: "in_progress",
+        createdAt: "2024-07-30T16:45:00",
+        assignedAt: "2024-08-05T11:00:00",
+        completedAt: null
+    },
+    {
+        type: "offer",
+        citizen_id: citizen4._id,
+        rescuer_id: rescuer3._id,
+        product_id: product2._id,
+        quantity: 5,
+        status: "in_progress",
+        createdAt: "2024-08-12T08:30:00",
+        assignedAt: "2024-08-15T10:00:00",
+        completedAt: null
+    },
+    {
+        type: "offer",
+        citizen_id: citizen5._id,
+        rescuer_id: null,
+        product_id: product3._id,
+        quantity: 4,
+        status: "pending",
+        createdAt: "2024-09-01T14:00:00",
+        assignedAt: null,
+        completedAt: null
+    }
+]);
 
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen2._id,
-    rescuer_id: null,
-    product_id: product2._id,
-    quantity: 3,
-    status: "pending",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: null,
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "offer",
-    citizen_id: citizen3._id,
-    rescuer_id: rescuer2._id,
-    product_id: product1._id,
-    quantity: 2,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-18T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "offer",
-    citizen_id: citizen4._id,
-    rescuer_id: null,
-    product_id: product2._id,
-    quantity: 10,
-    status: "pending",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: null,
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen4._id,
-    rescuer_id: rescuer2._id,
-    product_id: product2._id,
-    quantity: 15,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-18T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "offer",
-    citizen_id: citizen1._id,
-    rescuer_id: rescuer1._id,
-    product_id: product2._id,
-    quantity: 4,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-18T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen6._id,
-    rescuer_id: rescuer3._id,
-    product_id: product1._id,
-    quantity: 1,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-18T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "offer",
-    citizen_id: citizen6._id,
-    rescuer_id: rescuer3._id,
-    product_id: product2._id,
-    quantity: 2,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-18T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen6._id,
-    rescuer_id: null,
-    product_id: product3._id,
-    quantity: 3,
-    status: "pending",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: null,
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "offer",
-    citizen_id: citizen7._id,
-    rescuer_id: rescuer3._id,
-    product_id: product1._id,
-    quantity: 10,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-20T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen7._id,
-    rescuer_id: rescuer3._id,
-    product_id: product2._id,
-    quantity: 1,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-20T08:00:30"),
-    completedAt: null
-});
-
-db.tasks.insertOne({
-    type: "request",
-    citizen_id: citizen7._id,
-    rescuer_id: rescuer3._id,
-    product_id: product3._id,
-    quantity: 15,
-    status: "in_progress",
-    createdAt: new Date("2024-07-18T08:00:00"),
-    assignedAt: new Date("2024-07-20T08:00:30"),
-    completedAt: null
-});
-
-var task1 = db.tasks.findOne({ type: "request", citizen_id: citizen1._id, rescuer_id: rescuer1._id, product_id: product1._id, quantity: 5 });
-var task2 = db.tasks.findOne({ type: "request", citizen_id: citizen2._id, product_id: product2._id, quantity: 3 });
-var task3 = db.tasks.findOne({ type: "offer", citizen_id: citizen3._id, rescuer_id: rescuer2._id, product_id: product1._id, quantity: 2 });
-var task4 = db.tasks.findOne({ type: "offer", citizen_id: citizen4._id, product_id: product2._id, quantity: 10 });
-var task5 = db.tasks.findOne({ type: "request", citizen_id: citizen4._id, rescuer_id: rescuer2._id, product_id: product2._id, quantity: 15 });
-var task6 = db.tasks.findOne({ type: "offer", citizen_id: citizen1._id, rescuer_id: rescuer1._id, product_id: product2._id, quantity: 4 });
-var task7 = db.tasks.findOne({ type: "request", citizen_id: citizen6._id, rescuer_id: rescuer3._id, product_id: product1._id, quantity: 1 });
-var task8 = db.tasks.findOne({ type: "offer", citizen_id: citizen6._id, rescuer_id: rescuer3._id, product_id: product2._id, quantity: 2 });
-var task9 = db.tasks.findOne({ type: "request", citizen_id: citizen6._id, product_id: product3._id, quantity: 3 });
-var task10 = db.tasks.findOne({ type: "offer", citizen_id: citizen7._id, rescuer_id: rescuer3._id, product_id: product1._id, quantity: 10 });
-var task11 = db.tasks.findOne({ type: "request", citizen_id: citizen7._id, rescuer_id: rescuer3._id, product_id: product2._id, quantity: 1 });
-var task12 = db.tasks.findOne({ type: "request", citizen_id: citizen7._id, rescuer_id: rescuer3._id, product_id: product3._id, quantity: 15 });
+var task1 = db.tasks.findOne({ type: "request", citizen_id: citizen1._id, product_id: product1._id, quantity: 5 });
+var task2 = db.tasks.findOne({ type: "request", citizen_id: citizen1._id, product_id: product2._id, quantity: 3 });
+var task3 = db.tasks.findOne({ type: "request", citizen_id: citizen2._id, product_id: product3._id, quantity: 2 });
+var task4 = db.tasks.findOne({ type: "request", citizen_id: citizen3._id, rescuer_id: rescuer1._id, product_id: product10._id, quantity: 4 });
+var task5 = db.tasks.findOne({ type: "offer", citizen_id: citizen4._id, rescuer_id: rescuer2._id, product_id: product1._id, quantity: 7 });
+var task6 = db.tasks.findOne({ type: "offer", citizen_id: citizen4._id, rescuer_id: rescuer3._id, product_id: product2._id, quantity: 5 });
+var task7 = db.tasks.findOne({ type: "offer", citizen_id: citizen5._id, product_id: product3._id, quantity: 4 });
 
 db.createCollection("vehicles");
-db.vehicles.insertOne({
-    name: "Vehicle 1",
-    rescuer_id: rescuer1._id,
-    cargo: [
-        {
-            product_id: product1._id,
-            quantity: 1
-        },
-        {
-            product_id: product2._id,
-            quantity: 3
-        }
-    ],
-    task_ids: [
-        task1._id,
-        task6._id
-    ]
-});
-
-db.vehicles.insertOne({
-    name: "Vehicle 2",
-    rescuer_id: rescuer2._id,
-    cargo: [
-        {
-                product_id: product1._id,
-                quantity: 9
+db.vehicles.insertMany([
+    {
+        name: "Vehicle 1",
+        rescuer_id: rescuer1._id,
+        cargo: [
+            {
+                product_id: product5._id,
+                quantity: 1
+            },
+            {
+                product_id: product7._id,
+                quantity: 2
+            },
+            {
+                product_id: product10._id,
+                quantity: 5
             }
-    ],
-    task_ids: [
-        task3._id,
-        task5._id
-    ]
-});
-
-db.vehicles.insertOne({
-    name: "Vehicle 3",
-    rescuer_id: rescuer3._id,
-    cargo: [
-        {
-            product_id: product2._id,
-            quantity: 20
-        },
-        {
-            product_id: product3._id,
-            quantity: 14
-        }
-    ],
-    task_ids: [
-        task7._id,
-        task8._id,
-        task10._id,
-        task11._id,
-        task12._id
-    ]
-});
-
-db.vehicles.insertOne({
-    name: "Vehicle 4",
-    rescuer_id: rescuer4._id,
-    cargo: [],
-    task_ids: []
-});
+        ],
+        task_ids: [
+            task4._id
+        ]
+    },
+    {
+        name: "Vehicle 2",
+        rescuer_id: rescuer2._id,
+        cargo: [
+            {
+                product_id: product8._id,
+                quantity: 3
+            }
+        ],
+        task_ids: [
+            task5._id
+        ]
+    },
+    {
+        name: "Vehicle 3",
+        rescuer_id: rescuer3._id,
+        cargo: [],
+        task_ids: [
+            task6._id
+        ]
+    }
+]);
 
 db.createCollection("announcements");
 db.announcements.insertOne({
