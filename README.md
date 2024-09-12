@@ -1,11 +1,17 @@
-use 'nodemon server.js' to run (install with 'npm install -g nodemon' if necessary)
-nodemon keeps refreshing the server everytime changes are saved without you having to restart it manually
-recommend using git bash terminal for running the command, the wsl ubuntu terminal was way slower
+# How to run the project
+- Use `npm install` to install the necessary packages
+- Run the `database.mongodb` file in a  *MongoDB* console before running the `server.js` file 
 
-to connect to the database, have a file named ".env" in the same directory as the server.js file that includes "DB=mongodb://127.0.0.1:27017/Web2024" or your own database url
+- Use `node server.js` to start the *Node.js* server
 
-server.js is the main server file for the backend operations
+To connect to the database, the project uses the `.env` file. Edit it accordingly to set your own database URL.
 
-schemas.js is used in server.js to include the mongoose schemas for every mongodb document (aka table) in our database
+---
+`server.js` is the main server file for the backend operations.
 
+`schemas.js` is used in `server.js` to include the Mongoose schemas for every MongoDB document in our database.
+
+The `frontend` directory includes the `js`,`html`,`css` and asset files that are used in the frontend operations
+
+The `routes` directory includes the `js` files that are used for backend operations
 
