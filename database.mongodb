@@ -519,3 +519,4 @@ db.announcements.insertMany([
 
 db.products.createIndex({ name: 1, category: 1}, { unique: false });
 db.warehouse_products.createIndex({ product_id: 1, quantity: 1}, { unique: false });
+db.categories.createIndex({ category_name: 1}, { unique: false});
