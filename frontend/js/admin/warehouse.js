@@ -296,6 +296,8 @@ document.getElementById('deleteProduct').addEventListener('submit', function(eve
 
                 // Refresh the dropdown list after deletion
                 pullProductsData();
+                pullWarehouseData();
+                getWarehouseData();
             } else {
                 messageElement.style.color = 'red';
             }
@@ -324,6 +326,8 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
                 // Refresh the dropdown list after deletion
                 pullCategoriesData();
                 pullProductsData();
+                pullWarehouseData();
+                getWarehouseData();
             } else {
                 messageElement.style.color = 'red';
             }
