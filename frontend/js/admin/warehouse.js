@@ -323,6 +323,7 @@ document.getElementById('deleteCategory').addEventListener('submit', function(ev
 
                 // Refresh the dropdown list after deletion
                 pullCategoriesData();
+                pullProductsData();
             } else {
                 messageElement.style.color = 'red';
             }
