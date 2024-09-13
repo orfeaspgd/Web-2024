@@ -131,7 +131,9 @@ const getOffersData = () => {
                         color = 'primary'
                         break
                 }
-                cell5.innerHTML = `<div><span class="badge text-bg-${color}">${offer.status}</span></div>`
+                let status = offer.status.replace("_", " ");
+                status = status[0].toUpperCase() + status.slice(1);
+                cell5.innerHTML = `<div><span class="badge text-bg-${color}">${status}</span></div>`
                 row.appendChild(cell5);
                 cell6.textContent = offer.assignedAt;
                 row.appendChild(cell6);
