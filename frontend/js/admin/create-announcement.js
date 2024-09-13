@@ -44,7 +44,7 @@ document.getElementById('addProductButton').addEventListener('click', function()
     const index = productsContainer.children.length;
     newProductEntry.innerHTML =`
         <div class="col d-flex align-items-center">
-            <label for="selectProduct${index}" class="form-label me-2">Product:</label>
+            <label for="selectProduct${index}" class="form-label me-2"></label>
             <select class="form-select selectProduct me-2" id="selectProduct${index}" name="selectProduct" required>
                 <option value="" disabled selected>Pick a product</option>
             </select>
@@ -57,7 +57,7 @@ document.getElementById('addProductButton').addEventListener('click', function()
     const selectProduct = newProductEntry.querySelector('.selectProduct');
     warehouseProducts.forEach(product => {
         const option = document.createElement('option');
-        option.value = product.warehouseId;
+        option.value = product._id;
         option.textContent = product.name;
         selectProduct.appendChild(option);
     });
