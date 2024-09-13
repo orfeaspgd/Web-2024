@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('/warehouse-location')
         .then(response => response.json())
         .then(location => {
+            document.getElementById('latitude').value = location.latitude;
+            document.getElementById('longitude').value = location.longitude;
             initializeMap(location);
         })
         .catch(error => console.error('Error fetching warehouse location:', error));
@@ -51,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 let messageElement = document.getElementById('createAccountMessage');
+
                 if (data.status === 'success') {
                     messageElement.style.color = 'green';
                 } else {
