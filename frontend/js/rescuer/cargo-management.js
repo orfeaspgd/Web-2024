@@ -83,7 +83,8 @@ function loadProductIntoVehicle() {
     const quantity = document.getElementById('productQuantity').value;
 
     if (!productId || !quantity) {
-        alert('Please select a product and enter a quantity.');
+        document.getElementById('loadSelectedProductsMessage').style.color = 'red';
+        document.getElementById('loadSelectedProductsMessage').innerHTML = 'Please select a product and enter a quantity.';
         return;
     }
 
@@ -96,9 +97,16 @@ function loadProductIntoVehicle() {
         },
         body: JSON.stringify(data)
     })
-        .then(response => response.json())
+        .then(response => {
+            if(response.status !== 200){
+                document.getElementById('loadSelectedProductsMessage').style.color = 'red';
+            } else {
+                document.getElementById('loadSelectedProductsMessage').style.color = 'green';
+            }
+            return response.json();
+        })
         .then(data => {
-            alert(data.message);
+            document.getElementById('loadSelectedProductsMessage').innerHTML = data.message;
             populateVehicleCargo();
             populateWarehouseProducts();
         })
@@ -114,7 +122,8 @@ function unloadProductsFromVehicle() {
     })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            document.getElementById('unloadAllProductsMessage').style.color = 'green';
+            document.getElementById('unloadAllProductsMessage').innerHTML = data.message;
             populateVehicleCargo();
             populateWarehouseProducts();
         })

@@ -162,14 +162,15 @@ async function claimTask(taskId) {
         const data = await response.json();
 
         if (response.ok) {
-            alert('Task claimed successfully!');
-            window.location.reload();  // Reload the page to update the map
+               window.location.reload();  // Reload the page to update the map
         } else {
-            alert(data.message);
+            document.getElementById('claimTaskMessage').style.color = 'red';
+            document.getElementById('claimTaskMessage').innerHTML = data.message;
         }
     } catch (error) {
         console.error('Error claiming task:', error);
-        alert('Failed to claim the task. Please try again.');
+        document.getElementById('claimTaskMessage').style.color = 'red';
+        document.getElementById('claimTaskMessage').innerHTML = "Something went wrong.";
     }
 }
 
@@ -250,7 +251,7 @@ fetchMapData().then(data => {
         const vehicleUsername = task.rescuer_id ? data.vehicle.name : '-';
 
         // If the task is not assigned yet, include the Claim Task button
-        const claimButton = !task.rescuer_id ? `<button class="btn btn-primary mt-3" onclick="claimTask('${task._id}')">Claim Task</button>` : '';
+        const claimButton = !task.rescuer_id ? `<button class="btn btn-primary mt-3" onclick="claimTask('${task._id}')">Claim Task</button>             <div id="claimTaskMessage" class="mt-3"></div>` : '';
 
         // Create the popup content for the task marker using the task data
         taskMarker.bindPopup(`
