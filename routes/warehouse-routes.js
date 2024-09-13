@@ -117,6 +117,7 @@ export default function warehouseRoutes(app, cache) {
                     );
                 }
             }
+            cache.del('products');
             res.json({ status: 'success', message: 'Product deleted.' });
         } catch (err) {
             console.error(err);
@@ -285,7 +286,7 @@ export default function warehouseRoutes(app, cache) {
                 { quantity: warehouseEditQuantity},
                 { new: true }
             );
-            res.json({ status: 'success', message: 'Product Updates.' });
+            res.json({ status: 'success', message: 'Product Updated.' });
         } catch (err) {
             console.error('Error updating product:', err);
             res.status(500).json({ status: 'error', message: 'Something went wrong.' });
