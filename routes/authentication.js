@@ -70,10 +70,10 @@ export default function authenticationRoutes(app, cache) {
             name: firstname,
             surname: lastname,
             username: username,
-            phone_number: phone_number,
             email: email,
             password: password,
             role: "rescuer",
+            phone_number: phone_number,
             location: {
                 latitude: latitude,
                 longitude: longitude
@@ -128,10 +128,10 @@ export default function authenticationRoutes(app, cache) {
             name: firstname,
             surname: lastname,
             username: username,
-            phone_number: phone_number,
             email: email,
             password: password,
             role: "citizen",
+            phone_number: phone_number,
             location: {
                 latitude: latitude,
                 longitude: longitude

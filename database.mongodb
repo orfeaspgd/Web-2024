@@ -5,10 +5,10 @@ db.users.insertOne({
     name: "Orfeas",
     surname: "Pourgourides",
     username: "op",
-    password: "123",
     email: "op@op.com",
+    password: "123",
     role: "admin",
-    phone_number: "4156892043",
+    phone_number: 4156892043,
     location: {
         latitude: 38.246639,
         longitude: 21.734573
@@ -20,10 +20,10 @@ db.users.insertMany([
         name: "Jonny",
         surname: "Greenwood",
         username: "jg",
-        password: "321",
         email: "jg@jg.com",
+        password: "321",
         role: "rescuer",
-        phone_number: "8325517789",
+        phone_number: 8325517789,
         location: {
             latitude: 38.251632760706855,
             longitude: 21.74129901845413
@@ -33,10 +33,10 @@ db.users.insertMany([
         name: "Alex",
         surname: "Smith",
         username: "as",
-        password: "322",
         email: "as@as.com",
+        password: "322",
         role: "rescuer",
-        phone_number: "7024146592",
+        phone_number: 7024146592,
         location: {
             latitude: 38.235018558792504,
             longitude: 21.747193587853868
@@ -46,10 +46,10 @@ db.users.insertMany([
         name: "John",
         surname: "Doe",
         username: "jd",
-        password: "323",
         email: "jd@jd.com",
+        password: "323",
         role: "rescuer",
-        phone_number: "3104629701",
+        phone_number: 3104629701,
         location: {
             latitude: 38.24061853604818,
             longitude: 21.731085964339442
@@ -62,10 +62,10 @@ db.users.insertMany([
         name: "Akis",
         surname: "Papapanagiotou",
         username: "ap",
-        password: "213",
         email: "ap@ap.com",
+        password: "213",
         role: "citizen",
-        phone_number: "9013567824",
+        phone_number: 9013567824,
         location: {
             latitude: 38.24156227175115,
             longitude: 21.73743106710218
@@ -75,10 +75,10 @@ db.users.insertMany([
         name: "Leo",
         surname: "Smith",
         username: "ls",
-        password: "214",
         email: "ls@ls.com",
+        password: "214",
         role: "citizen",
-        phone_number: "4087291635",
+        phone_number: 4087291635,
         location: {
             latitude: 38.25412552912689,
             longitude: 21.737234299577715
@@ -88,10 +88,10 @@ db.users.insertMany([
         name: "Emily",
         surname: "Johnson",
         username: "ej",
-        password: "215",
         email: "ej@ej.com",
+        password: "215",
         role: "citizen",
-        phone_number: "5624783920",
+        phone_number: 5624783920,
         location: {
             latitude: 38.24265951848061,
             longitude: 21.75000452430459
@@ -101,10 +101,10 @@ db.users.insertMany([
         name: "Michael",
         surname: "Brown",
         username: "mb",
-        password: "216",
         email: "mb@mb.com",
+        password: "216",
         role: "citizen",
-        phone_number: "7139425810",
+        phone_number: 7139425810,
         location: {
             latitude: 38.24574885902723,
             longitude: 21.738890907772227
@@ -114,10 +114,10 @@ db.users.insertMany([
         name: "Alex",
         surname: "Miller",
         username: "am",
-        password: "217",
         email: "am@am.com",
+        password: "217",
         role: "citizen",
-        phone_number: "9196342705",
+        phone_number: 9196342705,
         location: {
             latitude: 38.23529048005788,
             longitude: 21.736203001582112
