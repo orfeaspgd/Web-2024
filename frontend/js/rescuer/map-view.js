@@ -246,6 +246,7 @@ fetchMapData().then(data => {
 
         // Format the assignment date
         const assignmentDate = task.assignedAt ? new Date(task.assignedAt).toLocaleString() : '-';
+        const creationDate = task.createdAt ? new Date(task.createdAt).toLocaleString() : '-';
 
         // Get vehicle name if the task is assigned to it
         const vehicleUsername = task.rescuer_id ? data.vehicle.name : '-';
@@ -260,6 +261,7 @@ fetchMapData().then(data => {
                 Phone: ${task.citizen_id.phone_number}<br>
                 Product: ${task.product_id.name}<br>
                 Quantity: ${task.quantity}<br>
+                Creation Date: ${creationDate}<br>
                 Assignment Date: ${assignmentDate}<br>
                 Vehicle: ${vehicleUsername}<br>
                 ${claimButton}
