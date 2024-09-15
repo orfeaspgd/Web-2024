@@ -33,7 +33,7 @@ const getAnnouncementsData = () => {
                 row.appendChild(cell2);
                 cell3.textContent = announcement.admin_id.name;
                 row.appendChild(cell3);
-                cell4.textContent = announcement.createdAt;
+                cell4.textContent = new Date(announcement.createdAt).toLocaleString();
                 row.appendChild(cell4);
                 cell5.innerHTML = `
                     <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary mt-1 ">Create Offer</button>
