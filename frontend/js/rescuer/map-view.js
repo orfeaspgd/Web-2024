@@ -211,6 +211,7 @@ fetchMapData().then(data => {
             originalLatLng = newPosition; // Update original position
 
             drawLines(data, linesGroup, newPosition, map);
+            checkDistanceToTasks();
         } else {
             // Reset the marker to the original position if not confirmed
             marker.setLatLng(originalLatLng);
