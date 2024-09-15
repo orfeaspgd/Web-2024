@@ -29,7 +29,7 @@ const getWarehouseData = () => {
                 'Product',
                 'Category',
                 'Details',
-                'Quantity in house',
+                'Quantity in Warehouse',
                 'Quantity in Vehicles'
             ];
             columnNames.forEach(name => {
