@@ -70,6 +70,7 @@ export default function warehouseRoutes(app, cache) {
             // }
             const productVehicleQuantities = {}
 
+            // sum the amount of each product in all vehicles
             vehicles.forEach(currentVehicle => {
                 currentVehicle.cargo.forEach(currentProduct => {
                     if (!productVehicleQuantities[currentProduct.product_id]) {
