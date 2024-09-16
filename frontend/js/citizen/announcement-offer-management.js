@@ -135,9 +135,9 @@ const getOffersData = () => {
                 status = status[0].toUpperCase() + status.slice(1);
                 cell5.innerHTML = `<div><span class="badge text-bg-${color}">${status}</span></div>`
                 row.appendChild(cell5);
-                cell6.textContent = offer.assignedAt;
+                cell6.textContent = new Date(offer.assignedAt).toLocaleString();
                 row.appendChild(cell6);
-                cell7.textContent = offer.completedAt;
+                cell7.textContent = new Date(offer.completedAt).toLocaleString();
                 row.appendChild(cell7);
                 if (offer.status === 'pending') {
                     cell8.innerHTML = `
