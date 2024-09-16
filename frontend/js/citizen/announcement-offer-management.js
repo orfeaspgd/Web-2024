@@ -114,7 +114,7 @@ const getOffersData = () => {
                 row.appendChild(cell2);
                 cell3.textContent = offer.quantity;
                 row.appendChild(cell3);
-                cell4.textContent = offer.createdAt;
+                cell4.textContent = new Date(offer.createdAt).toLocaleString();
                 row.appendChild(cell4);
                 let color = ''
                 switch (offer.status) {
@@ -139,7 +139,7 @@ const getOffersData = () => {
                 row.appendChild(cell6);
                 cell7.textContent = offer.completedAt;
                 row.appendChild(cell7);
-                if (offer.status !== 'cancelled') {
+                if (offer.status === 'pending') {
                     cell8.innerHTML = `
                         <button class="btn btn-danger mt-1">Cancel</button>
                         <div class="msg"></div>

@@ -74,7 +74,7 @@ export default function tasksRoutes(app, cache) {
         Tasks.updateOne(
             { _id: task },
             { status: 'cancelled' }
-        ).then(() => res.json({ status: 'success', message: 'task cancelled.' }))
+        ).then(() => res.json({ status: 'success', message: 'Task cancelled.' }))
             .catch((err) => {console.log(err);res.json({ status: 'error', message: 'Something went wrong.' })});
     });
 
