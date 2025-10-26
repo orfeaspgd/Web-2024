@@ -1,4 +1,5 @@
 Implementation of an online platform for the coordination of volunteers during natural disasters 
+
 Part of the Web Development Class for the Computer Science & Engineering Degree at the University of Patras
 
 Uses `Node.js` for the backend implementation
