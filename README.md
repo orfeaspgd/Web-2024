@@ -3,7 +3,9 @@ Implementation of an online platform for the coordination of volunteers during n
 Part of the Web Development Class for the Computer Science & Engineering Degree at the University of Patras
 
 Uses `Node.js` for the backend implementation
-Uses `MongoDB` with `Mongoose` schemas for the database `immplementation`
+
+Uses `MongoDB` with `Mongoose` schemas for the database immplementation
+
 Uses `HTML` and `css` for the frontent implementation
 
 
